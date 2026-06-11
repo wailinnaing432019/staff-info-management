@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import FamilyTab from './FamilyTab';
+import TrainingTab from './TrainingTab';
 export default function EmployeeForm() {
+    const tabs = [
+        { id: 'personal', label: '၁။ ကိုယ်ရေးအချက်အလက်' },
+        { id: 'employment', label: '၂။ ဝန်ထမ်းရေးရာ' },
+        { id: 'education', label: '၃။ ပညာရေးနှင့် သင်တန်း' },
+        { id: 'service', label: '၄။ တာဝန်ထမ်းဆောင်မှုမှတ်တမ်း' },
+        { id: 'family', label: '၅။ မိသားစုနှင့် ဆွေမျိုးများ' },
+        { id: 'foreign', label: '၆။ နိုင်ငံခြားခရီးစဉ်မှတ်တမ်း' },
+        { id: 'legal_awards', label: '၇။ ပြစ်ဒဏ်နှင့် ဆုလာဘ်' },
+        // တကယ်လို့ နောက်ထပ် Tab တွေရှိသေးရင်လည်း ဒီအောက်မှာ စိတ်ကြိုက်ထပ်တိုးရုံပါပဲ
+    ];
     const [activeTab, setActiveTab] = useState('personal');
+
+    const currentTabIndex = tabs.findIndex(tab => tab.id === activeTab);
+
+    // ၃။ ဒါက နောက်ဆုံး Tab ဟုတ်မဟုတ် စစ်ထုတ်ပေးမည့် Boolean variable
+    const isLastTab = currentTabIndex === tabs.length - 1;
+
 
     // Format ၃ ခုလုံးမှ Column များ အားလုံး မကျန်စေရန် State တည်ဆောက်ခြင်း
     const { data, setData, post, processing, errors } = useForm({
@@ -21,7 +38,7 @@ export default function EmployeeForm() {
 
         // ကဏ္ဍ (၃) One-to-Many Dynamic Arrays (Format အားလုံးမှ ဇယားများ)
         educations: [{ title: '', major_subject: '', graduation_year: '', degree_level: '', category: 'degree' }],
-        trainings: [{ title: '', learn_from: '', learn_to: '', location: '', rank: '', category: 'local_training' }],
+        trainings: [],
         service_records: [{ service_position: '', service_department: '', service_from: '', service_to: '', service_location: '' }],
         families: [],
         foreign_visits: [{ destination_country: '', training_course: '', assigned_country: '', time_period: '', arrival_date: '', supporting_agency: '', return_department: '', foreign_visit_details: '' }],
@@ -40,34 +57,53 @@ export default function EmployeeForm() {
         setData(field, updated);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        post(route('employees.store'));
+    const handleNextStep = () => {
+        if (!isLastTab) {
+            setActiveTab(tabs[currentTabIndex + 1].id);
+        }
     };
 
+    const handlePrevStep = () => {
+        if (currentTabIndex > 0) {
+            setActiveTab(tabs[currentTabIndex - 1].id);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // ၇ ဆင့်မြောက် ရောက်နေမှပဲ ဒေတာ တကယ်ပို့ခွင့်ပေးမည်
+        if (isLastTab) {
+            post(route('employees.store'));
+        }
+    };
+
+    const handleFormInput = (e) => {
+        if (e.target.tagName.toLowerCase() === 'textarea') {
+            e.target.style.resize = 'none';
+            e.target.style.height = 'auto';
+            e.target.style.height = `${e.target.scrollHeight}px`;
+        }
+    };
     return (
         <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow">
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">နိုင်ငံ့ဝန်ထမ်း ကိုယ်ရေးမှတ်တမ်း ဖြည့်သွင်းလွှာ (ပေါင်းစပ်ဖော်မတ်)</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">နိုင်ငံ့ဝန်ထမ်း ကိုယ်ရေးမှတ်တမ်း ဖြည့်သွင်းလွှာ</h2>
 
             {/* စာမျက်နှာ Tab များ သတ်မှတ်ခြင်း */}
             <div className="flex flex-wrap border-b mb-6 bg-gray-50 p-2 rounded">
-                {[
-                    { id: 'personal', label: '၁။ ကိုယ်ရေးအချက်အလက်' },
-                    { id: 'employment', label: '၂။ ဝန်ထမ်းရေးရာ' },
-                    { id: 'education', label: '၃။ ပညာရေးနှင့် သင်တန်း' },
-                    { id: 'service', label: '၄။ တာဝန်ထမ်းဆောင်မှုမှတ်တမ်း' },
-                    { id: 'family', label: '၅။ မိသားစုနှင့် ဆွေမျိုးများ' },
-                    { id: 'foreign', label: '၆။ နိုင်ငံခြားခရီးစဉ်မှတ်တမ်း' },
-                    { id: 'legal_awards', label: '၇။ ပြစ်ဒဏ်နှင့် ဆုလာဘ်' },
-                ].map(tab => (
-                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} type="button"
-                        className={`py-2 px-4 font-semibold text-sm transition-all rounded mr-2 mb-1 ${activeTab === tab.id ? 'bg-blue-600 text-white shadow' : 'text-gray-600 hover:bg-gray-200'}`}>
+                {tabs.map(tab => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        type="button"
+                        className={`py-2 px-4 font-semibold text-sm transition-all rounded mr-2 mb-1 ${activeTab === tab.id ? 'bg-blue-600 text-white shadow' : 'text-gray-600 hover:bg-gray-200'
+                            }`}
+                    >
                         {tab.label}
                     </button>
                 ))}
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} id="employeeMegaForm" className="space-y-6">
 
                 {/* TAB 1: ကိုယ်ရေးအချက်အလက် */}
                 {activeTab === 'personal' && (
@@ -83,7 +119,7 @@ export default function EmployeeForm() {
                         <div><label className="block text-sm font-medium text-gray-700">ကျား / မ</label>
                             <select className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.gender} onChange={e => setData('gender', e.target.value)}><option value="">ရွေးချယ်ရန်</option><option value="ကျား">ကျား</option><option value="မ">မ</option></select></div>
                         <div><label className="block text-sm font-medium text-gray-700">မွေးနေ့ (ရက်၊ လ၊ နှစ်)</label>
-                            <input type="date" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} /></div>
+                            <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} /></div>
                         <div><label className="block text-sm font-medium text-gray-700">အသက်</label>
                             <input type="number" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.age} onChange={e => setData('age', e.target.value)} /></div>
                         <div className="md:col-span-2"><label className="block text-sm font-medium text-gray-700">မွေးနေ့သက္ကရာဇ် အသေးစိတ်မှတ်ချက်</label>
@@ -180,10 +216,10 @@ export default function EmployeeForm() {
                                     <tbody>
                                         {data.educations.map((row, i) => (
                                             <tr key={i} className="border-b">
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.title} onChange={e => handleDynamicChange('educations', i, 'title', e.target.value)} placeholder="e.g. B.C.Sc" /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.major_subject} onChange={e => handleDynamicChange('educations', i, 'major_subject', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.graduation_year} onChange={e => handleDynamicChange('educations', i, 'graduation_year', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.degree_level} onChange={e => handleDynamicChange('educations', i, 'degree_level', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.title} onChange={e => handleDynamicChange('educations', i, 'title', e.target.value)} placeholder="e.g. B.C.Sc" /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.major_subject} onChange={e => handleDynamicChange('educations', i, 'major_subject', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.graduation_year} onChange={e => handleDynamicChange('educations', i, 'graduation_year', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.degree_level} onChange={e => handleDynamicChange('educations', i, 'degree_level', e.target.value)} /></td>
                                                 <td className="p-1 border text-center"><button type="button" onClick={() => removeRow('educations', i)} className="text-red-500 hover:underline">ဖျက်ရန်</button></td>
                                             </tr>
                                         ))}
@@ -194,38 +230,7 @@ export default function EmployeeForm() {
                         </div>
 
                         {/* သင်တန်းများဇယား */}
-                        <div>
-                            <h3 className="font-bold text-md mb-2 text-gray-700">တက်ရောက်ခဲ့ဖူးသော သင်တန်းမှတ်တမ်းများ (Local / Foreign Training / Current Training)</h3>
-                            <div className="overflow-x-auto">
-                                <table className="w-full border text-sm">
-                                    <thead className="bg-gray-100">
-                                        <tr>
-                                            <th className="p-2 border">သင်တန်းအမည်</th><th className="p-2 border">အမျိုးအစား</th><th className="p-2 border">မှ (ရက်စွဲ)</th><th className="p-2 border">ထိ (ရက်စွဲ)</th><th className="p-2 border">ကျောင်း/နေရာ</th><th className="p-2 border">အဆင့်/အမှတ်စဉ်</th><th className="p-2 border">လုပ်ဆောင်ချက်</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.trainings.map((row, i) => (
-                                            <tr key={i} className="border-b">
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.title} onChange={e => handleDynamicChange('trainings', i, 'title', e.target.value)} /></td>
-                                                <td className="p-1 border">
-                                                    <select className="w-full border-0 p-1" value={row.category} onChange={e => handleDynamicChange('trainings', i, 'category', e.target.value)}>
-                                                        <option value="local_training">ပြည်တွင်းသင်တန်း (Local)</option>
-                                                        <option value="foreign_training">ပြည်ပသင်တန်း (Foreign)</option>
-                                                        <option value="current_training">လက်ရှိတက်ရောက်ဆဲသင်တန်း</option>
-                                                    </select>
-                                                </td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.learn_from} onChange={e => handleDynamicChange('trainings', i, 'learn_from', e.target.value)} placeholder="ရက်/လ/နှစ် သို့ ကာလ" /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.learn_to} onChange={e => handleDynamicChange('trainings', i, 'learn_to', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.location} onChange={e => handleDynamicChange('trainings', i, 'location', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.rank} onChange={e => handleDynamicChange('trainings', i, 'rank', e.target.value)} /></td>
-                                                <td className="p-1 border text-center"><button type="button" onClick={() => removeRow('trainings', i)} className="text-red-500 hover:underline">ဖျက်ရန်</button></td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button type="button" onClick={() => addRow('trainings', { title: '', learn_from: '', learn_to: '', location: '', rank: '', category: 'local_training' })} className="mt-2 text-sm bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">+ သင်တန်းထပ်ထည့်ရန်</button>
-                        </div>
+                        <TrainingTab data={data} setData={setData} />
                     </div>
                 )}
 
@@ -243,11 +248,11 @@ export default function EmployeeForm() {
                                 <tbody>
                                     {data.service_records.map((row, i) => (
                                         <tr key={i} className="border-b">
-                                            <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.service_position} onChange={e => handleDynamicChange('service_records', i, 'service_position', e.target.value)} /></td>
-                                            <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.service_department} onChange={e => handleDynamicChange('service_records', i, 'service_department', e.target.value)} /></td>
-                                            <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.service_from} onChange={e => handleDynamicChange('service_records', i, 'service_from', e.target.value)} /></td>
-                                            <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.service_to} onChange={e => handleDynamicChange('service_records', i, 'service_to', e.target.value)} /></td>
-                                            <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.service_location} onChange={e => handleDynamicChange('service_records', i, 'service_location', e.target.value)} /></td>
+                                            <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.service_position} onChange={e => handleDynamicChange('service_records', i, 'service_position', e.target.value)} /></td>
+                                            <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.service_department} onChange={e => handleDynamicChange('service_records', i, 'service_department', e.target.value)} /></td>
+                                            <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.service_from} onChange={e => handleDynamicChange('service_records', i, 'service_from', e.target.value)} /></td>
+                                            <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.service_to} onChange={e => handleDynamicChange('service_records', i, 'service_to', e.target.value)} /></td>
+                                            <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.service_location} onChange={e => handleDynamicChange('service_records', i, 'service_location', e.target.value)} /></td>
                                             <td className="p-1 border text-center"><button type="button" onClick={() => removeRow('service_records', i)} className="text-red-500 hover:underline">ဖျက်ရန်</button></td>
                                         </tr>
                                     ))}
@@ -284,12 +289,12 @@ export default function EmployeeForm() {
                                     <tbody>
                                         {data.hasVisitedAbroad.map((row, i) => (
                                             <tr key={i} className="border-b">
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.abroad_from} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'training_course', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.abroad_to} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'destination_country', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.country_visited} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'time_period', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.visit_purpose} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'arrival_date', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.abroad_from} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'training_course', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.abroad_to} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'destination_country', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.country_visited} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'time_period', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.visit_purpose} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'arrival_date', e.target.value)} /></td>
 
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.foreign_currency_amount} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'supporting_agency', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.foreign_currency_amount} onChange={e => handleDynamicChange('hasVisitedAbroad', i, 'supporting_agency', e.target.value)} /></td>
                                                 <td className="p-1 border text-center"><button type="button" onClick={() => removeRow('hasVisitedAbroad', i)} className="text-red-500 hover:underline">ဖျက်ရန်</button></td>
                                             </tr>
                                         ))}
@@ -310,14 +315,14 @@ export default function EmployeeForm() {
                                     <tbody>
                                         {data.foreign_visits.map((row, i) => (
                                             <tr key={i} className="border-b">
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.training_course} onChange={e => handleDynamicChange('foreign_visits', i, 'training_course', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.destination_country} onChange={e => handleDynamicChange('foreign_visits', i, 'destination_country', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.time_period} onChange={e => handleDynamicChange('foreign_visits', i, 'time_period', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.arrival_date} onChange={e => handleDynamicChange('foreign_visits', i, 'arrival_date', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.training_course} onChange={e => handleDynamicChange('foreign_visits', i, 'training_course', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.destination_country} onChange={e => handleDynamicChange('foreign_visits', i, 'destination_country', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.time_period} onChange={e => handleDynamicChange('foreign_visits', i, 'time_period', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.arrival_date} onChange={e => handleDynamicChange('foreign_visits', i, 'arrival_date', e.target.value)} /></td>
 
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.supporting_agency} onChange={e => handleDynamicChange('foreign_visits', i, 'supporting_agency', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.return_department} onChange={e => handleDynamicChange('foreign_visits', i, 'return_department', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.foreign_visit_details} onChange={e => handleDynamicChange('foreign_visits', i, 'foreign_visit_details', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.supporting_agency} onChange={e => handleDynamicChange('foreign_visits', i, 'supporting_agency', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.return_department} onChange={e => handleDynamicChange('foreign_visits', i, 'return_department', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.foreign_visit_details} onChange={e => handleDynamicChange('foreign_visits', i, 'foreign_visit_details', e.target.value)} /></td>
                                                 <td className="p-1 border text-center"><button type="button" onClick={() => removeRow('foreign_visits', i)} className="text-red-500 hover:underline">ဖျက်ရန်</button></td>
                                             </tr>
                                         ))}
@@ -354,10 +359,10 @@ export default function EmployeeForm() {
                                                         <option value="criminal">ပြစ်မှု/ရာဇဝတ်မှု ပြစ်ဒဏ်မှတ်တမ်း</option>
                                                     </select>
                                                 </td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.period} onChange={e => handleDynamicChange('legal_records', i, 'period', e.target.value)} placeholder="e.g. ၂၀၂၅-၂၀၂၆" /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.reason} onChange={e => handleDynamicChange('legal_records', i, 'reason', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.penalty} onChange={e => handleDynamicChange('legal_records', i, 'penalty', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.remark} onChange={e => handleDynamicChange('legal_records', i, 'remark', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.period} onChange={e => handleDynamicChange('legal_records', i, 'period', e.target.value)} placeholder="e.g. ၂၀၂၅-၂၀၂၆" /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.reason} onChange={e => handleDynamicChange('legal_records', i, 'reason', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.penalty} onChange={e => handleDynamicChange('legal_records', i, 'penalty', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.remark} onChange={e => handleDynamicChange('legal_records', i, 'remark', e.target.value)} /></td>
                                                 <td className="p-1 border text-center"><button type="button" onClick={() => removeRow('legal_records', i)} className="text-red-500 hover:underline">ဖျက်ရန်</button></td>
                                             </tr>
                                         ))}
@@ -378,10 +383,10 @@ export default function EmployeeForm() {
                                     <tbody>
                                         {data.criminal_records.map((row, i) => (
                                             <tr key={i} className="border-b">
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.criminalPenalty} onChange={e => handleDynamicChange('criminal_records', i, 'reason', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.reasonPelanty} onChange={e => handleDynamicChange('criminal_records', i, 'penalty', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.criminalFrom} onChange={e => handleDynamicChange('criminal_records', i, 'remark', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.criminalTo} onChange={e => handleDynamicChange('criminal_records', i, 'remark', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.criminalPenalty} onChange={e => handleDynamicChange('criminal_records', i, 'reason', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.reasonPelanty} onChange={e => handleDynamicChange('criminal_records', i, 'penalty', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.criminalFrom} onChange={e => handleDynamicChange('criminal_records', i, 'remark', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.criminalTo} onChange={e => handleDynamicChange('criminal_records', i, 'remark', e.target.value)} /></td>
                                                 <td className="p-1 border text-center"><button type="button" onClick={() => removeRow('criminal_records', i)} className="text-red-500 hover:underline">ဖျက်ရန်</button></td>
                                             </tr>
                                         ))}
@@ -403,10 +408,10 @@ export default function EmployeeForm() {
                                     <tbody>
                                         {data.awards.map((row, i) => (
                                             <tr key={i} className="border-b">
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.award_title} onChange={e => handleDynamicChange('awards', i, 'award_title', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.award_period} onChange={e => handleDynamicChange('awards', i, 'award_period', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.award_year} onChange={e => handleDynamicChange('awards', i, 'award_year', e.target.value)} /></td>
-                                                <td className="p-1 border"><input type="text" className="w-full border-0 p-1" value={row.award_remark} onChange={e => handleDynamicChange('awards', i, 'award_remark', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.award_title} onChange={e => handleDynamicChange('awards', i, 'award_title', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.award_period} onChange={e => handleDynamicChange('awards', i, 'award_period', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.award_year} onChange={e => handleDynamicChange('awards', i, 'award_year', e.target.value)} /></td>
+                                                <td className="p-1 border"><textarea rows={1} className="w-full border-0 p-1" value={row.award_remark} onChange={e => handleDynamicChange('awards', i, 'award_remark', e.target.value)} /></td>
                                                 <td className="p-1 border text-center"><button type="button" onClick={() => removeRow('awards', i)} className="text-red-500 hover:underline">ဖျက်ရန်</button></td>
                                             </tr>
                                         ))}
@@ -418,13 +423,43 @@ export default function EmployeeForm() {
                     </div>
                 )}
 
-                {/* Form Action Button */}
-                <div className="flex justify-end pt-4 border-t">
-                    <button type="submit" disabled={processing} className="bg-green-600 text-white font-semibold px-6 py-2 rounded shadow hover:bg-green-700 disabled:opacity-50 transition-all">
-                        {processing ? 'ဒေတာများကို သိမ်းဆည်းနေပါသည်...' : 'မှတ်တမ်းများအားလုံးကို သိမ်းဆည်းမည်'}
-                    </button>
-                </div>
+
             </form>
+            <div className="mt-6 flex justify-end space-x-2 border-t pt-4">
+
+                {/* "နောက်သို့" ပြန်သွားမည့်ခလုတ် (ပထမဆုံး Tab မဟုတ်ရင် ပြမည်) */}
+                {currentTabIndex > 0 && (
+                    <button
+                        type="button"
+                        className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded shadow font-semibold"
+                        onClick={handlePrevStep}
+                    >
+                        နောက်သို့
+                    </button>
+                )}
+
+                {/* ✅ နောက်ဆုံး Tab မဟုတ်သေးရင် "နောက်တစ်ဆင့် သို့" သီးသန့် ခလုတ်ပဲ ပြမည် */}
+                {!isLastTab ? (
+                    <button
+                        type="button"
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow font-semibold"
+                        onClick={handleNextStep} // ကလစ်နှိပ်မှ နောက်တစ်ဆင့်တက်ပြီး Form Submit လုံးဝ မဖြစ်တော့ပါ
+                    >
+                        နောက်တစ်ဆင့် သို့
+                    </button>
+                ) : (
+                    /* ✅ ၇ ဆင့်မြောက် နောက်ဆုံး Tab ရောက်မှသာ Form ကို လှမ်း Submit လုပ်မည့် ခလုတ်ပေါ်မည် */
+                    <button
+                        type="submit"
+                        form="employeeMegaForm" // 👈 HTML5 ရဲ့ 'form' attribute သုံးပြီး အပေါ်က Form ကြီးကို လှမ်းတွန်းခိုင်းခြင်းဖြစ်ပါတယ်
+                        disabled={processing}
+                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow font-bold"
+                    >
+                        {processing ? 'သိမ်းဆည်းနေပါသည်...' : 'ဒေတာအားလုံးသိမ်းဆည်းမည်'}
+                    </button>
+                )}
+
+            </div>
         </div>
     );
 }
