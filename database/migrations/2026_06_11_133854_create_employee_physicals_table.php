@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trainings', function (Blueprint $table) {
+        Schema::create('employee_physicals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['education','local_training', 'foreign_training']);
-            $table->string('learn_course')->nullable();
-            $table->string('from_date')->nullable();
-            $table->string('to_date')->nullable();
-            $table->string('location')->nullable();
-            $table->string('rank')->nullable();
+            $table->decimal('height', 5, 2)->nullable(); //24
+            $table->decimal('weight', 5, 2)->nullable(); //25
+            $table->string('hair_color')->nullable(); //26
+            $table->string('eye_color')->nullable(); //27
+            $table->string('blood_type')->nullable(); //28
+            $table->text('distinctive_mark')->nullable(); //28
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trainings');
+        Schema::dropIfExists('employee_physicals');
     }
 };
