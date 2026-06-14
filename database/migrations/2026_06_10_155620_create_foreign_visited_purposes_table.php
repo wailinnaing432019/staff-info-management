@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('foreign_visited_purposes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('destination_country');
-            $table->string('assigned_country');
-            $table->date('time_period')->nullable(); 
-            $table->date('arrival_date')->nullable(); 
+            $table->string('destination_country')->nullable();
+            $table->string('assigned_country')->nullable();
+            $table->string('time_period')->nullable(); 
+            $table->string('arrival_date')->nullable(); 
             $table->string('training_course')->nullable();
             $table->string('supporting_agency')->nullable();
             $table->string('return_department')->nullable(); 
-            $table->text('foreign_visit_details')->nullable();
+            $table->string('foreign_visit_details')->nullable();
             $table->timestamps();
         });
     }

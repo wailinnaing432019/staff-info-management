@@ -19,11 +19,15 @@ return new class extends Migration
             $table->string('alternative_name')->nullable(); //4
             $table->string('gender')->nullable(); //5
             $table->string('date_of_birth')->nullable(); //6
-            $table->integer('age')->nullable(); //7
+            $table->string('age')->nullable(); //7
             $table->string('birth_place')->nullable(); //8
+            $table->string('date_of_birth_detail')->nullable();  
             $table->string('race')->nullable(); //9
             $table->string('religion')->nullable(); //10
-            $table->string('nrc')->nullable()->unique(); //11
+            $table->string('nrc_state')->nullable(); //11
+            $table->string('nrc_type')->nullable();
+            $table->string('nrc_township')->nullable();
+            $table->string('nrc_number')->nullable();
             $table->string('father_name')->nullable(); //12
             $table->string('father_job')->nullable(); //13
             $table->string('mother_name')->nullable(); //14

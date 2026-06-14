@@ -23,11 +23,12 @@ return new class extends Migration
             $table->string('employee_start_date_detail')->nullable();  //21
             $table->string('current_pos_start_date_detail')->nullable();  //22
             $table->string('current_dept_start_date_detail')->nullable(); //23
-            $table->text('penalty_detail')->nullable();
-            $table->text('contract_agreement_detail')->nullable(); //36
-            $table->text('foreign_detail')->nullable();
-            $table->text('training_detail')->nullable();
-            $table->text('transfer_detail')->nullable();
+            $table->string('year_of_service')->nullable(); //23
+            $table->string('penalty_detail')->nullable();
+            $table->string('contract_agreement_detail')->nullable(); //36
+            $table->string('foreign_detail')->nullable();
+            $table->string('training_detail')->nullable();
+            $table->string('transfer_detail')->nullable();
             $table->timestamps();
         });
     }

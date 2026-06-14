@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('trainings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['education','local_training', 'foreign_training']);
+            $table->enum('category', ['education','local_training', 'foreign_training']);
             $table->string('learn_course')->nullable();
-            $table->string('from_date')->nullable();
-            $table->string('to_date')->nullable();
+            $table->string('learn_from')->nullable();
+            $table->string('learn_to')->nullable();
             $table->string('location')->nullable();
             $table->string('rank')->nullable();
             $table->timestamps();

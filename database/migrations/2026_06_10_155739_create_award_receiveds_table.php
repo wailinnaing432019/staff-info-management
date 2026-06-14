@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('award_receiveds', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('award_title');
+            $table->string('award_title')->nullable();
             $table->string('award_year')->nullable();
             $table->string('award_period')->nullable();
-            $table->text('award_remark')->nullable();
+            $table->string('award_remark')->nullable();
             $table->timestamps();
         });
     }

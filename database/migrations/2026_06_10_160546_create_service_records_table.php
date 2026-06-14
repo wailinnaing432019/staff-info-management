@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('service_records', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('service_position');
-            $table->string('service_department');
-            $table->date('service_from');
-            $table->date('service_to')->nullable();
+            $table->string('service_position')->nullable();
+            $table->string('service_department')->nullable();
+            $table->string('service_from')->nullable();
+            $table->string('service_to')->nullable();
             $table->string('service_location')->nullable(); 
             $table->timestamps();
         });

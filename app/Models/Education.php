@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Education extends Model
 {
-    //
+    protected $fillable = [
+        'employee_id',
+        'degree_name',
+'major_subject',
+'graduation_year',
+'degree_level',
+    ];
 }

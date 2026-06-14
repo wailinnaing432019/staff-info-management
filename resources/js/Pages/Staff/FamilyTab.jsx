@@ -1,10 +1,10 @@
 import React from 'react';
 import AutoResizeTextarea from './AuthoResizeTextarea';
 // ✅ RenderFamilyTable ကို အပြင်ဘက် သီးသန့် Component အဖြစ် ဆွဲထုတ်လိုက်ပါတယ်
-const RenderFamilyTable = ({ title, relationType, data, handleFamilyChange, addFamilyRow, removeFamilyRow }) => {
+const RenderFamilyTable = ({ title, relationship_type, data, handleFamilyChange, addFamilyRow, removeFamilyRow }) => {
     const filteredMembers = data.families
         .map((member, originalIndex) => ({ ...member, originalIndex }))
-        .filter(item => item.relationship_type === relationType);
+        .filter(item => item.relationship_type === relationship_type);
 
     return (
         <div className="mb-8 bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
@@ -19,6 +19,7 @@ const RenderFamilyTable = ({ title, relationType, data, handleFamilyChange, addF
                             <th className="p-2 border w-12 text-center">စဉ်</th>
                             <th className="p-2 border min-w-[150px]">အမည်</th>
                             <th className="p-2 border w-24">ကျား/မ</th>
+                            <th className="p-2 border w-24">အသက်အရွယ်</th>
                             <th className="p-2 border min-w-[100px]">နိုင်ငံသား</th>
                             <th className="p-2 border min-w-[120px]">အလုပ်အကိုင်</th>
                             <th className="p-2 border min-w-[200px]">နေရပ်လိပ်စာ အပြည့်အစုံ</th>
@@ -42,6 +43,9 @@ const RenderFamilyTable = ({ title, relationType, data, handleFamilyChange, addF
                                         <option value="ကျား">ကျား</option>
                                         <option value="မ">မ</option>
                                     </select>
+                                </td>
+                                <td className="p-1 border">
+                                    <textarea rows={1} className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.family_lineage} onChange={e => handleFamilyChange(row.originalIndex, 'family_lineage', e.target.value)} />
                                 </td>
                                 <td className="p-1 border">
                                     <textarea rows={1} className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.nationality} onChange={e => handleFamilyChange(row.originalIndex, 'nationality', e.target.value)} />
@@ -75,7 +79,7 @@ const RenderFamilyTable = ({ title, relationType, data, handleFamilyChange, addF
                     </tbody>
                 </table>
             </div>
-            <button type="button" onClick={() => addFamilyRow(relationType)} className="mt-2 text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded transition-colors shadow-sm font-medium">
+            <button type="button" onClick={() => addFamilyRow(relationship_type)} className="mt-2 text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded transition-colors shadow-sm font-medium">
                 + အချက်အလက်ထည့်ရန်
             </button>
         </div>
@@ -85,8 +89,8 @@ const RenderFamilyTable = ({ title, relationType, data, handleFamilyChange, addF
 // Main Export Component
 export default function FamilyTab({ data, setData }) {
 
-    const addFamilyRow = (relationType) => {
-        const newRow = { relation_name: '', relationship_type: relationType, family_lineage: '', gender: 'ကျား', nationality: 'မြန်မာ', occupation: '', address: '', remark: '' };
+    const addFamilyRow = (relationship_type) => {
+        const newRow = { relation_name: '', relationship_type: relationship_type, family_lineage: '', gender: 'ကျား', nationality: 'မြန်မာ', occupation: '', address: '', remark: '' };
         setData('families', [...data.families, newRow]);
     };
 
@@ -106,14 +110,14 @@ export default function FamilyTab({ data, setData }) {
                 <h3 className="font-bold text-lg text-blue-900 mb-1">၅။ မိသားစုဝင်များနှင့် ဆွေမျိုးတော်စပ်သူများ၏ အသေးစိတ်အချက်အလက်</h3>
             </div>
 
-            <RenderFamilyTable title="၁။ အဘ၏မောင်နှမအရင်းများဇယား (Father Siblings)" relationType="father_sibling" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
-            <RenderFamilyTable title="၂။ အမိ၏မောင်နှမအရင်းများဇယား (Mother Siblings)" relationType="mother_sibling" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
-            <RenderFamilyTable title="၃။ ဝန်ထမ်း၏မောင်နှမအရင်းများဇယား (Employee Siblings)" relationType="employee_sibling" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
-            <RenderFamilyTable title="၄။ အိမ်ထောင်ဖက်မိသားစုဇယား (Spouse Family)" relationType="spouse_family" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
-            <RenderFamilyTable title="၅။ ယောက္ခမအဘဘက်မှမိသားစုဇယား (Spouse Father Family)" relationType="spouse_father_family" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
-            <RenderFamilyTable title="၆။ ယောက္ခမအမိဘက်မှမိသားစုဇယား (Spouse Mother Family)" relationType="spouse_mother_family" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
-            <RenderFamilyTable title="၇။ ဝန်ထမ်း၏သားသမီးမိသားစုဇယား (Employee Children Family)" relationType="children_family" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
-            <RenderFamilyTable title="၈။ ပြည်ပရှိဆွေမျိုးများဇယား (Relative Abroad)" relationType="relative_abroad" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
+            <RenderFamilyTable title="၁။ အဘ၏မောင်နှမအရင်းများဇယား (Father Siblings)" relationship_type="father_sibling" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
+            <RenderFamilyTable title="၂။ အမိ၏မောင်နှမအရင်းများဇယား (Mother Siblings)" relationship_type="mother_sibling" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
+            <RenderFamilyTable title="၃။ ဝန်ထမ်း၏မောင်နှမအရင်းများဇယား (Employee Siblings)" relationship_type="employee_sibling" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
+            <RenderFamilyTable title="၄။ အိမ်ထောင်ဖက်မိသားစုဇယား (Spouse Family)" relationship_type="spouse_family" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
+            <RenderFamilyTable title="၅။ ယောက္ခမအဘဘက်မှမိသားစုဇယား (Spouse Father Family)" relationship_type="spouse_father_family" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
+            <RenderFamilyTable title="၆။ ယောက္ခမအမိဘက်မှမိသားစုဇယား (Spouse Mother Family)" relationship_type="spouse_mother_family" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
+            <RenderFamilyTable title="၇။ ဝန်ထမ်း၏သားသမီးမိသားစုဇယား (Employee Children Family)" relationship_type="children" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
+            <RenderFamilyTable title="၈။ ပြည်ပရှိဆွေမျိုးများဇယား (Relative Abroad)" relationship_type="relative_abroad" data={data} handleFamilyChange={handleFamilyChange} addFamilyRow={addFamilyRow} removeFamilyRow={removeFamilyRow} />
         </div>
     );
 }

@@ -28,7 +28,7 @@ const RenderTrainingTable = ({ title, trainingCategory, data, handleTrainingChan
                             <tr key={row.originalIndex} className="border-b hover:bg-gray-50">
                                 {/* သင်တန်းအမည် */}
                                 <td className="p-1 border">
-                                    <textarea rows={1} className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.title} onChange={e => handleTrainingChange(row.originalIndex, 'title', e.target.value)} />
+                                    <textarea rows={1} className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.learn_course} onChange={e => handleTrainingChange(row.originalIndex, 'learn_course', e.target.value)} />
                                 </td>
                                 {/* မှ (ရက်စွဲ) */}
                                 <td className="p-1 border">
@@ -75,7 +75,7 @@ export default function TrainingTab({ data, setData }) {
     // နှိပ်လိုက်သည့် ဇယားအလိုက် သက်ဆိုင်ရာ category ပါတစ်ခါတည်း သတ်မှတ်ပေးမည်
     const addTrainingRow = (trainingCategory) => {
         const newRow = {
-            title: '',
+            learn_course: '',
             category: trainingCategory, // UI ကနေ တန်းသတ်မှတ်ပေးမည့် hidden value
             learn_from: '',
             learn_to: '',
@@ -110,6 +110,6 @@ export default function TrainingTab({ data, setData }) {
 
             <RenderTrainingTable title="၁။ ပြည်တွင်းသင်တန်းမှတ်တမ်း (Local Training)" trainingCategory="local_training" data={data} handleTrainingChange={handleTrainingChange} addTrainingRow={addTrainingRow} removeTrainingRow={removeTrainingRow} />
             <RenderTrainingTable title="၂။ ပြည်ပသင်တန်းမှတ်တမ်း (Foreign Training)" trainingCategory="foreign_training" data={data} handleTrainingChange={handleTrainingChange} addTrainingRow={addTrainingRow} removeTrainingRow={removeTrainingRow} />
-            <RenderTrainingTable title="၃။ လက်ရှိတက်ရောက်ဆဲသင်တန်းမှတ်တမ်း (Current Training)" trainingCategory="current_training" data={data} handleTrainingChange={handleTrainingChange} addTrainingRow={addTrainingRow} removeTrainingRow={removeTrainingRow} />        </div>
+            <RenderTrainingTable title="၃။ လက်ရှိတက်ရောက်ဆဲသင်တန်းမှတ်တမ်း (Current Training)" trainingCategory="education" data={data} handleTrainingChange={handleTrainingChange} addTrainingRow={addTrainingRow} removeTrainingRow={removeTrainingRow} />        </div>
     );
 }

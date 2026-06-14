@@ -34,7 +34,7 @@ export default function Edit({
                     </div>
 
                     <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8">
-                        <DeleteUserForm className="max-w-xl" />
+                        {/* <DeleteUserForm className="max-w-xl" /> */}
                     </div>
                 </div>
             </div>

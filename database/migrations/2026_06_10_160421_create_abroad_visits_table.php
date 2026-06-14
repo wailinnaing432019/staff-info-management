@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('visit_purpose')->nullable();
             $table->string('abroad_from')->nullable();
             $table->string('abroad_to')->nullable();
-            $table->string('foreign_currency_amt')->nullable();
+            $table->string('foreign_currency_amount')->nullable();
             $table->timestamps();
         });
     }

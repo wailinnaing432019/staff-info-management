@@ -17,10 +17,10 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
             $table->string('period')->nullable();
-            $table->text('reason')->nullable();
-            $table->text('penalty')->nullable();
-            $table->text('remark')->nullable();
-            $table->enum('type', [
+            $table->string('reason')->nullable();
+            $table->string('penalty')->nullable();
+            $table->string('remark')->nullable();
+            $table->enum('record_type', [
                 'disciplinary',
                 'court',
             ]);

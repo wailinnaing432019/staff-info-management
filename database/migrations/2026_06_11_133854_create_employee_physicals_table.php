@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('employee_physicals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->decimal('height', 5, 2)->nullable(); //24
-            $table->decimal('weight', 5, 2)->nullable(); //25
+            $table->string('height')->nullable(); //24
+            $table->string('weight')->nullable(); //25
             $table->string('hair_color')->nullable(); //26
             $table->string('eye_color')->nullable(); //27
             $table->string('blood_type')->nullable(); //28
-            $table->text('distinctive_mark')->nullable(); //28
+            $table->string('distinctive_mark')->nullable(); //28
             $table->timestamps();
         });
     }

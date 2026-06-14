@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('family_members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('relation_name');
+            $table->string('relation_name')->nullable();
     $table->string('gender')->nullable();
     $table->string('nationality')->nullable();
     $table->string('occupation')->nullable();
-    $table->text('address')->nullable();
-    $table->text('remark')->nullable();
+    $table->string('address')->nullable();
+    $table->string('remark')->nullable();
     $table->enum('relationship_type', ['father_sibling','mother_sibling','employee_sibling', 'spouse_family','spouse_father_family','spouse_mother_family','children','relative_abroad']); 
     $table->string('family_lineage')->nullable();  
             $table->timestamps();
