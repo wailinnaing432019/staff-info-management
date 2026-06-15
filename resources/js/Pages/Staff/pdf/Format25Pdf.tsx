@@ -77,7 +77,7 @@ export default function Format25Pdf({ data }) {
                             <td className="border border-black p-0.5 whitespace-nowrap">{data.date_of_birth || '-'}</td>
                             <td className="border border-black p-0.5">{data.race || '-'} / {data.religion || '-'}</td>
                             <td className="border border-black p-0.5 text-left">{data.birth_place || '-'}</td>
-                            <td className="border border-black p-0.5 font-mono text-[10px] print:text-[7px] whitespace-nowrap">{data.nrc_township || ''}
+                            <td className="border border-black p-0.5  text-[10px] print:text-[7px] whitespace-nowrap">{data.nrc_township || ''}
                                 {data.nrc_type && `(${data.nrc_type})`}
                                 {data.nrc_number ? ` ${data.nrc_number}` : '-'}</td>
                             <td className="border border-black p-0.5 text-left">{data.father_name || '-'}{data.father_job ? ` (${data.father_job})` : ''}</td>

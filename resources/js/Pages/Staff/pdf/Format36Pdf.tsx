@@ -1,6 +1,7 @@
 import React from 'react';
 import ActionTable from '../components/ActionTable';
 import FamilyTable from '../components/FamilyTable';
+import toMyanmarNumber from '@/util/numberHelper';
 
 export default function Format36({ data = {} }) {
     return (
@@ -194,7 +195,7 @@ export default function Format36({ data = {} }) {
                                     <tr key={idx}>
                                         <td className="border border-black p-2 text-left px-3">{edu.degree_name}</td>
                                         <td className="border border-black p-2">{edu.major_subject || '-'}</td>
-                                        <td className="border border-black p-2 font-mono">{edu.graduation_year || '-'}</td>
+                                        <td className="border border-black p-2 ">{edu.graduation_year || '-'}</td>
                                         <td className="border border-black p-2">{edu.degree_level || '-'}</td>
                                     </tr>
                                 ))
@@ -225,7 +226,7 @@ export default function Format36({ data = {} }) {
                                 return educations.length > 0 ? (
                                     educations.map((item, idx) => (
                                         <tr key={idx}>
-                                            <td className="border border-black p-2 text-center font-medium">{idx + 1}</td>
+                                            <td className="border border-black p-2 text-center font-medium">{toMyanmarNumber(idx + 1)}</td>
                                             <td className="border border-black p-2 text-left px-3">{item.learn_course || '-'}</td>
                                             <td className="border border-black p-2">
                                                 {item.learn_from || '-'} {item.learn_to ? ` မှ ${item.learn_to} ထိ` : ''}
@@ -269,7 +270,7 @@ export default function Format36({ data = {} }) {
                                         <td className="border border-black p-2">{trip.abroad_to || '-'}</td>
                                         <td className="border border-black p-2">{trip.country_visited || '-'}</td>
                                         <td className="border border-black p-2 text-left px-3">{trip.visit_purpose || '-'}</td>
-                                        <td className="border border-black p-2 font-mono">{trip.foreign_currency_amount || '-'}</td>
+                                        <td className="border border-black p-2 ">{trip.foreign_currency_amount || '-'}</td>
                                     </tr>
                                 ))
                             ) : (
@@ -311,14 +312,14 @@ export default function Format36({ data = {} }) {
                             <tr className="bg-gray-50 font-bold border-b border-black">
                                 <th className="border border-black p-2 w-16">စဉ်</th>
                                 <th className="border border-black p-2">ဘွဲ့ထူး၊ ဂုဏ်ထူးတံဆိပ်</th>
-                                <th className="border border-black p-2 w-64">အမိန့်အမှတ် / ခုနှစ်</th>
+                                <th className="border border-black p-2 w-64">အမိန့်အမှတ်/ ခုနှစ်</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-black">
                             {data.awards_received?.length > 0 ? (
                                 data.awards_received.map((item, idx) => (
                                     <tr key={idx}>
-                                        <td className="border border-black p-2">{idx + 1}</td>
+                                        <td className="border border-black p-2">{toMyanmarNumber(idx + 1)}</td>
                                         <td className="border border-black p-2 text-left px-3 font-semibold">{item.award_title || '-'}</td>
                                         <td className="border border-black p-2 font-semibold">{item.award_year || '-'}</td>
                                     </tr>
@@ -374,7 +375,7 @@ export default function Format36({ data = {} }) {
                             <div><strong>ရာထူး:</strong> <span>{data.employment?.position || '............................................'}</span></div>
                             <div><strong>ဖုန်းနံပါတ် (ရုံး/လက်ကိုင်ဖုန်း):</strong> <span>{data.phone || '............................................'}</span></div>
                             <div><strong>အီးမေးလ်:</strong> <span>{data.email || '............................................'}</span></div>
-                            <div className="text-[13px] mt-2"><strong>ရက်စွဲ:</strong> ဝင်္ဂဒ ခုနှစ်၊ .................... လ၊ ........... ရက်</div>
+                            <div className="text-[13px] mt-2"><strong>နေ့စွဲ:</strong>  ခုနှစ်၊ .................... လ၊ ........... ရက်</div>
                         </div>
 
                         {/* ထပ်ဆင့်အတည်ပြုချက်အပိုင်း */}
@@ -385,7 +386,7 @@ export default function Format36({ data = {} }) {
                             <div className="flex border-b border-dotted border-gray-600 h-6"><strong>ရာထူး:</strong></div>
                             <div className="flex border-b border-dotted border-gray-600 h-6"><strong>ဌာန:</strong></div>
                             <div><strong>တက္ကသိုလ်:</strong> ကွန်ပျူတာတက္ကသိုလ် (မိတ္ထီလာ)</div>
-                            <div className="text-[13px] mt-2"><strong>ရက်စွဲ:</strong> ဝင်္ဂဒ ခုနှစ်၊ .................... လ၊ ........... ရက်</div>
+                            <div className="text-[13px] mt-2"><strong>နေ့:</strong> ဝင်္ဂဒ ခုနှစ်၊ .................... လ၊ ........... ရက်</div>
                         </div>
                     </div>
                 </div>

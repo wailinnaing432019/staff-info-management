@@ -70,7 +70,7 @@ export default function Format25Portait({ data = {} }) {
                                     <p><strong className="text-black">မွေးသက္ကရာဇ်:</strong> {item.date_of_birth || '-'}</p>
                                     <p><strong className="text-black">လူမျိုး / ဘာသာ:</strong> {item.race || '-'} / {item.religion || '-'}</p>
                                     <p><strong className="text-black">မွေးဖွားရာဇာတိ:</strong> {item.birth_place || '-'}</p>
-                                    <p><strong className="text-black">မှတ်ပုံတင်အမှတ်:</strong> <span className="font-mono">
+                                    <p><strong className="text-black">မှတ်ပုံတင်အမှတ်:</strong> <span className="">
                                         {item.nrc_township || ''}
                                         {item.nrc_type && `(${item.nrc_type})`}
                                         {item.nrc_number ? ` ${item.nrc_number}` : '-'}</span></p>

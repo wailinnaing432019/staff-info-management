@@ -30,7 +30,7 @@ export default function Message() {
                         <span className="text-lg mt-0.5"><MessageCircleWarningIcon /></span>
                         <div>
                             <h5 className="font-bold text-sm mb-1">အချက်အလက် ပြင်ဆင်ရန် တောင်းဆိုမှု မအောင်မြင်ပါ။</h5>
-                            <p className="text-xs text-red-600/90 leading-relaxed font-mono bg-red-100/50 p-2 rounded mt-1 break-all">
+                            <p className="text-xs text-red-600/90 leading-relaxed  bg-red-100/50 p-2 rounded mt-1 break-all">
                                 {errorMessage}
                             </p>
                         </div>
@@ -48,7 +48,7 @@ export default function Message() {
                 </div>
             )}
 
-            {/* ✅ Backend က အောင်မြင်စွာ သိမ်းဆည်းနိုင်ရင် ပြမည့် Success Box */}
+
             {showSuccess && successMessage && (
                 <div className="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded shadow-sm flex justify-between items-center animate-fadeIn">
                     <div>

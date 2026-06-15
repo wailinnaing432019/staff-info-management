@@ -47,6 +47,10 @@ class Employee extends Model
     {
         return $this->hasOne(ForeignVisitedPurpose::class);
     }
+    public function referee()
+    {
+        return $this->hasOne(Referee::class);
+    }
     public function educations()
     {
         return $this->hasMany(Education::class);

@@ -17,7 +17,7 @@ export default function StaffSummaryTable({ data = {} }) {
                         <th className="border border-black p-1 w-10">စဉ်</th>
                         <th className="border border-black p-1">အမည်</th>
                         <th className="border border-black p-1">အရည်အချင်း အပြည့်အစုံ</th>
-                        <th className="border border-black p-1">မွေးသက္ကရာဇ်<br />(ရက်၊လ၊နှစ်)</th>
+                        <th className="border border-black p-1">မွေးသက္ကရာဇ် <br /> အသက် <br />(ရက်၊လ၊နှစ်)</th>
                         <th className="border border-black p-1">လူမျိုး/ဘာသာ</th>
                         <th className="border border-black p-1">မွေးဖွားရာဇာတိ</th>
                         <th className="border border-black p-1">မှတ်ပုံတင်အမှတ်</th>
@@ -49,7 +49,7 @@ export default function StaffSummaryTable({ data = {} }) {
                         <td className="border border-black p-1">{data.date_of_birth}</td>
                         <td className="border border-black p-1">{data.race || ''} / {data.religion || ''}</td>
                         <td className="border border-black p-1">{data.birth_place || ''}</td>
-                        <td className="border border-black p-1 font-mono">{data.nrc_township || ''}
+                        <td className="border border-black p-1 ">{data.nrc_township || ''}
                             {data.nrc_type && `(${data.nrc_type})`}
                             {data.nrc_number ? ` ${data.nrc_number}` : '-'}</td>
                         <td className="border border-black p-1">{data.father_name || ''}/{data.father_job || ''}</td>

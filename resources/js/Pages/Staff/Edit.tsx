@@ -7,18 +7,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Message from './components/Message';
 import NRCInputFields from './components/NRCInputFields';
 import nrcData from '@/constant/NRCData';
+import { tabs } from '@/constant/Tabs';
 
 export default function Edit({ employee }) {
     // ၁။ ၇ ဆင့်ပါသော Tabs Configuration
-    const tabs = [
-        { id: 'personal', label: '၁။ ကိုယ်ရေးအချက်အလက်' },
-        { id: 'employment', label: '၂။ ဝန်ထမ်းရေးရာ' },
-        { id: 'education', label: '၃။ ပညာရေးနှင့် သင်တန်း' },
-        { id: 'service', label: '၄။ တာဝန်ထမ်းဆောင်မှုမှတ်တမ်း' },
-        { id: 'family', label: '၅။ မိသားစုနှင့် ဆွေမျိုးများ' },
-        { id: 'foreign', label: '၆။ နိုင်ငံခြားခရီးစဉ်မှတ်တမ်း' },
-        { id: 'legal_awards', label: '၇။ ပြစ်ဒဏ်နှင့် ဆုလာဘ်' },
-    ];
+
 
     const [activeTab, setActiveTab] = useState('personal');
     const currentTabIndex = tabs.findIndex(tab => tab.id === activeTab);
@@ -93,8 +86,8 @@ export default function Edit({ employee }) {
         return_department: employee.foreign_visited_purpose?.return_department || '',
         foreign_visit_details: employee.foreign_visited_purpose?.foreign_visit_details || '',
 
-        // Tab 3 မှ ၇ အထိ: One-to-Many Dynamic Arrays
-        // တကယ်လို့ DB မှာ ဒေတာမရှိခဲ့ရင် Array အလွတ် [] ပေးပြီး Row တစ်ခုစီ အလိုအလျောက် ပတ်စေပါမယ်
+        referee_name: employee.referee?.referee_name || '', referee_position: employee.referee?.referee_position || '', referee_department: employee.referee?.referee_department || '', rector_name: employee.referee?.rector_name || '', rector_position: employee.referee?.rector_position || '', rector_department: employee.referee?.rector_department || '', dept_head_name: employee.referee?.dept_head_name || '', dept_head_position: employee.referee?.dept_head_position || '', dept_head_department: employee.referee?.dept_head_department || '',
+
         educations: employee.educations?.length > 0 ? employee.educations : [
             { degree_name: '', major_subject: '', graduation_year: '', degree_level: '' }
         ],
@@ -408,7 +401,7 @@ export default function Edit({ employee }) {
                                 <input type="text" value={data.position} onChange={e => setData('position', e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm" />
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-700 mb-1">တာဝန်ကျရာဌာန / တက္ကသိုလ်</label>
+                                <label className="block text-xs font-bold text-gray-700 mb-1">လက်ရှိဌာန</label>
                                 <input type="text" value={data.department} onChange={e => setData('department', e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm" />
                             </div>
                             <div>
@@ -420,11 +413,11 @@ export default function Edit({ employee }) {
                                 <input type="text" value={data.salary_rate} onChange={e => setData('salary_rate', e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm" />
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-700 mb-1">လက်ရှိတာဝန် စတင်ဝင်ရောက်သည့်ရက်စွဲ</label>
+                                <label className="block text-xs font-bold text-gray-700 mb-1">လက်ရှိတာဝန် စတင်ဝင်ရောက်သည့်နေ့</label>
                                 <input type='text' value={data.employee_start_date_detail} onChange={e => setData('employee_start_date_detail', e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm" />
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-gray-700 mb-1">လက်ရှိရာထူး စတင်ရရှိသည့်ရက်စွဲ</label>
+                                <label className="block text-xs font-bold text-gray-700 mb-1">လက်ရှိရာထူး စတင်ရရှိသည့်နေ့</label>
                                 <input type='text' value={data.current_pos_start_date_detail} onChange={e => setData('current_pos_start_date_detail', e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm" />
                             </div>
 
@@ -457,11 +450,10 @@ export default function Edit({ employee }) {
                     {/* ================= TAB 3: EDUCATION & TRAINING ================= */}
                     {activeTab === 'education' && (
                         <div className="space-y-6 animate-fadeIn">
-                            {/* ပညာရေးဇယား */}
                             <div>
                                 <div className="flex justify-between items-center mb-3">
                                     <h4 className="text-sm font-bold text-gray-800">🎓 (က) ပညာအရည်အချင်းမှတ်တမ်း</h4>
-                                    <button type="button" onClick={() => addRow('educations', { degree_name: '', major_subject: '', graduation_year: '', degree_level: '' })} className="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded">+ ဘွဲ့အသစ်ထည့်ရန်</button>
+                                    <button type="button" onClick={() => addRow('educations', { degree_name: '', major_subject: '', graduation_year: '', degree_level: '' })} className="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded">+ အသစ်ထည့်ရန်</button>
                                 </div>
                                 <table className="w-full border text-xs text-left">
                                     <thead className="bg-gray-100">
@@ -497,7 +489,7 @@ export default function Edit({ employee }) {
                         <div className="space-y-4 animate-fadeIn">
                             <div className="flex justify-between items-center">
                                 <h4 className="text-sm font-bold text-gray-800">🏢 နိုင်ငံ့ဝန်ထမ်း တာဝန်ထမ်းဆောင်မှုမှတ်တမ်း (စစ်ဘက်/နယ်ဘက်)</h4>
-                                <button type="button" onClick={() => addRow('service_records', { position_held: '', department_name: '', start_date: '', end_date: '', location_region: '' })} className="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded">+ မှတ်တမ်းအသစ်ထည့်ရန်</button>
+                                <button type="button" onClick={() => addRow('service_records', { position_held: '', department_name: '', start_date: '', end_date: '', location_region: '' })} className="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded">+ အသစ်ထည့်ရန်</button>
                             </div>
                             <table className="w-full border text-xs text-left">
                                 <thead className="bg-gray-100">
@@ -572,7 +564,7 @@ export default function Edit({ employee }) {
                                         'abroad_from': '',
                                         'abroad_to': '',
                                         'foreign_currency_amount': '',
-                                    })} className="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded">+ ခရီးစဉ်အသစ်ထည့်ရန်</button>
+                                    })} className="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded">+ အသစ်ထည့်ရန်</button>
                                 </div>
                                 <table className="w-full border text-xs text-left">
                                     <thead className="bg-gray-100">
@@ -580,7 +572,7 @@ export default function Edit({ employee }) {
                                             <th className="border p-2">သွားရောက်ခဲ့သည့် နိုင်ငံ</th>
                                             <th className="border p-2">ခရီးစဉ်ကိစ္စ / ရည်ရွယ်ချက်</th>
                                             <th className="border p-2">သွားရောက်ခဲ့သည့် ကာလ</th>
-                                            <th className="border p-2">ပြန်လည်ရောက်ရှိသည့် ရက်စွဲ</th>
+                                            <th className="border p-2">ပြန်လည်ရောက်ရှိသည့် နေ့</th>
                                             <th className="border p-2">နိုင်ငံခြားငွေ မည်မျှ ထုတ်ယူခဲ့သည်</th>
                                             <th className="border p-2 text-center w-16">ဖျက်</th>
                                         </tr>
@@ -607,6 +599,32 @@ export default function Edit({ employee }) {
                         <LegalEditTab data={data} removeRow={removeRow} addRow={addRow} updateRowValue={updateRowValue} />
                     )}
 
+
+                    {activeTab === "referee" && (
+                        <div className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div><label className="block text-sm font-medium text-gray-700">Referee Name</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.referee_name} onChange={e => setData('referee_name', e.target.value)} /></div>
+                                <div><label className="block text-sm font-medium text-gray-700">Referee Department</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.referee_department} onChange={e => setData('referee_department', e.target.value)} /></div>
+                                <div><label className="block text-sm font-medium text-gray-700">Referee Position</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.referee_position} onChange={e => setData('referee_position', e.target.value)} /></div>
+                                <div><label className="block text-sm font-medium text-gray-700">ပါမောက္ခချုပ်/ ကျောင်းအုပ်ကြီး အမည်</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.rector_name} onChange={e => setData('rector_name', e.target.value)} /></div>
+                                <div><label className="block text-sm font-medium text-gray-700">ပါမောက္ခချုပ်/ ကျောင်းအုပ်ကြီး ဌာန</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.rector_department} onChange={e => setData('rector_department', e.target.value)} /></div>
+                                <div><label className="block text-sm font-medium text-gray-700">ပါမောက္ခချုပ်/ ကျောင်းအုပ်ကြီး ရာထူး</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.rector_position} onChange={e => setData('rector_position', e.target.value)} /></div>
+
+                                <div><label className="block text-sm font-medium text-gray-700">ဌာနအကြီးအကဲ အမည်</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.dept_head_name} onChange={e => setData('dept_head_name', e.target.value)} /></div>
+                                <div><label className="block text-sm font-medium text-gray-700">ဌာနအကြီးအကဲ ဌာန</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.dept_head_department} onChange={e => setData('dept_head_department', e.target.value)} /></div>
+                                <div><label className="block text-sm font-medium text-gray-700">ဌာနအကြီးအကဲ ရာထူး</label>
+                                    <input type="text" className="mt-1 block w-full rounded border-gray-300 shadow-sm" value={data.dept_head_position} onChange={e => setData('dept_head_position', e.target.value)} /></div>
+                            </div>
+                        </div>
+                    )}
                 </form>
 
                 {/* 🔘 BOTTOM FOOTER ACTIONS BUTTONS */}

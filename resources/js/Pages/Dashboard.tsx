@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Users, Building2, Award, AlertTriangle, UserPlus, FileSpreadsheet, ChevronRight, Calendar, LayoutDashboardIcon, Flashlight, LineSquiggle, Zap } from 'lucide-react';
+import SelectionBoxPrint from './SelectionBoxPrint';
 
 export default function Dashboard({ stats }) {
     // 💡 Controller မှ ဒေတာမပါလာသေးပါက စမ်းသပ်ကြည့်ရှုနိုင်ရန် Sample Data များ သတ်မှတ်ထားခြင်း
@@ -36,11 +37,7 @@ export default function Dashboard({ stats }) {
     };
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-bold leading-tight text-gray-800">
-                    Dashboard
-                </h2>
-            }
+
         >
             <Head title="Dashboard" />
 
@@ -50,7 +47,7 @@ export default function Dashboard({ stats }) {
 
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
-                            <h3 className="text-lg font-bold text-gray-900">မင်္ဂလာပါ  ကြိုဆိုပါ၏။</h3>
+                            <h3 className="text-lg font-bold text-gray-900  ">မင်္ဂလာပါ  ကြိုဆိုပါ၏။</h3>
                             <p className="text-sm text-gray-500 mt-0.5">ကွန်ပျူတာတက္ကသိုလ်(မိတ္ထီလာ) ဝန်ထမ်းရေးရာ အချက်အလက်များကို ဤနေရာတွင် စီမံနိုင်ပါသည်။</p>
                         </div>
                         <div className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-sm font-semibold border border-indigo-100">
@@ -59,14 +56,13 @@ export default function Dashboard({ stats }) {
                         </div>
                     </div>
 
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
 
 
                         <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
                             <div className="space-y-1">
                                 <span className="text-sm text-gray-500 font-medium">စုစုပေါင်း ဝန်ထမ်း</span>
-                                <h4 className="text-2xl font-bold text-gray-900 font-mono">{dashboardData.totalEmployees} <span className="text-sm font-bold text-gray-500">ဦး</span></h4>
+                                <h4 className="text-2xl font-bold text-gray-900 ">{dashboardData.totalEmployees} <span className="text-sm font-bold text-gray-500">ဦး</span></h4>
                                 <p className="text-xs text-gray-400 font-medium">ကျား: {dashboardData.maleCount} | မ: {dashboardData.femaleCount}</p>
                             </div>
                             <div className="p-3.5 bg-blue-50 text-blue-600 rounded-xl">
@@ -78,8 +74,8 @@ export default function Dashboard({ stats }) {
                         <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
                             <div className="space-y-1">
                                 <span className="text-sm text-gray-500 font-medium">သင်ကြားရေးဌာနများ</span>
-                                <h4 className="text-2xl font-bold text-gray-900 font-mono">{dashboardData.totalDepartments} <span className="text-sm font-bold text-gray-500">ဌာန</span></h4>
-                                <p className="text-xs text-green-600 font-semibold">● အားလုံး အလုပ်လုပ်ဆဲ</p>
+                                <h4 className="text-2xl font-bold text-gray-900 ">{dashboardData.totalDepartments} <span className="text-sm font-bold text-gray-500">ဌာန</span></h4>
+
                             </div>
                             <div className="p-3.5 bg-emerald-50 text-emerald-600 rounded-xl">
                                 <Building2 size={24} />
@@ -87,33 +83,15 @@ export default function Dashboard({ stats }) {
                         </div>
 
 
-                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
-                            <div className="space-y-1">
-                                <span className="text-sm text-gray-500 font-medium">ဆုတံဆိပ် ချီးမြှင့်ခံရမှု</span>
-                                <h4 className="text-2xl font-bold text-gray-900 font-mono">{dashboardData.recentAwards} <span className="text-sm font-bold text-gray-500">ကြိမ်</span></h4>
-                                <p className="text-xs text-indigo-600 font-medium">ယခုနှစ်အတွင်း မှတ်တမ်း</p>
-                            </div>
-                            <div className="p-3.5 bg-amber-50 text-amber-600 rounded-xl">
-                                <Award size={24} />
-                            </div>
-                        </div>
 
 
-                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
-                            <div className="space-y-1">
-                                <span className="text-sm text-gray-500 font-medium">ပြစ်ဒဏ် / အရေးယူမှု</span>
-                                <h4 className="text-2xl font-bold text-gray-900 font-mono">{dashboardData.activePenalties} <span className="text-sm font-bold text-gray-500">ခု</span></h4>
-                                <p className="text-xs text-red-500 font-medium">စိစစ်ရန် မှတ်တမ်းကျန်</p>
-                            </div>
-                            <div className="p-3.5 bg-rose-50 text-rose-600 rounded-xl">
-                                <AlertTriangle size={24} />
-                            </div>
-                        </div>
+
+
                     </div>
 
 
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                        <h4 className="text-sm font-bold text-gray-800 mb-4 flex"><Zap className='mr-2' /> လုပ်ဆောင်ချက် ဖြတ်လမ်းများ (Quick Actions)</h4>
+                        <h4 className="text-sm font-bold text-gray-800 mb-4 flex"><Zap className='mr-2' /> လုပ်ဆောင်ချက် များ (Quick Actions)</h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <Link
                                 href="/employees/create"
@@ -141,17 +119,7 @@ export default function Dashboard({ stats }) {
                                 </div>
                             </Link>
 
-                            <div
-                                className="flex items-center gap-3 p-4 border border-dashed border-gray-200 rounded-xl bg-gray-50 text-gray-400 cursor-not-allowed text-left"
-                            >
-                                <div className="p-2 bg-white text-gray-300 rounded-lg">
-                                    <Award size={18} className='  group-hover:text-white' />
-                                </div>
-                                <div>
-                                    <span className="text-sm font-bold block">အစီရင်ခံစာ ထုတ်ယူရန်</span>
-                                    <span className="text-xs text-gray-300">Format 25 / A5 Card ပုံစံ Print ထုတ်ခြင်း</span>
-                                </div>
-                            </div>
+                            <SelectionBoxPrint />
                         </div>
                     </div>
 
@@ -172,7 +140,7 @@ export default function Dashboard({ stats }) {
                                     <div key={index} className="space-y-1">
                                         <div className="flex justify-between text-xs font-semibold text-gray-700">
                                             <span>{dept.name}</span>
-                                            <span className="font-mono">{dept.count} ဦး ({dept.percentage})</span>
+                                            <span className="">{dept.count} ဦး ({dept.percentage})</span>
                                         </div>
                                         {/* Custom Progress Bar */}
                                         <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
@@ -206,7 +174,7 @@ export default function Dashboard({ stats }) {
 
                             <div className="bg-gray-50 border border-gray-100 p-4 rounded-xl text-center">
                                 <p className="text-xs font-bold text-gray-700">စနစ်ထိန်းသိမ်းမှုနောက်ဆုံးရက်</p>
-                                <span className="text-[11px] text-gray-400 font-mono block mt-1">Last sync: Just now</span>
+                                <span className="text-[11px] text-gray-400  block mt-1">Last sync: Just now</span>
                             </div>
                         </div>
 

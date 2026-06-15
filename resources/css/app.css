@@ -6,6 +6,22 @@ textarea {
     resize: none !important;
 }
 
+@font-face {
+    font-family: 'Pyidaungsu';
+    src: url('/fonts/Pyidaungsu.ttf') format('truetype');
+    /* Adjust path as needed */
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-py {
+    font-family: 'Pyidaungsu';
+}
+
+body {
+    font-family: 'Pyidaungsu' !important;
+}
+
 /* စာရိုက်ရင် အောက်တစ်ကြောင်း အလိုအလျောက်ဆင်းပြီး Height ပါ လိုက်တိုးမည့် Class */
 .auto-grow-input {
     display: grid;

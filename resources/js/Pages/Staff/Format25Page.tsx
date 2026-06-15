@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { Printer } from 'lucide-react';
+import toMyanmarNumber from '@/util/numberHelper';
 
 export default function Format25Page({ employees = [] }) {
     // 💡 Grab Scroll လုပ်ရန် Div အား လှမ်းဖမ်းမည့် Ref တစ်ခု တည်ဆောက်ခြင်း
@@ -171,13 +172,13 @@ export default function Format25Page({ employees = [] }) {
                                 ) : (
                                     employees.map((emp, idx) => (
                                         <tr key={emp.id} className="hover:bg-indigo-50/50 odd:bg-white even:bg-slate-50/60 text-center transition-colors duration-150 print:bg-white">
-                                            <td className="border-b border-r border-black p-1.5 font-mono bg-slate-50/50 print:bg-white border-l">{idx + 1}</td>
+                                            <td className="border-b border-r border-black p-1.5  bg-slate-50/50 print:bg-white border-l">{toMyanmarNumber(idx + 1)}</td>
                                             <td className="border-b border-r border-black p-1.5 text-left font-bold text-slate-900">{emp.name || '-'}</td>
                                             <td className="border-b border-r border-black p-1.5 text-left">{emp.info?.degree || '-'}</td>
                                             <td className="border-b border-r border-black p-1.5 whitespace-nowrap">{emp.date_of_birth || '-'}</td>
                                             <td className="border-b border-r border-black p-1.5">{emp.race || ''} / {emp.religion || ''}</td>
                                             <td className="border-b border-r border-black p-1.5 text-left">{emp.birth_place || '-'}</td>
-                                            <td className="border-b border-r border-black p-1.5 font-mono whitespace-nowrap">{emp.nrc_township || ''}
+                                            <td className="border-b border-r border-black p-1.5  whitespace-nowrap">{emp.nrc_township || ''}
                                                 {emp.nrc_type && `(${emp.nrc_type})`}
                                                 {emp.nrc_number ? ` ${emp.nrc_number}` : '-'}</td>
                                             <td className="border-b border-r border-black p-1.5 text-left">{emp.father_name || '-'} {emp.father_job ? `(${emp.father_job})` : ''}</td>

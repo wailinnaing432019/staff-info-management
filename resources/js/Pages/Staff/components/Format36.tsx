@@ -3,6 +3,7 @@ import FamilyTable from './FamilyTable';
 import ActionTable from './ActionTable';
 import { Printer } from 'lucide-react';
 import { Link } from '@inertiajs/react';
+import toMyanmarNumber from '@/util/numberHelper';
 
 export default function Format36({ data = {} }) {
     return (
@@ -146,7 +147,7 @@ export default function Format36({ data = {} }) {
                                 <tr key={idx}>
                                     <td className="border border-black p-2 text-left">{edu.degree_name}</td>
                                     <td className="border border-black p-2">{edu.major_subject || '-'}</td>
-                                    <td className="border border-black p-2 font-mono">{edu.graduation_year || '-'}</td>
+                                    <td className="border border-black p-2 ">{edu.graduation_year || '-'}</td>
                                     <td className="border border-black p-2">{edu.degree_level || '-'}</td>
                                 </tr>
                             ))
@@ -182,7 +183,7 @@ export default function Format36({ data = {} }) {
                                 educations.map((item, idx) => (
                                     <tr key={idx} className="hover:bg-gray-50/50">
                                         {/* 💡 စစ်ထုတ်ပြီးသား Array ရဲ့ အခန်းနံပါတ်ဖြစ်လို့ Real Count (၁၊ ၂၊ ၃) အမှန်အတိုင်း ထွက်လာပါပြီ */}
-                                        <td className="border border-black p-1.5 text-center font-medium">{idx + 1}</td>
+                                        <td className="border border-black p-1.5 text-center font-medium">{toMyanmarNumber(idx + 1)}</td>
                                         <td className="border border-black p-1.5 text-left">{item.learn_course || '-'}</td>
                                         <td className="border border-black p-1.5">{item.learn_from || '-'}</td>
                                         <td className="border border-black p-1.5">{item.learn_to || '-'}</td>
@@ -241,7 +242,7 @@ export default function Format36({ data = {} }) {
                                     <td className="border border-black p-2">{trip.abroad_to || '-'}</td>
                                     <td className="border border-black p-2">{trip.country_visited || '-'}</td>
                                     <td className="border border-black p-2 text-left">{trip.visit_purpose || '-'}</td>
-                                    <td className="border border-black p-2 font-mono">{trip.foreign_currency_amount || '-'}</td>
+                                    <td className="border border-black p-2 ">{trip.foreign_currency_amount || '-'}</td>
                                 </tr>
                             ))
                         ) : (
@@ -314,13 +315,13 @@ export default function Format36({ data = {} }) {
             </div>
 
             <div>
-                <h4 className="text-sm font-bold mb-2">၃၀။ ဘွဲ့ တံဆိပ် ချီးမြှင့်ခံရဖူးခြင်း ရှိ/မရှိ</h4>
+                <h4 className="text-sm font-bold mb-2">၃၀။ ဘွဲ့ တံဆိပ် ချီးမြှင့်ခံရဖူးခြင်း ရှိ/ မရှိ  {data.awards_received?.length > 0 ? "(ရှိ)" : "(မရှိ)"}</h4>
                 <table className="w-full border-2 border-black border-collapse text-xs text-center">
                     <thead>
                         <tr className="bg-gray-100 font-bold border-b-2 border-black">
                             <th className="border border-black p-1.5  ">စဉ်</th>
                             <th className="border border-black p-1.5  ">ဘွဲ့ထူး၊ ဂုဏ်ထူးတံဆိပ်</th>
-                            <th className="border border-black p-1.5  ">အမိန့်အမှတ် / ခုနှစ် </th>
+                            <th className="border border-black p-1.5  ">အမိန့်အမှတ်/ ခုနှစ် </th>
                         </tr>
 
                     </thead>
@@ -328,7 +329,7 @@ export default function Format36({ data = {} }) {
                         {data.awards_received?.length > 0 ? (
                             data.awards_received.map((item, idx) => (
                                 <tr key={idx}>
-                                    <td className="border border-black p-1.5">{idx + 1}</td>
+                                    <td className="border border-black p-1.5">{toMyanmarNumber(idx + 1)}</td>
 
                                     <td className="border border-black p-1.5 font-semibold">{item.award_title || '-'}</td>
                                     <td className="border border-black p-1.5 font-semibold">{item.award_year || '-'}</td>
@@ -361,8 +362,8 @@ export default function Format36({ data = {} }) {
                             <td className="border border-black p-2">{data.foreign_visited_purpose?.assigned_country || '-'}</td>
                             <td className="border border-black p-2">{data.foreign_visited_purpose?.time_period || '-'}</td>
                             <td className="border border-black p-2 text-left">{data.foreign_visited_purpose?.arrival_date || '-'}</td>
-                            <td className="border border-black p-2 font-mono">{data.foreign_visited_purpose?.supporting_agency || '-'}</td>
-                            <td className="border border-black p-2 font-mono">{data.foreign_visited_purpose?.return_department || '-'}</td>
+                            <td className="border border-black p-2 ">{data.foreign_visited_purpose?.supporting_agency || '-'}</td>
+                            <td className="border border-black p-2 ">{data.foreign_visited_purpose?.return_department || '-'}</td>
                         </tr>
 
                     </tbody>
@@ -381,7 +382,7 @@ export default function Format36({ data = {} }) {
                         <p><strong className='w-24 inline-block shrink-0'>အမည်:</strong> {data.name || '-'}</p>
                         <p><strong className='w-24 inline-block shrink-0'>ရာထူး:</strong> {data.employment?.position || '-'}</p>
                         <p><strong className='w-24 inline-block shrink-0'>ဌာန:</strong> {data.employment?.department || '-'}</p>
-                        <p><strong className='w-24 inline-block shrink-0'>ရက်စွဲ:</strong> .............. ခုနှစ်၊ .................... လ၊ ........... ရက်</p>
+                        <p><strong className='w-24 inline-block shrink-0'>နေ့:</strong> .............. ခုနှစ်၊ .................... လ၊ ........... ရက်</p>
                     </div>
 
                     <div className="space-y-1 bg-gray-50 p-4 border border-dashed border-gray-400 rounded-lg">
@@ -392,7 +393,7 @@ export default function Format36({ data = {} }) {
                         <p><strong className='w-24 inline-block shrink-0'>ဌာန:</strong> ............................................</p>
                         {/* <p className="text-xs text-gray-600">(ပါမောက္ခချုပ် / ကျောင်းအုပ်ကြီး / ဌာနအကြီးအကဲ)</p> */}
                         <p><strong className='w-24 inline-block shrink-0'>တက္ကသိုလ်:</strong> ကွန်ပျူတာတက္ကသိုလ် (မိတ္ထီလာ)</p>
-                        <p><strong>ရက်စွဲ:</strong> ......... ခုနှစ်၊ .................... လ၊ ........... ရက်</p>
+                        <p><strong>နေ့:</strong> ......... ခုနှစ်၊ .................... လ၊ ........... ရက်</p>
                     </div>
                 </div>
             </div>

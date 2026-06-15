@@ -96,7 +96,18 @@ export default function NRCInputFields({
                         disabled={isDisabled}
                         value={number || ""}
                         onChange={(e) => {
-                            const val = e.target.value.replace(/[^0-9]/g, '');
+                            let val = e.target.value;
+
+                            const engToMya = {
+                                '0': '၀', '1': '၁', '2': '၂', '3': '၃', '4': '၄',
+                                '5': '၅', '6': '၆', '7': '၇', '8': '၈', '9': '၉'
+                            };
+                            val = val.replace(/[0-9]/g, (char) => engToMya[char]);
+
+
+                            val = val.replace(/[^၀-၉]/g, '');
+
+
                             onChange("nrc_number", val);
                         }}
                         placeholder="၁၂၃၄၅၆"

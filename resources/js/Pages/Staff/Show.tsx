@@ -23,11 +23,7 @@ export default function Show({ employeeData }) {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Empployee
-                </h2>
-            }
+
         >
 
             <div className="min-h-screen bg-gray-100 p-4 md:p-8">

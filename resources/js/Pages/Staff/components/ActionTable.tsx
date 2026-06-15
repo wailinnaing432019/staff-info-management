@@ -22,7 +22,7 @@ export default function ActionTable({ title, recordType, actionsData = [] }) {
                             <tr key={i} className="hover:bg-gray-50/50">
                                 <td className="border border-black p-2">{act.period || '-'}</td>
                                 <td className="border border-black p-2 text-left">{act.reason || '-'}</td>
-                                <td className="border border-black p-2 text-red-600 font-medium">{act.penalty || '-'}</td>
+                                <td className="border border-black p-2  ">{act.penalty || '-'}</td>
                                 <td className="border border-black p-2 ">{act.remark || '-'}</td>
                             </tr>
                         ))

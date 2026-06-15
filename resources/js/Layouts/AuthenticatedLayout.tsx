@@ -39,14 +39,14 @@ export default function Authenticated({
 
     // HR System အတွက် Sidebar Menus စာရင်း
     const menus = [
-        { title: 'ပင်မစာမျက်နှာ (Dashboard)', icon: <LayoutDashboardIcon />, route: 'dashboard' },
+        { title: 'ပင်မစာမျက်နှာ ', icon: <LayoutDashboardIcon />, route: 'dashboard' },
         { title: 'ဝန်ထမ်းများစာရင်း', icon: <UserRound />, route: 'employees.index' },
         { title: 'ဝန်ထမ်းသစ်ထည့်ရန်', icon: <Plus />, route: 'employees.create' },
         { title: 'ပုံစံ ၂၅ ဝန်းထမ်းများအားလုံး', icon: <FileChartColumn />, route: 'format25page' },
     ];
 
     return (
-        <div className="flex h-screen bg-slate-50 text-slate-800 font-sans overflow-hidden select-none">
+        <div className="flex h-screen bg-slate-50 text-slate-800   overflow-hidden select-none">
 
             {/* ==================== ၁။ DESKTOP SIDEBAR ==================== */}
             <div
@@ -66,7 +66,7 @@ export default function Authenticated({
                         {sidebarOpen && (
                             <div className="leading-tight whitespace-nowrap">
                                 <h2 className="font-extrabold text-blue-900  tracking-wide text-sm">UCSMTLA</h2>
-                                <p className="text-[10px] text-slate-700">ကွန်ပျူတာတက္ကသိုလ်(မိတ္ထီလာ)</p>
+                                <p className="text-[10px] text-slate-700">ကွန်ပျူတာတက္ကသိုလ် (မိတ္ထီလာ)</p>
                             </div>
                         )}
                     </Link>
@@ -173,7 +173,7 @@ export default function Authenticated({
 
                         {/* Current Date Display */}
                         <div className="hidden md:block text-xs text-slate-400 font-medium">
-                            ရက်စွဲ - {new Date().toLocaleDateString('my-MM', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            နေ့ - {new Date().toLocaleDateString('my-MM', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </div>
                     </div>
 
@@ -218,7 +218,7 @@ export default function Authenticated({
                                                             }`}>
                                                             ● {alert.title}
                                                         </span>
-                                                        <span className="text-[10px] text-slate-400 font-mono">{alert.time}</span>
+                                                        <span className="text-[10px] text-slate-400 ">{alert.time}</span>
                                                     </div>
                                                     <p className="text-xs text-slate-600 mt-1 leading-relaxed">
                                                         {alert.text}

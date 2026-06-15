@@ -29,40 +29,71 @@ class StaffController extends Controller
     {
         $search = $request->input('search');
 
-$employees = Employee::query()
-    // 📸 'info' relationship ထဲက id, employee_id နှင့် image_path ကိုပဲ ဆွဲထုတ်ခြင်း
-    // 💡 သတိပြုရန် - Eloquent Relationship အလုပ်လုပ်ရန် 'employee_id' ကို select ထဲတွင် မဖြစ်မနေ ထည့်ပေးရပါမည်။
-    ->with(['info' => function ($query) {
-        $query->select('id', 'employee_id', 'image_path'); 
-    }])
-    ->when($search, function ($query, $search) {
-        $query->where('name', 'like', "%{$search}%");
-    })
-    ->select([
-        'id',
-        'staff_number',
-        'name',
-        'gender',
-        'date_of_birth',
-        'race',
-        'religion',
-        'nrc_state',
-        'nrc_township',
-        'nrc_type',
-        'nrc_number',
-        'father_name',
-        'marital_status'
-    ])
-    ->latest()
-    ->paginate(2)
-    ->withQueryString();
+        $employees = Employee::query()
+            ->with(['info' => function ($query) {
+                $query->select('id', 'employee_id', 'image_path');
+            }])
+            ->with(['employment' => function ($query) {
+                $query->select('id', 'employee_id', 'department', 'position');
+            }])
+            ->when($search, function ($query, $search) {
+                $words = preg_split('/[\s\/]+/', trim($search), -1, PREG_SPLIT_NO_EMPTY);
 
-return Inertia::render('Staff/Index', [
-    'employees' => $employees,
-    'filters' => $request->only(['search'])
-]);
+                $query->where(function ($q) use ($words) {
+                    foreach ($words as $word) {
+                        $q->where(function ($subQ) use ($word) {
+                            $subQ->where('name', 'like', "%{$word}%")
+
+                                ->orWhereHas('employment', function ($empQ) use ($word) {
+                                    $empQ->where('position', 'like', "%{$word}%");
+                                })
+
+                                ->orWhereHas('employment', function ($deptQ) use ($word) {
+                                    $deptQ->where('department', 'like', "%{$word}%");
+                                });
+                        });
+                    }
+                });
+            })
+            ->select([
+                'id',
+                'staff_number',
+                'name',
+                'gender',
+                'nrc_state',
+                'nrc_township',
+                'nrc_type',
+                'nrc_number',
+                'father_name',
+            ])
+            ->latest()
+            ->paginate(5)
+            ->withQueryString();
+
+        return Inertia::render('Staff/Index', [
+            'employees' => $employees,
+            'filters' => $request->only(['search'])
+        ]);
     }
 
+    public function checkStaffNumber(Request $request)
+    {
+        $request->validate([
+            'staff_number' => 'required|string',
+        ]);
+
+        $employee = Employee::where('staff_number', $request->staff_number)->first();
+
+        if ($employee) {
+            return response()->json([
+                'id' => $employee->id
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'ဤဝန်ထမ်းအမှတ်ဖြင့် ဝန်ထမ်းရှာမတွေ့ပါ'
+        ], 404);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -174,7 +205,8 @@ return Inertia::render('Staff/Index', [
             'foreignVisitedPurpose',
             'awardsReceived',
             'courtDisciplinaryActions',
-            'criminalRecords'
+            'criminalRecords',
+            'referee'
         ])->findOrFail($id);
 
         return Inertia::render('Staff/Edit', [
@@ -225,9 +257,8 @@ return Inertia::render('Staff/Index', [
             $employee->employment()->updateOrCreate(['employee_id' => $employee->id], $validated);
             $employee->foreignVisitedPurpose()->updateOrCreate(['employee_id' => $employee->id], $validated);
 
-            // (ဂ) One-to-Many Dynamic Array Table များအား Sync လုပ်ခြင်း
-            // ၁။ ပညာအရည်အချင်း
-
+            $employee->referee()->updateOrCreate(['employee_id'=>$employee->id],$validated);
+            
             if (isset($validated['educations'])) {
                 $filteredEducations = array_filter($validated['educations'], fn($item) => !empty($item['degree_name']));
 
@@ -329,7 +360,7 @@ return Inertia::render('Staff/Index', [
                 $employee->awardsReceived()->delete();
             }
 
-         // abroad visits
+            // abroad visits
             if (isset($validated['abroad_visits'])) {
                 $filteredLog = array_filter($validated['abroad_visits'], fn($item) => !empty($item['country_visited']));
                 $keepIds = collect($filteredLog)->pluck('id')->filter()->toArray();
@@ -360,38 +391,39 @@ return Inertia::render('Staff/Index', [
             if (isset($path) && Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path); // delete image if transition
             }
-            Log::error('Employee Update Error: ' . $e->getMessage()); 
+            Log::error('Employee Update Error: ' . $e->getMessage());
 
-    return redirect()->back()
-        ->withInput()
-        ->withErrors(['error' => 'အချက်အလက်များ သိမ်းဆည်းစဉ် စနစ်ချို့ယွင်းမှုတစ်ခု ဖြစ်ပွားခဲ့ပါသည်။ ကျေးဇူးပြု၍ ထည့်သွင်းထားသော အချက်အလက်များ မှန်ကန်မှု ရှိ/မရှိ ပြန်လည်စစ်ဆေးပေးပါဗျာ။']);
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'အချက်အလက်များ သိမ်းဆည်းစဉ် စနစ်ချို့ယွင်းမှုတစ်ခု ဖြစ်ပွားခဲ့ပါသည်။ ကျေးဇူးပြု၍ ထည့်သွင်းထားသော အချက်အလက်များ မှန်ကန်မှု ရှိ/မရှိ ပြန်လည်စစ်ဆေးပေးပါဗျာ။']);
         }
     }
- 
-    public function  format25Page(Request $request)  {
- 
-        $employees = Employee::query()
-        ->with([
-            'physical',
-            'info',
-            'employment',
-            'educations',
-            'trainings',
-            'familyMembers',
-            'foreignVisitedPurpose',
-            'courtDisciplinaryActions',
-            'criminalRecords',
-            'serviceRecords',
-            'awardsReceived',
-            'abroadVisits'
-        ])
-        
-        ->orderBy('staff_number', 'asc') // သို့မဟုတ် ->orderBy('staff_number', 'asc') ဆရာ ကြိုက်သလို ပြောင်းနိုင်ပါသည်
-        ->get(); // ဝန်ထမ်းအားလုံးကို Report ထုတ်မည် ဖြစ်၍ Pagination မသုံးဘဲ ->get() ယူပါသည်
 
-    return Inertia::render('Staff/Format25Page', [
-        'employees' => $employees
-    ]);
+    public function  format25Page(Request $request)
+    {
+
+        $employees = Employee::query()
+            ->with([
+                'physical',
+                'info',
+                'employment',
+                'educations',
+                'trainings',
+                'familyMembers',
+                'foreignVisitedPurpose',
+                'courtDisciplinaryActions',
+                'criminalRecords',
+                'serviceRecords',
+                'awardsReceived',
+                'abroadVisits'
+            ])
+
+            ->orderBy('staff_number', 'asc') // သို့မဟုတ် ->orderBy('staff_number', 'asc') ဆရာ ကြိုက်သလို ပြောင်းနိုင်ပါသည်
+            ->get(); // ဝန်ထမ်းအားလုံးကို Report ထုတ်မည် ဖြစ်၍ Pagination မသုံးဘဲ ->get() ယူပါသည်
+
+        return Inertia::render('Staff/Format25Page', [
+            'employees' => $employees
+        ]);
     }
 
     /**
