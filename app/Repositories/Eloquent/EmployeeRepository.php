@@ -50,7 +50,7 @@ class EmployeeRepository implements EmployeeRepositoryInterface
                 'father_name',
             ])
             ->latest()
-            ->paginate(5)
+            ->paginate(10)
             ->withQueryString();
     }
 

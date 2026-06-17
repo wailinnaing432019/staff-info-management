@@ -21,10 +21,9 @@ class DashboardController extends Controller
         // 💡 EmployeeEmployment table ထဲက department column ကို group လုပ်ပြီး ရေတွက်ခြင်း
         $totalDepartments = EmployeeEmployment::whereNotNull('department')
                                     ->distinct('department')
-                                    ->count('department') ?: 5; // ဒေတာမရှိသေးပါက default 5 ပြရန်
+                                    ->count('department') ?: 0; // ဒေတာမရှိသေးပါက default 5 ပြရန်
 
-        // ၃။ ဂုဏ်ထူးဆောင်ဆုများ (ယခုနှစ်အတွင်း ရရှိခဲ့သော ဆုအရေအတွက်)
-        // Employee Model ထဲက awardsReceived Relation ကို သုံးထားပါသည်
+         
         $recentAwards = Employee::has('awardsReceived')->count();
 
         // ၄။ ပြစ်ဒဏ် / အရေးယူမှုမှတ်တမ်း ရှိနေသည့် ဝန်ထမ်းအရေအတွက်
@@ -34,7 +33,7 @@ class DashboardController extends Controller
                                     ->where('penalty_detail', '!=', '')
                                     ->count();
 
-        // ၅။ ဌာနအလိုက် ဝန်ထမ်းအင်အား ရာခိုင်နှုန်းတွက်ချက်ခြင်း (Department Wise Distribution)
+ 
         $departmentsData = EmployeeEmployment::select('department as name', DB::raw('count(*) as count'))
             ->whereNotNull('department')
             ->groupBy('department')
@@ -50,11 +49,10 @@ class DashboardController extends Controller
             ];
         })->toArray();
 
-        // ၆။ လတ်တလော စနစ်သတိပေးချက်များ (Recent System Alerts / Notifications)
+ 
         $alerts = [];
         
-        // သတိပေးချက် (၁) - လတ်တလော ဝင်ထားသော ဝန်ထမ်းအသစ်နှင့် ၎င်း၏ရာထူးကို ပြသခြင်း
-        // 💡 Employee ကိုဆွဲထုတ်စဉ် employment relation ပါ တစ်ခါတည်း သယ်ဆောင်ခြင်း (Eager Loading)
+ 
         $recentEmp = Employee::with('employment')->orderBy('created_at', 'desc')->first();
         if ($recentEmp && $recentEmp->employment) {
             $alerts[] = [
