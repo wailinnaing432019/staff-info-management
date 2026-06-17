@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Users, Building2, Award, AlertTriangle, UserPlus, FileSpreadsheet, ChevronRight, Calendar, LayoutDashboardIcon, Flashlight, LineSquiggle, Zap } from 'lucide-react';
 import SelectionBoxPrint from './SelectionBoxPrint';
+import toMyanmarNumber from '@/util/numberHelper';
 
 export default function Dashboard({ stats }) {
     // 💡 Controller မှ ဒေတာမပါလာသေးပါက စမ်းသပ်ကြည့်ရှုနိုင်ရန် Sample Data များ သတ်မှတ်ထားခြင်း
@@ -62,8 +63,8 @@ export default function Dashboard({ stats }) {
                         <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
                             <div className="space-y-1">
                                 <span className="text-sm text-gray-500 font-medium">စုစုပေါင်း ဝန်ထမ်း</span>
-                                <h4 className="text-2xl font-bold text-gray-900 ">{dashboardData.totalEmployees} <span className="text-sm font-bold text-gray-500">ဦး</span></h4>
-                                <p className="text-xs text-gray-400 font-medium">ကျား: {dashboardData.maleCount} | မ: {dashboardData.femaleCount}</p>
+                                <h4 className="text-2xl font-bold text-gray-900 ">{toMyanmarNumber(dashboardData.totalEmployees)} <span className="text-sm font-bold text-gray-500">ဦး</span></h4>
+                                <p className="text-xs text-gray-400 font-medium">ကျား: {toMyanmarNumber(dashboardData.maleCount)} | မ: {toMyanmarNumber(dashboardData.femaleCount)}</p>
                             </div>
                             <div className="p-3.5 bg-blue-50 text-blue-600 rounded-xl">
                                 <Users size={24} />
@@ -74,7 +75,7 @@ export default function Dashboard({ stats }) {
                         <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
                             <div className="space-y-1">
                                 <span className="text-sm text-gray-500 font-medium">သင်ကြားရေးဌာနများ</span>
-                                <h4 className="text-2xl font-bold text-gray-900 ">{dashboardData.totalDepartments} <span className="text-sm font-bold text-gray-500">ဌာန</span></h4>
+                                <h4 className="text-2xl font-bold text-gray-900 ">{toMyanmarNumber(dashboardData.totalDepartments)} <span className="text-sm font-bold text-gray-500">ဌာန</span></h4>
 
                             </div>
                             <div className="p-3.5 bg-emerald-50 text-emerald-600 rounded-xl">
@@ -140,7 +141,7 @@ export default function Dashboard({ stats }) {
                                     <div key={index} className="space-y-1">
                                         <div className="flex justify-between text-xs font-semibold text-gray-700">
                                             <span>{dept.name}</span>
-                                            <span className="">{dept.count} ဦး ({dept.percentage})</span>
+                                            <span className="">{toMyanmarNumber(dept.count)} ဦး ({toMyanmarNumber(dept.percentage)})</span>
                                         </div>
                                         {/* Custom Progress Bar */}
                                         <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">

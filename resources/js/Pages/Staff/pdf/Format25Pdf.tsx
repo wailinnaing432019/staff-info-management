@@ -55,7 +55,7 @@ export default function Format25Pdf({ data }) {
                             <th className="border border-black p-0.5 min-w-[80px]">အလုပ်စတင် ဝင်သည့်နေ့</th>
                             <th className="border border-black p-0.5 min-w-[80px]">လက်ရှိရာထူး<br />ရသည့်နေ့(ရက်၊လ၊နှစ်)</th>
                             <th className="border border-black p-0.5 min-w-[80px]">လက်ရှိဌာနသို့<br />ရောက်သည့်နေ့</th>
-                            <th className="border border-black p-0.5 min-w-[80px]">ပြစ်ဒဏ်ခံရဖူးခြင်း<br />ရှိ/မရှိ</th>
+                            <th className="border border-black p-0.5 min-w-[80px]">ပြစ်ဒဏ်ခံရဖူးခြင်း<br />ရှိ/ မရှိ</th>
                             <th className="border border-black p-0.5 min-w-[140px]">စာချုပ် ချုပ်ဆိုထားခြင်းရှိမရှိ ၊ ရှိပါက စာချုပ်နှစ်၊လျော်ကြေးငွေ</th>
                             <th className="border border-black p-0.5 min-w-[80px]">နိုင်ငံခြားသို့ ရောက်ဖူးခြင်း ရှိ၊မရှိ</th>
                             <th className="border border-black p-0.5 min-w-[90px]">နဝတသင်တန်း(ထက်၊အောက်) ပြီး၊မပြီး</th>

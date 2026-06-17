@@ -188,7 +188,7 @@ export default function Format18({ data = {} }) {
                                 // ၁။ နိုင်ငံခြားသင်တန်း (foreign_training) များကိုသာ သီးသန့် Filter လုပ်ပြီး စစ်ထုတ်လိုက်ပါသည်
                                 const localTraining = data.trainings?.filter(item => item.category === "local_training") || [];
 
-                                // ၂။ စစ်ထုတ်ထားသော Array ကိုပဲ အခြေခံပြီး ဒေတာ ရှိ/မရှိ စစ်ဆေးပါမည်
+                                // ၂။ စစ်ထုတ်ထားသော Array ကိုပဲ အခြေခံပြီး ဒေတာ ရှိ/ မရှိ စစ်ဆေးပါမည်
                                 return localTraining.length > 0 ? (
                                     localTraining.map((item, idx) => (
                                         <tr key={idx} className="hover:bg-gray-50/50">
@@ -235,7 +235,7 @@ export default function Format18({ data = {} }) {
                                 // ၁။ နိုင်ငံခြားသင်တန်း (foreign_training) များကိုသာ သီးသန့် Filter လုပ်ပြီး စစ်ထုတ်လိုက်ပါသည်
                                 const foreignTrainings = data.trainings?.filter(item => item.category === "foreign_training") || [];
 
-                                // ၂။ စစ်ထုတ်ထားသော Array ကိုပဲ အခြေခံပြီး ဒေတာ ရှိ/မရှိ စစ်ဆေးပါမည်
+                                // ၂။ စစ်ထုတ်ထားသော Array ကိုပဲ အခြေခံပြီး ဒေတာ ရှိ/ မရှိ စစ်ဆေးပါမည်
                                 return foreignTrainings.length > 0 ? (
                                     foreignTrainings.map((item, idx) => (
                                         <tr key={idx} className="hover:bg-gray-50/50">

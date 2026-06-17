@@ -1,6 +1,6 @@
 import React from 'react';
 
-// Reusable Table Component (အပြင်မှာ ထားပါမယ်)
+ 
 const RenderLegalTable = ({ title, recordType, data, handleLegalChange, addLegalRow, removeLegalRow }) => {
     const filteredRecords = data.legal_records
         .map((row, originalIndex) => ({ ...row, originalIndex }))

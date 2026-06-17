@@ -42,8 +42,8 @@ class EmployeeService
             }
 
             
-            if (!empty($storeData['hasVisitedAbroad'])) {
-                $employee->abroadVisits()->createMany($storeData['hasVisitedAbroad']);
+            if (!empty($storeData['abroad_visits'])) {
+                $employee->abroadVisits()->createMany($storeData['abroad_visits']);
                 
             }
  
@@ -80,7 +80,8 @@ class EmployeeService
             'criminalRecords',
             'serviceRecords',
             'awardsReceived',
-            'abroadVisits'
+            'abroadVisits',
+            'referee'
         ])->findOrFail($id);
     }
 }

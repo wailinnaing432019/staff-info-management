@@ -17,7 +17,7 @@ const RenderFamilyTable = ({ title, relationship_type, data, handleFamilyChange,
                             <th className="p-2 border w-12 text-center">စဉ်</th>
                             <th className="p-2 border min-w-[150px]">အမည်</th>
                             <th className="p-2 border w-24">ကျား/မ</th>
-                            <th className="p-2 border w-24">အသက်အရွယ်</th>
+                            <th className="p-2 border w-24">တော်စပ်ပုံ</th>
                             <th className="p-2 border min-w-[100px]">နိုင်ငံသား</th>
                             <th className="p-2 border min-w-[120px]">အလုပ်အကိုင်</th>
                             <th className="p-2 border min-w-[200px]">နေရပ်လိပ်စာ အပြည့်အစုံ</th>
@@ -37,13 +37,26 @@ const RenderFamilyTable = ({ title, relationship_type, data, handleFamilyChange,
                                     <textarea rows={1} className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.relation_name} onChange={e => handleFamilyChange(row.originalIndex, 'relation_name', e.target.value)} />
                                 </td>
                                 <td className="p-1 border">
-                                    <select className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.gender} onChange={e => handleFamilyChange(row.originalIndex, 'gender', e.target.value)}>
-                                        <option value="ကျား">ကျား</option>
-                                        <option value="မ">မ</option>
+                                    <select className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.gender || 'male'} onChange={e => handleFamilyChange(row.originalIndex, 'gender', e.target.value)}>
+
+                                        <option value="male">ကျား</option>
+                                        <option value="female">မ</option>
                                     </select>
                                 </td>
                                 <td className="p-1 border">
-                                    <textarea rows={1} className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.family_lineage} onChange={e => handleFamilyChange(row.originalIndex, 'family_lineage', e.target.value)} />
+                                    {
+                                        relationship_type === "children" ? (
+                                            <select className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.family_lineage || 'son'} onChange={e => handleFamilyChange(row.originalIndex, 'family_lineage', e.target.value)}>
+                                                <option value="son">သား</option>
+                                                <option value="daughter">သမီး</option>
+                                                <option value="sonInLaw">သမက်</option>
+                                                <option value="daughterInLaw">ချွေးမ</option>
+                                            </select>
+                                        ) : (
+                                            <textarea rows={1} className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.family_lineage} onChange={e => handleFamilyChange(row.originalIndex, 'family_lineage', e.target.value)} />
+                                        )
+                                    }
+
                                 </td>
                                 <td className="p-1 border">
                                     <textarea rows={1} className="w-full border-0 p-1 focus:ring-1 focus:ring-blue-500 rounded" value={row.nationality} onChange={e => handleFamilyChange(row.originalIndex, 'nationality', e.target.value)} />
@@ -84,7 +97,7 @@ const RenderFamilyTable = ({ title, relationship_type, data, handleFamilyChange,
 export default function FamilyTab({ data, setData }) {
 
     const addFamilyRow = (relationship_type) => {
-        const newRow = { relation_name: '', relationship_type: relationship_type, family_lineage: '', gender: 'ကျား', nationality: 'မြန်မာ', occupation: '', address: '', remark: '' };
+        const newRow = { relation_name: '', relationship_type: relationship_type, family_lineage: '', gender: 'male', nationality: '', occupation: '', address: '', remark: '' };
         setData('families', [...data.families, newRow]);
     };
 

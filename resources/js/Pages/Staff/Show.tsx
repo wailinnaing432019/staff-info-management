@@ -13,7 +13,7 @@ export default function Show({ employeeData }) {
         ...employeeData,
         educations: employeeData.educations || [],
         trainings: employeeData.trainings || [],
-        // 💡 DB Relation Name က family_members ဖြစ်သော်လည်း Frontend က families လို့ သုံးချင်ရင် ဤသို့ပေးထားနိုင်သည်
+
         families: employeeData.family_members || [],
         legal_records: employeeData.court_disciplinary_actions || [],
         criminal_records: employeeData.criminal_records || [],

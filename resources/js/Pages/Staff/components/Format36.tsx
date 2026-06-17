@@ -178,7 +178,7 @@ export default function Format36({ data = {} }) {
                             // ၁။ နိုင်ငံခြားသင်တန်း (foreign_training) များကိုသာ သီးသန့် Filter လုပ်ပြီး စစ်ထုတ်လိုက်ပါသည်
                             const educations = data.trainings?.filter(item => item.category === "education") || [];
 
-                            // ၂။ စစ်ထုတ်ထားသော Array ကိုပဲ အခြေခံပြီး ဒေတာ ရှိ/မရှိ စစ်ဆေးပါမည်
+                            // ၂။ စစ်ထုတ်ထားသော Array ကိုပဲ အခြေခံပြီး ဒေတာ ရှိ/ မရှိ စစ်ဆေးပါမည်
                             return educations.length > 0 ? (
                                 educations.map((item, idx) => (
                                     <tr key={idx} className="hover:bg-gray-50/50">
@@ -218,9 +218,9 @@ export default function Format36({ data = {} }) {
                 </table>
             </div>
 
-            {/* ၂၀။ နိုင်ငံခြားသို့ရောက်ဖူးခြင်း ရှိ/မရှိ ဇယား */}
+            {/* ၂၀။ နိုင်ငံခြားသို့ရောက်ဖူးခြင်း ရှိ/ မရှိ ဇယား */}
             <div className="mb-6">
-                <h4 className="font-bold text-sm mb-2">၂၀။ နိုင်ငံခြားသို့ရောက်ဖူးခြင်း ရှိ/မရှိ</h4>
+                <h4 className="font-bold text-sm mb-2">၂၀။ နိုင်ငံခြားသို့ရောက်ဖူးခြင်း ရှိ/ မရှိ</h4>
                 <table className="w-full border-2 border-black border-collapse text-xs text-center">
                     <thead>
                         <tr className="bg-gray-100 font-bold border-b-2 border-black">
@@ -297,18 +297,18 @@ export default function Format36({ data = {} }) {
                 familiesData={data.families}
             />
 
-            {/* ၂၉။ ဌာနဆိုင်ရာ အရေးယူခံရခြင်း ရှိ/မရှိ */}
+            {/* ၂၉။ ဌာနဆိုင်ရာ အရေးယူခံရခြင်း ရှိ/ မရှိ */}
             <div className="grid grid-cols-1 gap-6 mb-6 print:grid-cols-2">
                 {/* ၂၉။ ဌာနဆိုင်ရာ အရေးယူမှတ်တမ်း */}
                 <ActionTable
-                    title="၂၉။ ဌာနဆိုင်ရာ အရေးယူခံရခြင်း ရှိ/မရှိ"
+                    title="၂၉။ ဌာနဆိုင်ရာ အရေးယူခံရခြင်း ရှိ/ မရှိ"
                     recordType="disciplinary"
                     actionsData={data.court_disciplinary_actions}
                 />
 
                 {/* ၃၀။ တရားရုံး ပြစ်ဒဏ်မှတ်တမ်း */}
                 <ActionTable
-                    title="၃၀။ တရားရုံးတွင် တရားစွဲ ခံရဖူးခြင်း ရှိ/မရှိ"
+                    title="၃၀။ တရားရုံးတွင် တရားစွဲ ခံရဖူးခြင်း ရှိ/ မရှိ"
                     recordType="court"
                     actionsData={data.court_disciplinary_actions}
                 />

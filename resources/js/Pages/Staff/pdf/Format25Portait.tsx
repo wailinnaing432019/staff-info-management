@@ -75,7 +75,7 @@ export default function Format25Portait({ data = {} }) {
                                         {item.nrc_type && `(${item.nrc_type})`}
                                         {item.nrc_number ? ` ${item.nrc_number}` : '-'}</span></p>
                                     <p><strong className="text-black">အဖအမည်/အလုပ်:</strong> {item.father_name || '-'}{item.father_job ? ` (${item.father_job})` : ''}</p>
-                                    <p><strong className="text-black">အိမ်ထောင်ရှိ/မရှိ:</strong> {item.marital_status || '-'}</p>
+                                    <p><strong className="text-black">အိမ်ထောင်ရှိ/ မရှိ:</strong> {item.marital_status || '-'}</p>
                                 </div>
 
                                 {/* 💼 အပိုင်း (၂) - ဝန်ထမ်းရေးရာနှင့် ရာထူး */}
