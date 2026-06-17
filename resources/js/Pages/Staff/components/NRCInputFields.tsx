@@ -63,8 +63,14 @@ export default function NRCInputFields({
                     <select
                         value={township || ""}
                         disabled={isDisabled || !state}
-                        onChange={(e) => onChange("nrc_township", e.target.value)}
-                        className="h-9 text-xs w-full border rounded px-2 bg-white disabled:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        onChange={(e) =>
+                            onChange("nrc_township", e.target.value)
+                        }
+                        className={`h-9 text-xs w-full border rounded px-2 bg-white disabled:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 ${
+                            errors?.nrc_township
+                                ? "border-red-500"
+                                : "border-gray-300"
+                        }`}
                     >
                         <option value="">မြို့နယ်</option>
                         {townshipsList.map((ts) => (
@@ -89,7 +95,6 @@ export default function NRCInputFields({
                     </select>
                 </div>
 
-                {/* ၄။ မှတ်ပုံတင်ဂဏန်းအမှတ် (Number Input) */}
                 <div className="flex-[2] min-w-[100px]">
                     <input
                         type="text"
@@ -99,19 +104,32 @@ export default function NRCInputFields({
                             let val = e.target.value;
 
                             const engToMya = {
-                                '0': '၀', '1': '၁', '2': '၂', '3': '၃', '4': '၄',
-                                '5': '၅', '6': '၆', '7': '၇', '8': '၈', '9': '၉'
+                                "0": "၀",
+                                "1": "၁",
+                                "2": "၂",
+                                "3": "၃",
+                                "4": "၄",
+                                "5": "၅",
+                                "6": "၆",
+                                "7": "၇",
+                                "8": "၈",
+                                "9": "၉",
                             };
-                            val = val.replace(/[0-9]/g, (char) => engToMya[char]);
+                            val = val.replace(
+                                /[0-9]/g,
+                                (char) => engToMya[char],
+                            );
 
-
-                            val = val.replace(/[^၀-၉]/g, '');
-
+                            val = val.replace(/[^၀-၉]/g, "");
 
                             onChange("nrc_number", val);
                         }}
                         placeholder="၁၂၃၄၅၆"
-                        className="h-9 text-xs w-full border rounded px-3 bg-white disabled:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        className={`h-9 text-xs w-full border rounded px-3 bg-white disabled:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 ${
+                            errors?.nrc_number
+                                ? "border-red-500"
+                                : "border-gray-300"
+                        }`}
                         maxLength={6}
                     />
                 </div>
