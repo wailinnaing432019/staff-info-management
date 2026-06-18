@@ -1,26 +1,20 @@
+import { getGenderMyanmar } from "@/util/genderHelper";
 import toMyanmarNumber from "@/util/numberHelper";
 import { Printer } from "lucide-react";
 
 export default function Format18({ data = {} }) {
     return (
-        <div className="bg-white p-6 md:p-12 border border-gray-300 shadow-xl rounded-xl max-w-4xl mx-auto my-6 text-black  print:border-0 print:shadow-none print:p-0 print:m-0 print:max-w-full">
-            <div className="flex justify-between items-start mb-2">
-                <div className=" "> </div>
-                <div className="text-base font-bold tracking-widest border border-black px-3 py-0.5 bg-gray-50">
-                    လျှို့ဝှက်
-                </div>
-            </div>
-
-            <div className="flex justify-between items-end mb-6 relative">
-                <div className="w-[100px] hidden md:block"></div>
+        <div className="bg-white p-6 md:p-12 max-w-4xl mx-auto my-6 text-black  select-none print:border-0 print:shadow-none print:p-0 print:m-0 print:max-w-full relative">
+            <div className="flex justify-between items-end mb-6 pt-2 relative">
+                <div className="w-[100px] hidden md:block print:block"></div>
 
                 <div className="text-center flex-1">
-                    <h2 className="text-xl font-bold tracking-wide   inline-block pb-1 px-4">
+                    <h2 className="text-[14px] -ml-40 font-bold tracking-wide  inline-block pb-1 px-4">
                         ကိုယ်ရေးမှတ်တမ်း
                     </h2>
                 </div>
 
-                <div className="w-[100px] h-[100px] border-2 border-black flex flex-col items-center justify-center bg-gray-50 shrink-0 overflow-hidden shadow-sm">
+                <div className="absolute top-0 right-5 w-[100px] h-[100px] border-1 border-slate-400 flex flex-col items-center justify-center bg-gray-50 shrink-0 overflow-hidden shadow-sm print:shadow-none">
                     {data.info?.image_path ? (
                         <img
                             src={`/storage/${data.info.image_path}`}
@@ -40,153 +34,126 @@ export default function Format18({ data = {} }) {
                 </div>
             </div>
 
-            <div className="text-[16px] space-y-2.5 py-2">
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၁။ အမည် (ကျား/မ)
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
-                    <div className=" text-gray-900">{data.name || "-"}</div>
+            <div className="text-[14px] space-y-2.5 py-2">
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၁။ အမည် (ကျား/မ)</div>
+                    <div className="text-center">-</div>
+                    <div className="">{data.name || "-"}</div>
+                </div>
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className=""></div>
+                    <div className="text-center">-</div>
+                    <div className="">{getGenderMyanmar(data.gender)}</div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၂။ ဝန်ထမ်းအမှတ်
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
-                    <div className=" text-gray-900">
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၂။ ဝန်ထမ်းအမှတ်</div>
+                    <div className="text-center">-</div>
+                    <div className="">
                         {data.staff_number || data.id || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၃။ မွေးနေ့ (ရက်၊ လ၊ နှစ်)
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၃။ မွေးနေ့ (ရက်၊ လ၊ နှစ်)</div>
+                    <div className="text-center">-</div>
                     <div className="text-gray-900">
                         {data.date_of_birth || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၄။ လူမျိုး / ဘာသာ
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၄။ လူမျိုး / ဘာသာ</div>
+                    <div className="text-center">-</div>
                     <div className="text-gray-900">
-                        {data.race || "-"} / {data.religion || "-"}
+                        {data.race || "-"} ၊ {data.religion || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၅။ အဘအမည်
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၅။ အဘအမည်</div>
+                    <div className="text-center">-</div>
                     <div className="text-gray-900">
                         {data.father_name || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၆။ အမိအမည်
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၆။ အမိအမည်</div>
+                    <div className="text-center">-</div>
                     <div className="text-gray-900">
                         {data.mother_name || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၇။ နိုင်ငံသားစိစစ်ရေးအမှတ်
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
-                    <div className="font-medium text-gray-900">
-                        {data.nrc_township || ""}
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၇။ နိုင်ငံသားစိစစ်ရေးအမှတ်</div>
+                    <div className="text-center">-</div>
+                    <div className="font-medium">
+                        {data.nrc_state || ""}/{data.nrc_township || ""}
                         {data.nrc_type && `(${data.nrc_type})`}
-                        {data.nrc_number ? ` ${data.nrc_number}` : "-"}{" "}
+                        {data.nrc_number ? ` ${data.nrc_number}` : "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၈။ ဇနီး/ခင်ပွန်းအမည်
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၈။ ဇနီး/ ခင်ပွန်းအမည်</div>
+                    <div className="text-center">-</div>
                     <div className="text-gray-900">
                         {data.spouse_name || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၉။ သား / သမီးအမည်
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
-                    <div className="break-words text-gray-900 flex-1">
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၉။ သား/ သမီးအမည်</div>
+                    <div className="text-center">-</div>
+                    <div className="break-words">
                         {data.info?.childrens || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၁၀။ လိပ်စာ
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
-                    <div className="break-words text-gray-900 flex-1">
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၁၀။ လိပ်စာ</div>
+                    <div className="text-center">-</div>
+                    <div className="break-words">
                         {data.info?.permanent_address || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၁၁။ ပညာအရည်အချင်း
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
-                    <div className="break-words text-gray-900 flex-1">
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၁၁။ ပညာအရည်အချင်း</div>
+                    <div className="text-center">-</div>
+                    <div className="break-words">
                         {data.info?.degree || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၁၂။ လက်ရှိရာထူး/လစာနှုန်း/ဌာန
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
-                    <div className="break-words text-gray-900 flex-1">
-                        {data.employment?.position || "-"} /{" "}
-                        {data.employment?.salary_scale || "-"} /{" "}
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၁၂။ လက်ရှိရာထူး/ လစာနှုန်း/ ဌာန</div>
+                    <div className="text-center">-</div>
+                    <div className="break-words">
+                        {data.employment?.position || "-"}၊{" "}
+                        {data.employment?.salary_rate || "-"}၊{" "}
                         {data.employment?.department || "-"}
                     </div>
                 </div>
 
-                <div className="flex items-start">
-                    <div className="w-56 font-bold text-gray-700 shrink-0">
-                        ၁၃။ သွေးအုပ်စု
-                    </div>
-                    <div className="px-2 shrink-0">-</div>
-                    <div className=" text-gray-900">
-                        {data.physical?.blood_type || "-"}
-                    </div>
+                <div className="grid grid-cols-[200px_20px_1fr] items-start">
+                    <div className="">၁၃။ သွေးအုပ်စု</div>
+                    <div className="text-center">-</div>
+                    <div className="">{data.physical?.blood_type || "-"}</div>
                 </div>
             </div>
 
-            {/* အောက်ခြေ ဇယားကွက်များဆီ ဆက်ရန်... */}
-            {/* <div className="text-center mt-4 text-xs text-gray-400 italic"> */}
-            {/* အပိုင်း (၂) - ဇယားကွက်များ (PDF ဒုတိယပိုင်း) */}
-            <div className="space-y-6 mt-8">
-                {/* ၁၄။ နိုင်ငံ့ဝန်ထမ်းတာဝန်ထမ်းဆောင်မှုမှတ်တမ်း */}
-                <div>
-                    <h4 className="text-sm font-bold mb-2">
-                        ၁၄။ နိုင်ငံ့ဝန်ထမ်းတာဝန်ထမ်းဆောင်မှုမှတ်တမ်း (စစ်ဘက် /
+            <div className="space-y-6 mt-6">
+                <div className="keep-together">
+                    <h4 className="text-sm  mb-2">
+                        ၁၄။ နိုင်ငံ့ဝန်ထမ်းတာဝန်ထမ်းဆောင်မှုမှတ်တမ်း (စစ်ဘက်/
                         နယ်ဘက်)
                     </h4>
-                    <table className="w-full border-2 border-black border-collapse text-xs text-center">
+                    <table className="w-full border-1 border-black border-collapse text-xs text-center">
                         <thead>
-                            <tr className="bg-gray-100 font-bold divide-x divide-black border-b-2 border-black">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
                                 <th
                                     rowSpan={2}
                                     className="border border-black p-1.5 w-12"
@@ -197,13 +164,13 @@ export default function Format18({ data = {} }) {
                                     rowSpan={2}
                                     className="border border-black p-1.5"
                                 >
-                                    ရာထူး / ဌာန
+                                    ရာထူး/ ဌာန
                                 </th>
                                 <th
                                     colSpan={2}
-                                    className="border border-black p-1.5 col-span-2"
+                                    className="border border-black p-1.5"
                                 >
-                                    တာဝန်ထမ်းဆောင်သည့် ကာလ (မှ - ထိ)
+                                    တာဝန်ထမ်းဆောင်သည့် ကာလ{" "}
                                 </th>
                                 <th
                                     rowSpan={2}
@@ -212,8 +179,8 @@ export default function Format18({ data = {} }) {
                                     နေရာ/ ဒေသ
                                 </th>
                             </tr>
-                            <tr className="bg-gray-100 font-bold divide-x divide-black border-b-2 border-black">
-                                <th className="border border-black p-1.5 col-span-2">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
+                                <th className="border border-black p-1.5">
                                     {" "}
                                     မှ{" "}
                                 </th>
@@ -229,16 +196,15 @@ export default function Format18({ data = {} }) {
                                         <td className="border border-black p-1.5">
                                             {toMyanmarNumber(idx + 1)}
                                         </td>
-                                        <td className="border border-black p-1.5 text-left">
-                                            {item.service_position} /{" "}
+                                        <td className="border border-black p-1.5 text-left px-2">
+                                            {item.service_position} ၊{" "}
                                             {item.service_department}
                                         </td>
                                         <td className="border border-black p-1.5">
-                                            {item.service_from || "-"}{" "}
+                                            {item.service_from || "-"}
                                         </td>
                                         <td className="border border-black p-1.5">
-                                            {" "}
-                                            {item.service_to || "ယနေ့ထိ"}
+                                            {item.service_to || "-"}
                                         </td>
                                         <td className="border border-black p-1.5">
                                             {item.service_location || "-"}
@@ -247,24 +213,34 @@ export default function Format18({ data = {} }) {
                                 ))
                             ) : (
                                 <tr>
-                                    <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                    <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                    <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                    <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                    <td className="border border-black p-4 text-gray-400 italic text-center"></td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
                 </div>
 
-                <div>
-                    <h4 className="text-sm font-bold mb-2">
+                <div className="keep-together">
+                    <h4 className="text-sm  mb-2">
                         ၁၅။ ပြည်တွင်းသင်တန်းများ တက်ရောက်မှု
                     </h4>
-                    <table className="w-full border-2 border-black border-collapse text-xs text-center">
+                    <table className="w-full border-1 border-black border-collapse text-xs text-center">
                         <thead>
-                            <tr className="bg-gray-100 font-bold border-b-2 border-black">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
                                 <th
                                     rowSpan={2}
                                     className="border border-black p-1.5 w-12"
@@ -281,7 +257,7 @@ export default function Format18({ data = {} }) {
                                     colSpan={2}
                                     className="border border-black p-1.5"
                                 >
-                                    တက်ရောက်သည့်ကာလ (မှ - ထိ)
+                                    တက်ရောက်သည့်ကာလ{" "}
                                 </th>
                                 <th
                                     rowSpan={2}
@@ -290,7 +266,7 @@ export default function Format18({ data = {} }) {
                                     နေရာ/ ဒေသ
                                 </th>
                             </tr>
-                            <tr className="bg-gray-100 font-bold border-b-2 border-black">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
                                 <th className="border border-black p-1.5">
                                     {" "}
                                     မှ{" "}
@@ -307,17 +283,13 @@ export default function Format18({ data = {} }) {
                                         (item) =>
                                             item.category === "local_training",
                                     ) || [];
-
                                 return localTraining.length > 0 ? (
                                     localTraining.map((item, idx) => (
-                                        <tr
-                                            key={idx}
-                                            className="hover:bg-gray-50/50"
-                                        >
+                                        <tr key={idx}>
                                             <td className="border border-black p-1.5 text-center font-medium">
                                                 {toMyanmarNumber(idx + 1)}
                                             </td>
-                                            <td className="border border-black p-1.5 text-left">
+                                            <td className="border border-black p-1.5 text-left px-2">
                                                 {item.learn_course || "-"}
                                             </td>
                                             <td className="border border-black p-1.5">
@@ -333,11 +305,21 @@ export default function Format18({ data = {} }) {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
                                     </tr>
                                 );
                             })()}
@@ -345,13 +327,13 @@ export default function Format18({ data = {} }) {
                     </table>
                 </div>
 
-                <div>
-                    <h4 className="text-sm font-bold mb-2">
+                <div className="keep-together">
+                    <h4 className="text-sm  mb-2">
                         ၁၆။ ပြည်ပသင်တန်းများ တက်ရောက်မှု
                     </h4>
-                    <table className="w-full border-2 border-black border-collapse text-xs text-center">
+                    <table className="w-full border-1 border-black border-collapse text-xs text-center">
                         <thead>
-                            <tr className="bg-gray-100 font-bold border-b-2 border-black">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
                                 <th
                                     rowSpan={2}
                                     className="border border-black p-1.5 w-12"
@@ -368,7 +350,7 @@ export default function Format18({ data = {} }) {
                                     colSpan={2}
                                     className="border border-black p-1.5"
                                 >
-                                    တက်ရောက်သည့်ကာလ (မှ - ထိ)
+                                    တက်ရောက်သည့်ကာလ{" "}
                                 </th>
                                 <th
                                     rowSpan={2}
@@ -377,7 +359,7 @@ export default function Format18({ data = {} }) {
                                     နေရာ/ ဒေသ
                                 </th>
                             </tr>
-                            <tr className="bg-gray-100 font-bold border-b-2 border-black">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
                                 <th className="border border-black p-1.5">
                                     {" "}
                                     မှ{" "}
@@ -395,17 +377,13 @@ export default function Format18({ data = {} }) {
                                             item.category ===
                                             "foreign_training",
                                     ) || [];
-
                                 return foreignTrainings.length > 0 ? (
                                     foreignTrainings.map((item, idx) => (
-                                        <tr
-                                            key={idx}
-                                            className="hover:bg-gray-50/50"
-                                        >
+                                        <tr key={idx}>
                                             <td className="border border-black p-1.5 text-center font-medium">
                                                 {toMyanmarNumber(idx + 1)}
                                             </td>
-                                            <td className="border border-black p-1.5 text-left">
+                                            <td className="border border-black p-1.5 text-left px-2">
                                                 {item.learn_course || "-"}
                                             </td>
                                             <td className="border border-black p-1.5">
@@ -421,11 +399,21 @@ export default function Format18({ data = {} }) {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
-                                        <td className="border border-black p-4 text-gray-400 italic text-center"></td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
+                                        <td className="border border-black p-4 italic">
+                                            -
+                                        </td>
                                     </tr>
                                 );
                             })()}
@@ -433,33 +421,31 @@ export default function Format18({ data = {} }) {
                     </table>
                 </div>
 
-                <div>
-                    <h4 className="text-sm font-bold mb-2">
-                        ၁၇။ ပြစ်မှုမှတ်တမ်း
-                    </h4>
-                    <table className="w-full border-2 border-black border-collapse text-xs text-center">
+                <div className="keep-together">
+                    <h4 className="text-sm  mb-2">၁၇။ ပြစ်မှုမှတ်တမ်း</h4>
+                    <table className="w-full border-1 border-black border-collapse text-xs text-center">
                         <thead>
-                            <tr className="bg-gray-100 font-bold border-b-2 border-black">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
                                 <th
                                     rowSpan={2}
-                                    className="border border-black p-1.5  "
+                                    className="border border-black p-1.5"
                                 >
                                     ပြစ်ဒဏ်
                                 </th>
                                 <th
                                     rowSpan={2}
-                                    className="border border-black p-1.5  "
+                                    className="border border-black p-1.5"
                                 >
-                                    ပြစ်ဒဏ်ချမှတ်ခံရသည့် အကြောင်းအရင်း{" "}
+                                    ပြစ်ဒဏ်ချမှတ်ခံရသည့် အကြောင်းအရင်း
                                 </th>
                                 <th
                                     colSpan={2}
-                                    className="border border-black p-1.5  "
+                                    className="border border-black p-1.5"
                                 >
-                                    ပြစ်ဒဏ်ချမှတ်သည့် ကာလ{" "}
+                                    ပြစ်ဒဏ်ချမှတ်သည့် ကာလ
                                 </th>
                             </tr>
-                            <tr className="bg-gray-100 font-bold border-b-2 border-black">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
                                 <th className="border border-black p-1.5">
                                     မှ
                                 </th>
@@ -475,44 +461,52 @@ export default function Format18({ data = {} }) {
                                         <td className="border border-black p-1.5">
                                             {item.criminalPenalty}
                                         </td>
-
-                                        <td className="border border-black p-1.5 ">
+                                        <td className="border border-black p-1.5">
                                             {item.reasonPelanty || "-"}
                                         </td>
-                                        <td className="border border-black p-1.5 ">
+                                        <td className="border border-black p-1.5">
                                             {item.criminalFrom || "-"}
                                         </td>
-                                        <td className="border border-black p-1.5 ">
+                                        <td className="border border-black p-1.5">
                                             {item.criminalTo || "-"}
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td className="border border-black p-4 "></td>
-                                    <td className="border border-black p-4 "></td>
-                                    <td className="border border-black p-4 "></td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
                 </div>
 
-                <div>
-                    <h4 className="text-sm font-bold mb-2">
+                <div className="keep-together">
+                    <h4 className="text-sm  mb-2">
                         ၁၈။ ချီးမြှင့်ခံရသည့် ဘွဲ့ထူး၊ ဂုဏ်ထူးတံဆိပ်များ
                     </h4>
-                    <table className="w-full border-2 border-black border-collapse text-xs text-center">
+                    <table className="w-full border-1 border-black border-collapse text-xs text-center">
                         <thead>
-                            <tr className="bg-gray-100 font-bold border-b-2 border-black">
-                                <th className="border border-black p-1.5  ">
+                            <tr className="bg-gray-100 font-bold border-b-1 border-black">
+                                <th className="border border-black p-1.5 w-12">
                                     စဉ်
                                 </th>
-                                <th className="border border-black p-1.5  ">
-                                    ဘွဲ့ထူး၊ ဂုဏ်ထူးတံဆိပ်
+                                <th className="border border-black p-1.5">
+                                    ဘွဲ့ထူး၊ ဂုဏ်ထူးတံဆိပ် အမည်
                                 </th>
-                                <th className="border border-black p-1.5  ">
-                                    အမိန့်အမှတ်/ ခုနှစ်{" "}
+                                <th className="border border-black p-1.5 w-1/3">
+                                    အမိန့်အမှတ်/ ခုနှစ်
                                 </th>
                             </tr>
                         </thead>
@@ -523,90 +517,94 @@ export default function Format18({ data = {} }) {
                                         <td className="border border-black p-1.5">
                                             {toMyanmarNumber(idx + 1)}
                                         </td>
-
-                                        <td className="border border-black p-1.5 ">
+                                        <td className="border border-black p-1.5 text-left px-3">
                                             {item.award_title || "-"}
                                         </td>
-                                        <td className="border border-black p-1.5 ">
+                                        <td className="border border-black p-1.5">
                                             {item.award_year || "-"}
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td className="border border-black p-4 "></td>
-                                    <td className="border border-black p-4 "></td>
-                                    <td className="border border-black p-4 "></td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
+                                    <td className="border border-black p-4 italic">
+                                        -
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
+                </div>
 
-                    <div className="mt-6 text-[13px] leading-relaxed">
-                        <p className="font-semibold mb-6">
-                            အထက်ပါ ဖော်ပြချက်များသည် မှန်ကန်ကြောင်း
-                            ဝန်ခံကတိပြုလက်မှတ်ရေးထိုးပါသည်။
-                        </p>
+                <div className="mt-8 text-[13px] leading-relaxed keep-together">
+                    <p className="  mb-6">
+                        အထက်ပါ ဖြည့်စွက်ချက်များ မှန်ကန်ကြောင်း
+                        လက်မှတ်ရေးထိုးပါသည်။
+                    </p>
 
-                        <div className="flex justify-between items-start mt-4">
-                            <div className="flex items-center gap-1 pt-2">
-                                <span>နေ့၊ jojo ခုနှစ်၊</span>
-                                <span className="w-16 border-b border-black text-center inline-block"></span>
-                                <span>လ (</span>
-                                <span className="w-10 border-b border-black text-center inline-block"></span>
-                                <span>) ရက်</span>
+                    <div className="  mt-4">
+                        <div className="w-80 mx-auto space-y-3">
+                            <div className="flex">
+                                <div className="w-44 shrink-0">လက်မှတ်</div>
+                                <div className="px-1">၊</div>
+                                <div className="flex-1  "></div>
                             </div>
-
-                            <div className="w-80 space-y-3">
-                                <div className="flex">
-                                    <div className="w-32 shrink-0">လက်မှတ်</div>
-                                    <div className="px-1">-</div>
-                                    <div className="flex-1 border-b border-black"></div>
-                                </div>
-                                <div className="flex">
-                                    <div className="w-32 shrink-0">အမည်</div>
-                                    <div className="px-1">-</div>
-                                    <div className="flex-1 border-b border-black font-semibold">
-                                        {data.name || ""}
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <div className="w-32 shrink-0">ရာထူး</div>
-                                    <div className="px-1">-</div>
-                                    <div className="flex-1 border-b border-black">
-                                        {data.employment?.position || ""}
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <div className="w-32 shrink-0">
-                                        ဖုန်းနံပါတ် (ရုံး/လက်ကိုင်ဖုန်း)
-                                    </div>
-                                    <div className="px-1">-</div>
-                                    <div className="flex-1 border-b border-black">
-                                        {data.info?.mobile_phno || ""}
-                                    </div>
-                                </div>
-                                <div className="flex">
-                                    <div className="w-32 shrink-0">
-                                        အီးမေးလ်
-                                    </div>
-                                    <div className="px-1">-</div>
-                                    <div className="flex-1 border-b border-black">
-                                        {data.info?.email || ""}
-                                    </div>
+                            <div className="flex">
+                                <div className="w-44 shrink-0">အမည်</div>
+                                <div className="px-1">၊</div>
+                                <div className="flex-1   ">
+                                    {data.name || ""}
                                 </div>
                             </div>
+                            <div className="flex">
+                                <div className="w-44 shrink-0">ရာထူး</div>
+                                <div className="px-1">၊</div>
+                                <div className="flex-1  ">
+                                    {data.employment?.position || ""}
+                                </div>
+                            </div>
+                            <div className="flex">
+                                <div className="w-44 shrink-0">
+                                    ဖုန်းနံပါတ် (ရုံး/လက်ကိုင်ဖုန်း)
+                                </div>
+                                <div className="px-1">၊</div>
+                                <div className="flex-1  ">
+                                    {data.info?.mobile_phno || ""}
+                                </div>
+                            </div>
+                            <div className="flex">
+                                <div className="w-44 shrink-0">အီးမေးလ်</div>
+                                <div className="px-1">၊</div>
+                                <div className="flex-1  ">
+                                    {data.info?.email || ""}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center mt-8 gap-1 pt-2">
+                            <span> ရက်စွဲ၊</span>
+                            <span className="w-16 border-b border-black text-center inline-block"></span>
+                            <span> ခုနှစ်၊</span>{" "}
+                            <span className="w-16 border-b border-black text-center inline-block"></span>
+                            <span>လ (</span>
+                            <span className="w-10 border-b border-black text-center inline-block"></span>
+                            <span>) ရက်</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <a
-                target="_blank"
-                href={`/employees/${data.id}/format18pdf`}
-                className="fixed bottom-10 text-blue-400 right-20 rounded-full bg-red-100 p-4 text-sm font-bold   hover:text-black"
-            >
-                <Printer />
-            </a>
+
+            <div className="flex justify-end mt-8 screen-secret">
+                <div className="text-base font-bold tracking-widest border border-black px-4 py-0.5">
+                    လျှို့ဝှက်
+                </div>
+            </div>
         </div>
     );
 }

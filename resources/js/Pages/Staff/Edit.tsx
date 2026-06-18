@@ -211,12 +211,10 @@ export default function EditEmployee({ employee }) {
     const validateTabs = () => {
         let localErrors = {};
         let isValid = true;
+
         if (activeTab === "personal") {
             const personalFields = [
-                "staff_number",
                 "name",
-                "nickname",
-                "alternative_name",
                 "gender",
                 "date_of_birth",
                 "age",
@@ -225,16 +223,17 @@ export default function EditEmployee({ employee }) {
                 "religion",
                 "blood_type",
                 "marital_status",
-                "spouse_name",
                 "height",
                 "weight",
                 "hair_color",
                 "eye_color",
                 "distinctive_mark",
-                "childrens",
                 "father_name",
-                "father_job",
                 "mother_name",
+                "nrc_state",
+                "nrc_township",
+                "nrc_number",
+                "nrc_type",
             ];
 
             personalFields.forEach((field) => {
@@ -256,20 +255,15 @@ export default function EditEmployee({ employee }) {
                 "current_pos_start_date_detail",
                 "current_dept_start_date_detail",
                 "year_of_service",
-                "separation_date",
-                "transfer_detail",
                 "foreign_detail",
                 "penalty_detail",
                 "training_detail",
-                "current_training",
-                "is_accompanied",
                 "not_border",
                 "current_address",
                 "permanent_address",
                 "email",
                 "mobile_phno",
                 "contract_agreement_detail",
-                "remark",
             ];
 
             employmentFields.forEach((field) => {
@@ -281,10 +275,10 @@ export default function EditEmployee({ employee }) {
             });
         }
 
+        clearErrors();
+
         if (!isValid) {
             setError(localErrors);
-        } else {
-            clearErrors();
         }
 
         return isValid;

@@ -28,8 +28,6 @@ const InputField = ({
         {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
     </div>
 );
-
-// 💡 ၂။ ထပ်ခါတလဲလဲ သုံးမည့် Reusable Textarea Field Component
 const TextareaField = ({
     label,
     value,
@@ -68,7 +66,6 @@ export default function EmployeeFormFields({
         <>
             {activeTab === "personal" && (
                 <div className="space-y-6">
-                    {/* ဓာတ်ပုံတင်သည့်နေရာ */}
                     <div className="flex items-center space-x-6 bg-gray-50 p-4 rounded border border-dashed border-gray-300">
                         <label className="flex items-center space-x-6 cursor-pointer group">
                             <input
@@ -116,14 +113,6 @@ export default function EmployeeFormFields({
                     {/* Personal Inputs Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <InputField
-                            label="ဝန်ထမ်းအမှတ်"
-                            value={data.staff_number}
-                            error={errors.staff_number}
-                            onChange={(e) =>
-                                setData("staff_number", e.target.value)
-                            }
-                        />
-                        <InputField
                             label="အမည်"
                             value={data.name}
                             error={errors.name}
@@ -133,6 +122,7 @@ export default function EmployeeFormFields({
                             label="ငယ်အမည်"
                             value={data.nickname}
                             error={errors.nickname}
+                            required={false}
                             onChange={(e) =>
                                 setData("nickname", e.target.value)
                             }
@@ -141,12 +131,20 @@ export default function EmployeeFormFields({
                             label="အခြားအမည်များ (ရှိလျှင်)"
                             value={data.alternative_name}
                             error={errors.alternative_name}
+                            required={false}
                             onChange={(e) =>
                                 setData("alternative_name", e.target.value)
                             }
                         />
-
-                        {/* ကျား/မ Select အကွက် */}
+                        <InputField
+                            label="ဝန်ထမ်းအမှတ်"
+                            value={data.staff_number}
+                            error={errors.staff_number}
+                            required={false}
+                            onChange={(e) =>
+                                setData("staff_number", e.target.value)
+                            }
+                        />
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
                                 ကျား/ မ <span className="text-red-500">*</span>
@@ -231,18 +229,34 @@ export default function EmployeeFormFields({
                                 setData("blood_type", e.target.value)
                             }
                         />
-                        <InputField
-                            label="အိမ်ထောင်ရှိ/ မရှိ"
-                            value={data.marital_status}
-                            error={errors.marital_status}
-                            onChange={(e) =>
-                                setData("marital_status", e.target.value)
-                            }
-                        />
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                အိမ်ထောင်ရှိ/ မရှိ{" "}
+                                <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                                className={`mt-1 block w-full rounded shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${errors.marital_status ? "border-red-500" : "border-gray-300"}`}
+                                value={data.marital_status || ""}
+                                onChange={(e) =>
+                                    setData("marital_status", e.target.value)
+                                }
+                            >
+                                <option value="">ရွေးချယ်ရန်</option>
+                                <option value="ရှိ">ရှိ</option>
+                                <option value="မရှိ">မရှိ</option>
+                            </select>
+                            {errors.marital_status && (
+                                <p className="text-xs text-red-500 mt-1">
+                                    {errors.marital_status}
+                                </p>
+                            )}
+                        </div>
                         <InputField
                             label="ဇနီး/ ခင်ပွန်း အမည်"
                             value={data.spouse_name}
                             error={errors.spouse_name}
+                            required={false}
                             onChange={(e) =>
                                 setData("spouse_name", e.target.value)
                             }
@@ -287,12 +301,12 @@ export default function EmployeeFormFields({
                             label="သား/ သမီး အမည်"
                             value={data.childrens}
                             error={errors.childrens}
+                            required={false}
                             onChange={(e) =>
                                 setData("childrens", e.target.value)
                             }
                         />
 
-                        {/* မိဘအချက်အလက်များ */}
                         <div className="md:col-span-3 border-t pt-4 mt-2 font-bold text-gray-700 text-base">
                             မိဘအချက်အလက်များ
                         </div>
@@ -308,6 +322,7 @@ export default function EmployeeFormFields({
                             label="အဘ၏အလုပ်အကိုင်"
                             value={data.father_job}
                             error={errors.father_job}
+                            required={false}
                             onChange={(e) =>
                                 setData("father_job", e.target.value)
                             }
@@ -395,6 +410,7 @@ export default function EmployeeFormFields({
                         label="ကင်းကွာသည့် ရက်စွဲ"
                         value={data.separation_date}
                         error={errors.separation_date}
+                        required={false}
                         onChange={(e) =>
                             setData("separation_date", e.target.value)
                         }
@@ -406,6 +422,7 @@ export default function EmployeeFormFields({
                             label="ပြောင်းရွှေ့ တာဝန်ထမ်းဆောင်ခဲ့ဖူးသော ကျောင်း/ ဌာန (အဆင့်ဆင့် မှ-ထိ)"
                             value={data.transfer_detail}
                             error={errors.transfer_detail}
+                            required={false}
                             onChange={(e) =>
                                 setData("transfer_detail", e.target.value)
                             }
@@ -446,6 +463,7 @@ export default function EmployeeFormFields({
                             label="သင်တန်းတက်ရောက်နေပါက ဖော်ပြရန် (ပြည်တွင်း/ ပြည်ပ)"
                             value={data.current_training}
                             error={errors.current_training}
+                            required={false}
                             onChange={(e) =>
                                 setData("current_training", e.target.value)
                             }
@@ -456,20 +474,35 @@ export default function EmployeeFormFields({
                             label="အခြားတက္ကသိုလ်နှင့် တွဲဖက်နေပါက ဖော်ပြရန်"
                             value={data.is_accompanied}
                             error={errors.is_accompanied}
+                            required={false}
                             onChange={(e) =>
                                 setData("is_accompanied", e.target.value)
                             }
                         />
                     </div>
                     <div className="md:col-span-3">
-                        <TextareaField
-                            label="နယ်ခံ/ နယ်ဝေး"
-                            value={data.not_border}
-                            error={errors.not_border}
-                            onChange={(e) =>
-                                setData("not_border", e.target.value)
-                            }
-                        />
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                နယ်ခံ/ နယ်ဝေး{" "}
+                                <span className="text-red-500">*</span>
+                            </label>
+                            <select
+                                className={`mt-1 block w-full rounded shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${errors.not_border ? "border-red-500" : "border-gray-300"}`}
+                                value={data.not_border || ""}
+                                onChange={(e) =>
+                                    setData("not_border", e.target.value)
+                                }
+                            >
+                                <option value="">ရွေးချယ်ရန်</option>
+                                <option value="နယ်ခံ">နယ်ခံ</option>
+                                <option value="နယ်ဝေး">နယ်ဝေး</option>
+                            </select>
+                            {errors.not_border && (
+                                <p className="text-xs text-red-500 mt-1">
+                                    {errors.not_border}
+                                </p>
+                            )}
+                        </div>
                     </div>
                     <div className="md:col-span-3">
                         <TextareaField
@@ -494,20 +527,6 @@ export default function EmployeeFormFields({
                         />
                     </div>
 
-                    <InputField
-                        label="Email"
-                        type="email"
-                        value={data.email}
-                        error={errors.email}
-                        onChange={(e) => setData("email", e.target.value)}
-                    />
-                    <InputField
-                        label="ဖုန်းနံပါတ်"
-                        value={data.mobile_phno}
-                        error={errors.mobile_phno}
-                        onChange={(e) => setData("mobile_phno", e.target.value)}
-                    />
-
                     <div className="md:col-span-3">
                         <TextareaField
                             label="စာချုပ်ချုပ်ဆိုထားခြင်း ရှိ/ မရှိ၊ ရှိပါက စာချုပ်နှစ်၊ လျော်ကြေးငွေ"
@@ -526,11 +545,25 @@ export default function EmployeeFormFields({
                         <TextareaField
                             label="မှတ်ချက်"
                             value={data.remark}
+                            required={false}
                             error={errors.remark}
                             rows={2}
                             onChange={(e) => setData("remark", e.target.value)}
                         />
                     </div>
+                    <InputField
+                        label="Email"
+                        type="email"
+                        value={data.email}
+                        error={errors.email}
+                        onChange={(e) => setData("email", e.target.value)}
+                    />
+                    <InputField
+                        label="ဖုန်းနံပါတ်"
+                        value={data.mobile_phno}
+                        error={errors.mobile_phno}
+                        onChange={(e) => setData("mobile_phno", e.target.value)}
+                    />
                 </div>
             )}
 

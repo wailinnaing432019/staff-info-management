@@ -8,21 +8,34 @@ import toMyanmarNumber from "@/util/numberHelper";
 export default function Format36({ data = {} }) {
     return (
         <div className="bg-white p-4 md:p-8 max-w-4xl mx-auto my-4 text-black   text-[14px] leading-relaxed select-none print:border-0 print:shadow-none print:p-0 print:m-0 print:max-w-full">
-            <div className="flex justify-between items-start mb-6 screen-secret">
-                <div className="   border border-black px-3 py-0.5">
-                    ပုံစံ (၃၆)
+            <div className="flex justify-between items-end mb-6 pt-2 relative">
+                <div className="w-[100px] hidden md:block print:block"></div>
+
+                <div className="text-center flex-1">
+                    <h2 className="text-[14px] -ml-40 font-bold tracking-wide  inline-block pb-1 px-4">
+                        ကိုယ်ရေးမှတ်တမ်း
+                    </h2>
                 </div>
-                <div className="text-base   tracking-widest border border-black px-4 py-0.5">
-                    လျှို့ဝှက်
+
+                <div className="absolute top-0 right-5 w-[100px] h-[100px] border-1 border-slate-400 flex flex-col items-center justify-center bg-gray-50 shrink-0 overflow-hidden shadow-sm print:shadow-none">
+                    {data.info?.image_path ? (
+                        <img
+                            src={`/storage/${data.info.image_path}`}
+                            alt="Profile"
+                            className="w-full h-full object-cover object-top"
+                        />
+                    ) : (
+                        <div className="text-gray-400 font-bold flex flex-col items-center justify-center gap-1 leading-tight text-[10px] p-1 text-center select-none">
+                            <span className="text-gray-600 font-bold">
+                                ဓာတ်ပုံ
+                            </span>
+                            <span className="text-gray-400 text-[8px] font-medium">
+                                (၂ လက်မ ပတ်လည်)
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
-
-            <div className="text-center mb-6">
-                <h2 className="text-xl    tracking-wide  inline-block pb-1 px-6">
-                    ကိုယ်ရေးမှတ်တမ်း
-                </h2>
-            </div>
-
             <div className="space-y-4">
                 <div className="grid grid-cols-[240px_20px_1fr] items-start">
                     <div className="  ">၁။ အမည်</div>
@@ -48,7 +61,7 @@ export default function Format36({ data = {} }) {
                     <div className="  ">၄။ အသက် (မွေးနေ့သက္ကရာဇ်)</div>
                     <div className="text-center">-</div>
                     <div className="text-gray-900">
-                        {data.age ? `${data.age} နှစ် ` : ""}{" "}
+                        {data.age ? `${data.age} ` : ""}{" "}
                         {data.date_of_birth ? `(${data.date_of_birth})` : "-"}
                     </div>
                 </div>
@@ -78,7 +91,7 @@ export default function Format36({ data = {} }) {
                     <div className="  ">၈။ အမျိုးသားမှတ်ပုံတင်အမှတ်</div>
                     <div className="text-center">-</div>
                     <div className="font-medium tracking-wide ">
-                        {data.nrc_township || ""}
+                        {data.nrc_state || ""}/{data.nrc_township || ""}
                         {data.nrc_type && `(${data.nrc_type})`}
                         {data.nrc_number ? ` ${data.nrc_number}` : "-"}
                     </div>
@@ -128,7 +141,7 @@ export default function Format36({ data = {} }) {
                     <div className="  ">၁၄။ အလုပ်အကိုင်နှင့်ဌာန</div>
                     <div className="text-center">-</div>
                     <div className="text-gray-900 break-words">
-                        {data.employment?.position || "-"} /{" "}
+                        {data.employment?.position || "-"} ၊{" "}
                         {data.employment?.department || "-"}
                     </div>
                 </div>
@@ -164,7 +177,7 @@ export default function Format36({ data = {} }) {
                 <h4 className=" mb-2">၁၈။ ပညာအရည်အချင်း</h4>
                 <table className="w-full border border-black border-collapse  text-center">
                     <thead>
-                        <tr className="bg-gray-50 font-bold border-b border-black">
+                        <tr className="bg-gray-50 font-semibold border-b border-black">
                             <th className="border border-black p-2">
                                 ဘွဲ့အမည်
                             </th>
@@ -200,16 +213,16 @@ export default function Format36({ data = {} }) {
                         ) : (
                             <tr>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                             </tr>
                         )}
@@ -283,7 +296,7 @@ export default function Format36({ data = {} }) {
                 </h4>
                 <table className="w-full border border-black border-collapse  text-center">
                     <thead>
-                        <tr className="bg-gray-50 font-bold border-b border-black">
+                        <tr className="bg-gray-50 font-semibold border-b border-black">
                             <th className="border border-black p-2">
                                 မှ <br /> (ရက်/လ/နှစ်)
                             </th>
@@ -325,19 +338,19 @@ export default function Format36({ data = {} }) {
                         ) : (
                             <tr>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    မှတ်တမ်းမရှိပါ။
+                                    -
                                 </td>
                             </tr>
                         )}
@@ -426,7 +439,7 @@ export default function Format36({ data = {} }) {
                 </h4>
                 <table className="w-full border border-black border-collapse  text-center">
                     <thead>
-                        <tr className="bg-gray-50 font-bold border-b border-black">
+                        <tr className="bg-gray-50 font-semibold border-b border-black">
                             <th className="border border-black p-2">
                                 ချီးမြှင့်ခံရသည့် ကာလ
                             </th>
@@ -474,7 +487,7 @@ export default function Format36({ data = {} }) {
                 <h4 className=" mb-2">၃၂။ နိုင်ငံခြားသို့သွားရောက်မည့်ကိစ္စ</h4>
                 <table className="w-full border border-black border-collapse  text-center">
                     <thead>
-                        <tr className="bg-gray-50 font-bold border-b border-black">
+                        <tr className="bg-gray-50 font-semibold border-b border-black">
                             <th className="border border-black p-2">
                                 သင်ကြားမည့်
                                 ဘာသာရပ်နှင့်အဆင့်/တက်ရောက်မည့်သင်တန်း/သို့မဟုတ်
@@ -531,7 +544,7 @@ export default function Format36({ data = {} }) {
                     <div className="text-center">-</div>
                     <div className=" ">
                         {data.foreign_visited_purpose?.destination_country ||
-                            "-"}
+                            ""}
                     </div>
                 </div>
                 <div className="grid grid-cols-[240px_20px_1fr] items-start">
@@ -541,7 +554,7 @@ export default function Format36({ data = {} }) {
                     <div className="text-center">-</div>
                     <div className=" ">
                         {data.foreign_visited_purpose?.foreign_visit_details ||
-                            "-"}
+                            ""}
                     </div>
                 </div>
             </div>
@@ -707,19 +720,6 @@ export default function Format36({ data = {} }) {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="flex justify-end mt-12 screen-secret">
-                <div className="text-base font-bold  border border-black px-4 py-0.5">
-                    လျှို့ဝှက်
-                </div>
-                <a
-                    target="_blank"
-                    href={`/employees/${data.id}/format36pdf`}
-                    className="fixed bottom-10 text-blue-400 right-20 rounded-full bg-red-100 p-4 text-sm font-bold   hover:text-black"
-                >
-                    <Printer />
-                </a>
             </div>
         </div>
     );

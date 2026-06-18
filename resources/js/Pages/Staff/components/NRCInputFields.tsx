@@ -22,7 +22,6 @@ export default function NRCInputFields({
     onChange,
     isDisabled,
 }: Props) {
-    // ပြည်နယ် ပြောင်းသွားရင် အဲဒီပြည်နယ်အောက်မှာရှိတဲ့ မြို့နယ်စာရင်းကို သိမ်းထားရန်
     const [townshipsList, setTownshipsList] = useState<string[]>([]);
 
     useEffect(() => {
@@ -36,14 +35,13 @@ export default function NRCInputFields({
     return (
         <div>
             <div className="flex gap-2 max-w-xl text-xs">
-                {/* ၁။ ပြည်နယ်/တိုင်းအမှတ် (State Select) */}
                 <div className="flex-1 min-w-[80px]">
                     <select
                         value={state || ""}
                         disabled={isDisabled}
                         onChange={(e) => {
                             onChange("nrc_state", e.target.value);
-                            onChange("nrc_township", ""); // ပြည်နယ်ပြောင်းရင် မြို့နယ်ကို reset ချရန်
+                            onChange("nrc_township", "");
                         }}
                         className="h-9 text-xs w-full border rounded px-2 bg-white disabled:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     >
@@ -58,7 +56,6 @@ export default function NRCInputFields({
                     </select>
                 </div>
 
-                {/* ၂။ မြို့နယ်အတိုကောက် (Township Select) */}
                 <div className="flex-[2] min-w-[120px]">
                     <select
                         value={township || ""}
@@ -81,7 +78,6 @@ export default function NRCInputFields({
                     </select>
                 </div>
 
-                {/* ၃။ နိုင်ငံသားအမျိုးအစား (Type Select) */}
                 <div className="flex-1 min-w-[70px]">
                     <select
                         value={type || "နိုင်"}
@@ -89,6 +85,8 @@ export default function NRCInputFields({
                         onChange={(e) => onChange("nrc_type", e.target.value)}
                         className="h-9 text-xs w-full border rounded px-2 bg-white disabled:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     >
+                        {/* <option value="">အမျိုးအစား</option> */}
+
                         <option value="နိုင်">နိုင်</option>
                         <option value="ပြု">ပြု</option>
                         <option value="ဧည့်">ဧည့်</option>
