@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import FamilyTab from "./FamilyTab";
-import TrainingTab from "./TrainingTab";
-import LegalTab from "./LegalTab";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import NRCInputFields from "./components/NRCInputFields";
-import nrcData from "@/constant/NRCData";
 import { tabs } from "@/constant/Tabs";
-import Referee from "./components/Referee";
 import EmployeeFormFields from "./components/StaffFormFields";
+import Swal from "sweetalert2";
+import { validateHelperTabs } from "@/util/validationHelper";
 
 export default function EmployeeForm() {
     const [activeTab, setActiveTab] = useState("personal");
 
     const currentTabIndex = tabs.findIndex((tab) => tab.id === activeTab);
-
-    const isLastTab = currentTabIndex === tabs.length - 1;
 
     const { data, setData, post, processing, errors, setError, clearErrors } =
         useForm({
@@ -91,6 +85,29 @@ export default function EmployeeForm() {
             dept_head_name: "",
             dept_head_position: "",
             dept_head_department: "",
+
+            is_rector_or_above: 0,
+            is_party_member: "",
+            employment_reference: "",
+            skin_color: "",
+            is_parent_season_at_birth: "",
+            previous_address: "",
+            father_address_detail: "",
+            mother_address_detail: "",
+            reason_for_current_occupation: "",
+            selection_type: "",
+            previous_school: "",
+            last_school: "",
+            student_level: "",
+            hobby: "",
+            referee_status: "",
+            reason_for_transfer: "",
+            service_rank: "",
+            close_friend: "",
+            close_foreign_friend: "",
+            supporterv: "",
+            crime_victim_status: "",
+
             educations: [],
             trainings: [],
             service_records: [],
@@ -100,6 +117,7 @@ export default function EmployeeForm() {
             legal_records: [],
             criminal_records: [],
             awards: [],
+            past_jobs: [],
         });
 
     const addRow = (field, schema) => setData(field, [...data[field], schema]);
@@ -115,80 +133,24 @@ export default function EmployeeForm() {
     };
 
     const validateTabs = () => {
-        let localErrors = {};
-        let isValid = true;
-
-        if (activeTab === "personal") {
-            const personalFields = [ 
-                "name", 
-                "gender",
-                "date_of_birth",
-                "age",
-                "birth_place",
-                "race",
-                "religion",
-                "blood_type",
-                "marital_status", 
-                "height",
-                "weight",
-                "hair_color",
-                "eye_color",
-                "distinctive_mark", 
-                "father_name", 
-                "mother_name",
-                "nrc_state",
-                "nrc_township",
-                "nrc_number",
-                "nrc_type",
-            ];
-
-            personalFields.forEach((field) => {
-                if (!data[field] || String(data[field]).trim() === "") {
-                    localErrors[field] =
-                        "ဤအချက်အလက်အား ဖြည့်စွက်ရန် လိုအပ်ပါသည်။";
-                    isValid = false;
-                }
-            });
-        }
-
-        if (activeTab === "employment") {
-            const employmentFields = [
-                "degree",
-                "position",
-                "department",
-                "salary_rate",
-                "employee_start_date_detail",
-                "current_pos_start_date_detail",
-                "current_dept_start_date_detail",
-                "year_of_service", 
-                "foreign_detail",
-                "penalty_detail",
-                "training_detail", 
-                "not_border",
-                "current_address",
-                "permanent_address",
-                "email",
-                "mobile_phno",
-                "contract_agreement_detail", 
-            ];
-
-            employmentFields.forEach((field) => {
-                if (!data[field] || String(data[field]).trim() === "") {
-                    localErrors[field] =
-                        "ဤအချက်အလက်အား ဖြည့်စွက်ရန် လိုအပ်ပါသည်။";
-                    isValid = false;
-                }
-            });
-        }
-
+        const { isValid, localErrors } = validateHelperTabs(activeTab, data);
         clearErrors();
-
         if (!isValid) {
             setError(localErrors);
+            Swal.fire({
+                icon: "error",
+                text: "လိုအပ်သည့် ဒေတာများအားလုံးပြည့်စုံစွာ ဖြည့်ရန်လိုအပ်ပါသည်",
+                confirmButtonText: "နားလည်ပါပြီ",
+                confirmButtonColor: "oklch(0.577 0.245 27.325)",
+            });
         }
-
         return isValid;
     };
+
+    const isSecLastTab = currentTabIndex === tabs.length - 2;
+    const isLastTab = currentTabIndex === tabs.length - 1;
+
+    const shouldFormEndHere = isSecLastTab && !data.is_rector_or_above;
 
     const handleTabChange = (targetTabId) => {
         const targetTabIndex = tabs.findIndex((tab) => tab.id === targetTabId);
@@ -199,7 +161,15 @@ export default function EmployeeForm() {
             return;
         }
 
-        if (!validateTabs()) {
+        if (!validateTabs()) return;
+
+        if (targetTabIndex === tabs.length - 1 && !data.is_rector_or_above) {
+            Swal.fire({
+                icon: "error",
+                text: "အထက်လူကြီးဖြစ်မှသာ နောက်ဆုံးအဆင့် (၉ ခုမြှောက် Tab) သို့ သွားရောက်နိုင်ပါသည်။",
+                confirmButtonText: "နားလည်ပါပြီ",
+                confirmButtonColor: "oklch(0.577 0.245 27.325)",
+            });
             return;
         }
 
@@ -208,9 +178,14 @@ export default function EmployeeForm() {
     const handleNextStep = (e) => {
         if (e) e.preventDefault();
 
-        if (!validateTabs()) {
+        if (!validateTabs()) return;
+
+        if (shouldFormEndHere) {
+            if (!validateTabs()) return;
+            post(route("employees.store"));
             return;
         }
+
         if (!isLastTab) {
             setActiveTab(tabs[currentTabIndex + 1].id);
         }
@@ -224,8 +199,8 @@ export default function EmployeeForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        if (isLastTab) {
+        if (!validateTabs()) return;
+        if (isLastTab || shouldFormEndHere) {
             post(route("employees.store"));
         }
     };
@@ -253,14 +228,9 @@ export default function EmployeeForm() {
             reader.readAsDataURL(file);
         }
     };
+
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    ဝန်ထမ်း အသစ်ထည့်ခြင်း
-                </h2>
-            }
-        >
+        <AuthenticatedLayout>
             <Head title={`ဝန်ထမ်း အသစ်ထည့်ခြင်း`} />
             <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow">
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
@@ -312,24 +282,25 @@ export default function EmployeeForm() {
                         </button>
                     )}
 
-                    {!isLastTab ? (
+                    {shouldFormEndHere || isLastTab ? (
+                        <button
+                            type="submit"
+                            form="employeeMegaForm"
+                            disabled={processing}
+                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow font-bold"
+                            onClick={handleSubmit}
+                        >
+                            {processing
+                                ? "သိမ်းဆည်းနေပါသည်..."
+                                : "ဒေတာအားလုံးသိမ်းဆည်းမည်"}
+                        </button>
+                    ) : (
                         <button
                             type="button"
                             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow font-semibold"
                             onClick={(e) => handleNextStep(e)}
                         >
                             နောက်တစ်ဆင့် သို့
-                        </button>
-                    ) : (
-                        <button
-                            type="submit"
-                            form="employeeMegaForm"
-                            disabled={processing}
-                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow font-bold"
-                        >
-                            {processing
-                                ? "သိမ်းဆည်းနေပါသည်..."
-                                : "ဒေတာအားလုံးသိမ်းဆည်းမည်"}
                         </button>
                     )}
                 </div>

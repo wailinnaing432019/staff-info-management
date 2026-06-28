@@ -1,5 +1,8 @@
 import { getMyanmarCurrentDate } from "@/util/getCurrentMonth";
+import toMyanmarNumber from "@/util/numberHelper";
 import React, { useEffect } from "react";
+import Format25 from "../components/Format25";
+import { Head } from "@inertiajs/react";
 
 export default function Format25Pdf({ data }) {
     useEffect(() => {
@@ -9,241 +12,253 @@ export default function Format25Pdf({ data }) {
 
         return () => clearTimeout(timer);
     }, []);
+
     return (
         <>
+            <Head title={`ပုံစံ-၂၅`} />
             <style
                 dangerouslySetInnerHTML={{
                     __html: `
+                    @import url('https://cdn.jsdelivr.net/npm/@myanmar-tools/fonts/pyidaungsu.css');
+
                     @page { 
-                        size: A4 landscape; 
-                        margin: 0;  
+                        size: legal landscape; 
+                        margin: 10mm 10mm 10mm 10mm;  
+                    
+                        @top-center {
+                        content: "";
+                        } 
+                        @bottom-center {
+                        content: "";
+                        } 
                     }
+
                     @media print {
                         body {
                             -webkit-print-color-adjust: exact;
                             print-color-adjust: exact;
                             background-color: white;
-                            width: 100vw !important;
-                            height: 100vh !important;
-                            overflow: hidden;
+                            color: black;
+                            font-family: 'Pyidaungsu', sans-serif !important;
                         }
-                        
-                        
-                        .print-scale-container {
-                            transform: scale(0.3); 
-                            transform-origin: top left;  
-                            width: 333.33% !important;  
-                            box-sizing: border-box;
-                            padding: 50mm 35mm !important;  
-                        }
+                    }
 
-                        table {
-                            page-break-inside: auto;
-                            width: 100% !important;
-                        }
-                        tr {
-                            page-break-inside: avoid;
-                            page-break-after: auto;
-                        }
-                        thead {
-                            display: table-header-group;
-                        }
+                    * {
+                        font-family: 'Pyidaungsu', sans-serif !important;
+                    }
+ 
+                    table th, table td {
+                        border: 1px solid black !important;
+                        padding: 3px 2px !important;
+                        line-height: 1.2 !important;
+                        word-break: break-word;  
                     }
                     `,
                 }}
             />
 
-            <div className="print-scale-container w-full bg-white p-4 overflow-x-auto print:p-0 print:overflow-visible">
-                <div className="text-center mb-3 print:mb-1">
-                    <h2 className="text-lg font-bold text-gray-900 print:text-base">
-                        ကွန်ပျူတာတက္ကသိုလ်(မိတ္ထီလာ)
+            <div className="w-full bg-white p-2">
+                <div className="text-center mb-2">
+                    <h2 className="text-sm font-bold text-gray-900">
+                        ကွန်ပျူတာတက္ကသိုလ်(မိတ္ထီလာ)၊ သင်ကြားရေးဌာနများတွင်
+                        တာဝန်ထမ်းဆောင်နေသော ဝန်ထမ်း၏ ကိုယ်ရေးအကျဉ်းချုပ်
                     </h2>
-                    <h3 className="text-base font-bold text-gray-800 mt-0.5 print:text-sm">
-                        သင်ကြားရေးဌာနများတွင် တာဝန်ထမ်းဆောင်နေသော ဝန်ထမ်းများ၏
-                        ကိုယ်ရေးအကျဉ်းချုပ်
-                    </h3>
-                    <p className="text-right text-xs font-semibold text-gray-600 mt-1 print:mt-0">
+
+                    <p className="text-right text-sm font-semibold text-gray-600 mt-2">
                         {getMyanmarCurrentDate()}
                     </p>
                 </div>
 
-                <table className="w-full border-collapse border border-black text-[11px] min-w-[1900px] print:min-w-0 print:text-[7.5px]">
+                <table className="w-full border-collapse border border-black text-[9px] print:text-[7px]">
                     <thead className="bg-gray-100 text-center font-bold">
                         <tr className="divide-x divide-black">
-                            <th className="border border-black p-0.5 w-8 shrink-0">
-                                စဉ်
+                            <th className="w-[2%]">စဉ်</th>
+                            <th className="w-[3%]">အမည်</th>
+                            <th className="w-[3%]">
+                                ပညာ <br />
+                                အရည်အချင်း
+                                <br />
+                                အပြည့်အစုံ
                             </th>
-                            <th className="border border-black p-0.5 min-w-[100px]">
-                                အမည်
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[130px]">
-                                အရည်အချင်း အပြည့်အစုံ
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[80px]">
+                            <th className="w-[3%]">
                                 မွေးသက္ကရာဇ်
+                                <br />
+                                အသက်
                                 <br />
                                 (ရက်၊လ၊နှစ်)
                             </th>
-                            <th className="border border-black p-0.5 min-w-[90px]">
-                                လူမျိုး/ဘာသာ
+                            <th className="w-[3%]">လူမျိုး/ဘာသာ</th>
+                            <th className="w-[3%]">မွေးဖွားရာဇာတိ</th>
+                            <th className="w-[3%]">
+                                မှတ်ပုံတင် <br />
+                                အမှတ်
                             </th>
-                            <th className="border border-black p-0.5 min-w-[100px]">
-                                မွေးဖွားရာဇာတိ
+                            <th className="w-[3%]">
+                                အဖအမည်
+                                <br />
+                                အလုပ်အကိုင်
                             </th>
-                            <th className="border border-black p-0.5 min-w-[120px]">
-                                မှတ်ပုံတင်အမှတ်
+                            <th className="w-[3%]">
+                                အိမ်ထောင်ရှိ/
+                                <br />
+                                မရှိ
                             </th>
-                            <th className="border border-black p-0.5 min-w-[120px]">
-                                အဖအမည် အလုပ်အကိုင်
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[70px]">
-                                အိမ်ထောင်ရှိ/ မရှိ
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[160px]">
+
+                            <th className="w-[7%]">
                                 လက်ရှိရာထူး၊ လစာနှုန်း၊ ဌာန
                             </th>
-                            <th className="border border-black p-0.5 min-w-[80px]">
-                                အလုပ်စတင် ဝင်သည့်နေ့
+                            <th className="w-[3%]">
+                                အလုပ်စတင်
+                                <br />
+                                ဝင်ရောက်သည့်နေ့
+                                <br /> (ရက်၊ လ၊ နှစ်)
                             </th>
-                            <th className="border border-black p-0.5 min-w-[80px]">
+                            <th className="w-[3%]">
                                 လက်ရှိရာထူး
                                 <br />
-                                ရသည့်နေ့(ရက်၊လ၊နှစ်)
+                                ရသည့်နေ့
+                                <br /> (ရက်၊ လ၊ နှစ်)
                             </th>
-                            <th className="border border-black p-0.5 min-w-[80px]">
-                                လက်ရှိဌာနသို့
+                            <th className="w-[3%]">
+                                လက်ရှိဌာန
                                 <br />
                                 ရောက်သည့်နေ့
+                                <br /> (ရက်၊ လ၊ နှစ်)
                             </th>
-                            <th className="border border-black p-0.5 min-w-[80px]">
+                            <th className="w-[3%]">
                                 ပြစ်ဒဏ်ခံရဖူးခြင်း
                                 <br />
-                                ရှိ/ မရှိ
+                                ရှိ/မရှိ
+                                <br /> (ရှိလျှင် ဖော်ပြရန်)
                             </th>
-                            <th className="border border-black p-0.5 min-w-[140px]">
+                            <th className="w-[3%]">
                                 စာချုပ် ချုပ်ဆိုထားခြင်းရှိမရှိ ၊ ရှိပါက
+                                <br />
                                 စာချုပ်နှစ်၊လျော်ကြေးငွေ
                             </th>
-                            <th className="border border-black p-0.5 min-w-[80px]">
-                                နိုင်ငံခြားသို့ ရောက်ဖူးခြင်း ရှိ၊မရှိ
+                            <th className="w-[4%]">
+                                နိုင်ငံခြားသို့ ရောက်ဖူးခြင်း
+                                <br />
+                                ရှိ၊မရှိ ရှိပါက သွားရောက်ခဲ့သည့်နိုင်ငံ ကာလ
+                                <br /> (မှ၊ ထိ)
                             </th>
-                            <th className="border border-black p-0.5 min-w-[90px]">
-                                နဝတသင်တန်း(ထက်၊အောက်) ပြီး၊မပြီး
+                            <th className="w-[5%]">
+                                နဝတသင်တန်း(ထက်၊အောက်)
+                                <br />
+                                ပြီး/ မပြီး၊ သင်တန်းတက်ရောက်ခဲ့ဖူးလျှင်
+                                သင်တန်းအမည်နှင့် အမှတ်စဉ်
                             </th>
-                            <th className="border border-black p-0.5 min-w-[180px]">
+                            <th className="w-[7%]">
                                 ပြောင်းရွှေ့ တာဝန်ထမ်းဆောင်ခဲ့ဖူးသော ကျောင်း၊
+                                <br />
                                 ဌာန (အဆင့်ဆင့် မှ-ထိ)
                             </th>
-                            <th className="border border-black p-0.5 min-w-[140px]">
-                                အမြဲတမ်းနေရပ်လိပ်စာ
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[140px]">
-                                လက်ရှိနေရပ်လိပ်စာ
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[70px]">
-                                နယ်ခံ/နယ်ဝေး
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[100px]">
-                                သင်တန်းတက်ရောက်နေပါက ဖော်ပြရန်(ပြည်တွင်း၊ပြည်ပ)
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[100px]">
-                                အခြားတက္ကသိုလ် သို့ တွဲဖက်နေပါက ဖော်ပြရန်{" "}
-                            </th>
-                            <th className="border border-black p-0.5 min-w-[80px]">
-                                ကင်းကွာ/တွဲဖက်
+
+                            <th className="w-[5%]">အမြဲတမ်းနေရပ်လိပ်စာ</th>
+                            <th className="w-[5%]">လက်ရှိနေရပ်လိပ်စာ</th>
+                            <th className="w-[3%]">နယ်ခံ/နယ်ဝေး</th>
+                            <th className="w-[4%]">
+                                သင်တန်းတက်ရောက်နေပါက
                                 <br />
-                                ဖော်ပြရန်
+                                ဖော်ပြရန်(ပြည်တွင်း၊ပြည်ပ)
                             </th>
-                            <th className="border border-black p-0.5 min-w-[80px]">
-                                မှတ်ချက်
+
+                            <th className="w-[6%]">
+                                အခြားတက္ကသိုလ် သို့
+                                <br />
+                                တွဲဖက်နေပါက ဖော်ပြရန်
                             </th>
+                            <th className="w-[10%]">ကင်းကွာသည့် ရက်စွဲ</th>
+                            <th className="w-[4%]">မှတ်ချက်</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-black">
-                        <tr className="hover:bg-gray-50 text-center align-top break-inside-avoid">
-                            <td className="border border-black p-0.5">{1}</td>
-                            <td className="border border-black p-0.5 text-left font-semibold">
+                        <tr className="text-center">
+                            {[...Array(25)].map((_, index) => (
+                                <td key={index}>
+                                    {toMyanmarNumber(index + 1)}
+                                </td>
+                            ))}
+                        </tr>
+                        <tr className="text-center align-top">
+                            <td>{toMyanmarNumber(1)}</td>
+                            <td className="text-left font-semibold">
                                 {data.name || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left whitespace-pre-line">
+                            <td className="text-left whitespace-pre-line">
                                 {data.info?.degree || "-"}
                             </td>
-                            <td className="border border-black p-0.5 whitespace-nowrap">
-                                {data.date_of_birth || "-"}
+                            <td>
+                                {data.age || ""}
+                                <br /> {data.date_of_birth || "-"}
                             </td>
-                            <td className="border border-black p-0.5">
-                                {data.race || "-"} / {data.religion || "-"}
+                            <td>
+                                {data.race || "-"}၊ {data.religion || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
+                            <td className="text-left">
                                 {data.birth_place || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-[10px] print:text-[7px] whitespace-nowrap">
-                                {data.nrc_township || ""}{" "}
-                                {data.nrc_type && `(${data.nrc_type})`}{" "}
+                            <td className="text-left">
+                                {data.nrc_state || ""}/{data.nrc_township || ""}
+                                {data.nrc_type && `(${data.nrc_type})`}
                                 {data.nrc_number ? ` ${data.nrc_number}` : "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
-                                {data.father_name || "-"}{" "}
+                            <td className="text-left">
+                                {data.father_name || "-"} <br />
                                 {data.father_job ? ` (${data.father_job})` : ""}
                             </td>
-                            <td className="border border-black p-0.5">
-                                {data.marital_status || "-"}
-                            </td>
-                            <td className="border border-black p-0.5 text-left">
-                                {data.employment?.position || "-"} <br />
-                                <span className="text-[10px] print:text-[6.5px] text-gray-600">
-                                    ({data.employment?.salary_scale || "-"})
-                                </span>{" "}
+                            <td>{data.marital_status || "-"}</td>
+                            <td className="text-left">
+                                {data.employment?.position || "-"}၊ <br />
+                                {data.employment?.salary_rate || "-"}၊
                                 <br />
                                 {data.employment?.department || "-"}
                             </td>
-                            <td className="border border-black p-0.5 whitespace-nowrap">
+                            <td>
                                 {data.employment?.employee_start_date_detail ||
                                     "-"}
                             </td>
-                            <td className="border border-black p-0.5 whitespace-nowrap">
+                            <td>
                                 {data.employment
                                     ?.current_pos_start_date_detail || "-"}
                             </td>
-                            <td className="border border-black p-0.5 whitespace-nowrap">
+                            <td>
                                 {data.employment
                                     ?.current_dept_start_date_detail || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
-                                {data.employment?.penalty_detail || "မရှိ"}
+                            <td className="text-left">
+                                {data.employment?.penalty_detail || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
+                            <td className="text-left">
                                 {data.employment?.contract_agreement_detail ||
-                                    "မရှိ"}
+                                    "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
-                                {data.employment?.foreign_detail || "မရှိ"}
+                            <td className="text-left">
+                                {data.employment?.foreign_detail || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
+                            <td className="text-left">
                                 {data.employment?.training_detail || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left whitespace-pre-line">
+                            <td className="text-left whitespace-pre-line">
                                 {data.employment?.transfer_detail || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left whitespace-pre-line">
+                            <td className="text-left whitespace-pre-line">
                                 {data.info?.permanent_address || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left whitespace-pre-line">
+                            <td className="text-left whitespace-pre-line">
                                 {data.info?.current_address || "-"}
                             </td>
-                            <td className="border border-black p-0.5">
-                                {data.info?.not_border || "-"}
-                            </td>
-                            <td className="border border-black p-0.5 text-left">
+                            <td>{data.info?.not_border || "-"}</td>
+                            <td className="text-left">
                                 {data.info?.current_training || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
+                            <td className="text-left">
                                 {data.info?.is_accompanied || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
+                            <td className="text-left">
                                 {data.info?.separation_date || "-"}
                             </td>
-                            <td className="border border-black p-0.5 text-left">
+                            <td className="text-left">
                                 {data.info?.remark || "-"}
                             </td>
                         </tr>

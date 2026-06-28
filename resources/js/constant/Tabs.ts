@@ -7,4 +7,5 @@ export const tabs = [
     { id: "foreign", label: "၆။ နိုင်ငံခြားခရီးစဉ်မှတ်တမ်း" },
     { id: "legal_awards", label: "၇။ ပြစ်ဒဏ်နှင့် ဆုလာဘ်" },
     { id: "referee", label: "၈။ ထောက်ခံပေးသူများ" },
+    { id: "detail_history", label: "၉။ ပါမောက္ခချုပ်/ ဒုတိယပါမောက္ခချုပ်" },
 ];

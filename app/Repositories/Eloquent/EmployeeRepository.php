@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class EmployeeRepository implements EmployeeRepositoryInterface
 {
- 
+
     public function paginateWithFilters(Request $request)
     {
         $search = $request->input('search');
@@ -49,48 +49,62 @@ class EmployeeRepository implements EmployeeRepositoryInterface
                 'nrc_number',
                 'father_name',
             ])
-            ->latest()
+            ->orderBy('created_at', 'asc')
             ->paginate(10)
             ->withQueryString();
     }
 
- 
+
     public function findWithRelations(int $id)
     {
         return Employee::with([
-            'physical', 'info', 'employment', 'educations', 'trainings',
-            'familyMembers', 'foreignVisitedPurpose', 'courtDisciplinaryActions',
-            'criminalRecords', 'serviceRecords', 'awardsReceived', 'abroadVisits', 'referee'
+            'physical',
+            'info',
+            'employment',
+            'educations',
+            'trainings',
+            'familyMembers',
+            'foreignVisitedPurpose',
+            'courtDisciplinaryActions',
+            'criminalRecords',
+            'serviceRecords',
+            'awardsReceived',
+            'abroadVisits',
+            'referee',
+            'pastJobs',
+            'details'
         ])->findOrFail($id);
     }
 
- 
+
     public function checkStaffNumber(string $staffNumber)
     {
         return Employee::where('name', $staffNumber)->first();
     }
 
- 
+
     public function create(array $data)
     {
-        return Employee::create($data);  
+        return Employee::create($data);
     }
 
-   
+
     public function update(int $id, array $validated)
     {
         $employee = Employee::findOrFail($id);
-        
+
         $employee->update($validated);
- 
+
         $employee->physical()->updateOrCreate(['employee_id' => $employee->id], $validated);
         $employee->info()->updateOrCreate(['employee_id' => $employee->id], $validated);
         $employee->employment()->updateOrCreate(['employee_id' => $employee->id], $validated);
         $employee->foreignVisitedPurpose()->updateOrCreate(['employee_id' => $employee->id], $validated);
         $employee->referee()->updateOrCreate(['employee_id' => $employee->id], $validated);
-         
+        $employee->details()->updateOrCreate(['employee_id' => $employee->id], $validated);
+
+
         if (isset($validated['educations'])) {
-            $filteredEducations = array_filter($validated['educations'], fn($item) => !empty($item['degree_name']));
+            $filteredEducations = $this->filterRelationData($validated['educations'], ['category']); // category ပါလာလျှင် ignore လုပ်ရန်
             $keepIds = collect($filteredEducations)->pluck('id')->filter()->toArray();
             $employee->educations()->whereNotIn('id', $keepIds)->delete();
             foreach ($filteredEducations as $edu) {
@@ -99,9 +113,9 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         } else {
             $employee->educations()->delete();
         }
- 
+
         if (isset($validated['trainings'])) {
-            $filteredTrainings = array_filter($validated['trainings'], fn($item) => !empty($item['learn_course']));
+            $filteredTrainings = $this->filterRelationData($validated['trainings'], ['category']);
             $keepIds = collect($filteredTrainings)->pluck('id')->filter()->toArray();
             $employee->trainings()->whereNotIn('id', $keepIds)->delete();
             foreach ($filteredTrainings as $training) {
@@ -110,9 +124,9 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         } else {
             $employee->trainings()->delete();
         }
- 
+
         if (isset($validated['service_records'])) {
-            $filteredRecords = array_filter($validated['service_records'], fn($item) => !empty($item['service_position']));
+            $filteredRecords = $this->filterRelationData($validated['service_records']);
             $keepIds = collect($filteredRecords)->pluck('id')->filter()->toArray();
             $employee->serviceRecords()->whereNotIn('id', $keepIds)->delete();
             foreach ($filteredRecords as $record) {
@@ -121,9 +135,9 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         } else {
             $employee->serviceRecords()->delete();
         }
- 
+
         if (isset($validated['families'])) {
-            $filteredFamilies = array_filter($validated['families'], fn($item) => !empty($item['relation_name']));
+            $filteredFamilies = $this->filterRelationData($validated['families'], ['relationship_type']);
             $keepIds = collect($filteredFamilies)->pluck('id')->filter()->toArray();
             $employee->familyMembers()->whereNotIn('id', $keepIds)->delete();
             foreach ($filteredFamilies as $family) {
@@ -132,9 +146,9 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         } else {
             $employee->familyMembers()->delete();
         }
- 
+
         if (isset($validated['legal_records'])) {
-            $filteredLog = array_filter($validated['legal_records'], fn($item) => !empty($item['reason']));
+            $filteredLog = $this->filterRelationData($validated['legal_records'], ['record_type']);
             $keepIds = collect($filteredLog)->pluck('id')->filter()->toArray();
             $employee->courtDisciplinaryActions()->whereNotIn('id', $keepIds)->delete();
             foreach ($filteredLog as $log) {
@@ -143,9 +157,9 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         } else {
             $employee->courtDisciplinaryActions()->delete();
         }
- 
+
         if (isset($validated['awards'])) {
-            $filteredAwards = array_filter($validated['awards'], fn($item) => !empty($item['award_title']));
+            $filteredAwards = $this->filterRelationData($validated['awards']);
             $keepIds = collect($filteredAwards)->pluck('id')->filter()->toArray();
             $employee->awardsReceived()->whereNotIn('id', $keepIds)->delete();
             foreach ($filteredAwards as $award) {
@@ -154,9 +168,20 @@ class EmployeeRepository implements EmployeeRepositoryInterface
         } else {
             $employee->awardsReceived()->delete();
         }
- 
+
+        if (isset($validated['criminal_records'])) {
+            $filteredLog = $this->filterRelationData($validated['criminal_records']);
+            $keepIds = collect($filteredLog)->pluck('id')->filter()->toArray();
+            $employee->criminalRecords()->whereNotIn('id', $keepIds)->delete();
+            foreach ($filteredLog as $log) {
+                $employee->criminalRecords()->updateOrCreate(['id' => $log['id'] ?? null], $log);
+            }
+        } else {
+            $employee->criminalRecords()->delete();
+        }
+
         if (isset($validated['abroad_visits'])) {
-            $filteredLog = array_filter($validated['abroad_visits'], fn($item) => !empty($item['country_visited']));
+            $filteredLog = $this->filterRelationData($validated['abroad_visits']);
             $keepIds = collect($filteredLog)->pluck('id')->filter()->toArray();
             $employee->abroadVisits()->whereNotIn('id', $keepIds)->delete();
             foreach ($filteredLog as $log) {
@@ -166,12 +191,38 @@ class EmployeeRepository implements EmployeeRepositoryInterface
             $employee->abroadVisits()->delete();
         }
 
+        if (isset($validated['past_jobs'])) {
+            $filteredLog = $this->filterRelationData($validated['past_jobs'], ['type', 'category']);
+            $keepIds = collect($filteredLog)->pluck('id')->filter()->toArray();
+            $employee->pastJobs()->whereNotIn('id', $keepIds)->delete();
+            foreach ($filteredLog as $log) {
+                $employee->pastJobs()->updateOrCreate(['id' => $log['id'] ?? null], $log);
+            }
+        } else {
+            $employee->pastJobs()->delete();
+        }
+
         return $employee;
     }
- 
+
     public function delete(int $id)
     {
         $employee = Employee::findOrFail($id);
         return $employee->delete();
+    }
+
+
+    private function filterRelationData(array $data, array $extraIgnoreKeys = []): array
+    {
+        $baseIgnoreKeys = ['id', 'employee_id', 'created_at', 'updated_at'];
+        $ignoreKeys = array_merge($baseIgnoreKeys, $extraIgnoreKeys);
+
+        return array_filter($data, function ($item) use ($ignoreKeys) {
+            $filledFields = array_filter($item, function ($value, $key) use ($ignoreKeys) {
+                return !in_array($key, $ignoreKeys) && !empty($value);
+            }, ARRAY_FILTER_USE_BOTH);
+
+            return !empty($filledFields);
+        });
     }
 }

@@ -4,6 +4,7 @@ import ActionTable from "./ActionTable";
 import { Printer } from "lucide-react";
 import { Link } from "@inertiajs/react";
 import toMyanmarNumber from "@/util/numberHelper";
+import PrintButton from "./PrintButton";
 
 export default function Format36({ data = {} }) {
     return (
@@ -236,6 +237,21 @@ export default function Format36({ data = {} }) {
                     သင်တန်း စသည်များ
                 </h4>
                 <table className="w-full border border-black border-collapse  text-center">
+                    <thead>
+                        <tr className="bg-gray-50 font-semibold border-b border-black">
+                            <th className="border border-black p-2">မှ</th>
+                            <th className="border border-black p-2">ထိ</th>
+                            <th className="border border-black p-2  ">
+                                ကျောင်း၊ တက္ကသိုလ်၊ အလုပ်ဌာန၊ သင်တန်း
+                            </th>
+                            <th className="border border-black p-2  ">
+                                တည်ရာအရပ်
+                            </th>
+                            <th className="border border-black p-2  ">
+                                အဆင့်အတန်း
+                            </th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {(() => {
                             const educations =
@@ -245,17 +261,14 @@ export default function Format36({ data = {} }) {
                             return educations.length > 0 ? (
                                 educations.map((item, idx) => (
                                     <tr key={idx}>
-                                        <td className="border border-black p-2 text-center font-medium">
-                                            {toMyanmarNumber(idx + 1)}
-                                        </td>
-                                        <td className="border border-black p-2 text-left px-3">
-                                            {item.learn_course || "-"}
-                                        </td>
                                         <td className="border border-black p-2">
                                             {item.learn_from || "-"}
                                         </td>
                                         <td className="border border-black p-2">
                                             {item.learn_to || "-"}
+                                        </td>
+                                        <td className="border border-black p-2 text-left px-3">
+                                            {item.learn_course || "-"}
                                         </td>
                                         <td className="border border-black p-2">
                                             {item.location || "-"}
@@ -268,19 +281,19 @@ export default function Format36({ data = {} }) {
                             ) : (
                                 <tr>
                                     <td className="border border-black p-4 text-gray-400  text-center">
-                                        {" "}
+                                        -
                                     </td>
                                     <td className="border border-black p-4 text-gray-400  text-center">
-                                        {" "}
+                                        -
                                     </td>
                                     <td className="border border-black p-4 text-gray-400  text-center">
-                                        {" "}
+                                        -
                                     </td>
                                     <td className="border border-black p-4 text-gray-400  text-center">
-                                        {" "}
+                                        -
                                     </td>
                                     <td className="border border-black p-4 text-gray-400  text-center">
-                                        {" "}
+                                        -
                                     </td>
                                 </tr>
                             );
@@ -469,13 +482,13 @@ export default function Format36({ data = {} }) {
                         ) : (
                             <tr>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    {" "}
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    {" "}
+                                    -
                                 </td>
                                 <td className="border border-black p-4 text-gray-400 ">
-                                    {" "}
+                                    -
                                 </td>
                             </tr>
                         )}
@@ -720,6 +733,8 @@ export default function Format36({ data = {} }) {
                         </div>
                     </div>
                 </div>
+
+                <PrintButton employeeId={data.id} formatType="format36pdf" />
             </div>
         </div>
     );

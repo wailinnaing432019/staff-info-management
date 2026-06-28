@@ -50,10 +50,10 @@ export default function ActionTable({ title, recordType, actionsData = [] }) {
                         ))
                     ) : (
                         <tr>
-                            <td className="border border-black p-2 text-left"></td>
-                            <td className="border border-black p-2 text-left"></td>
-                            <td className="border border-black p-2 text-left"></td>
-                            <td className="border border-black p-2 text-left"></td>
+                            <td className="border border-black p-2 ">-</td>
+                            <td className="border border-black p-2 ">-</td>
+                            <td className="border border-black p-2 ">-</td>
+                            <td className="border border-black p-2 ">-</td>
                         </tr>
                     )}
                 </tbody>

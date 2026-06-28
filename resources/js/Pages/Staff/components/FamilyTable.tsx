@@ -10,7 +10,7 @@ export default function FamilyTable({
         familiesData?.filter(
             (item) => item.relationship_type === relationshipType,
         ) || [];
-
+    const isAbroad = relationshipType === "relative_abroad";
     return (
         <div className="mb-6">
             <h4 className=" mb-2">{title}</h4>
@@ -22,13 +22,43 @@ export default function FamilyTable({
                             အမည် (အခြားအမည်ရှိလျှင်လည်းဖော်ပြရန်)
                         </th>
                         <th className="border border-black p-2 ">တော်စပ်ပုံ</th>
-                        <th className="border border-black p-2  ">ကျား/မ</th>
-                        <th className="border border-black p-2  ">
-                            မည်သည့်နိုင်ငံသား
-                        </th>
-                        <th className="border border-black p-2">အလုပ်အကိုင်</th>
-                        <th className="border border-black p-2">နေရပ်</th>
-                        <th className="border border-black p-2">မှတ်ချက်</th>
+                        {isAbroad ? (
+                            <>
+                                <th className="border border-black p-2  ">
+                                    မည်သည့်နိုင်ငံသား
+                                </th>
+                                <th className="border border-black p-2">
+                                    အလုပ်အကိုင်
+                                </th>
+                                <th className="border border-black p-2">
+                                    ရောက်ရှိနေသည့်နိုင်ငံ
+                                </th>
+                                <th className="border border-black p-2">
+                                    သွားရောက်သည့်ကိစ္စ
+                                </th>
+                                <th className="border border-black p-2">
+                                    ပြန်လည်ရောက်ရှိမည့်ကာလ
+                                </th>
+                            </>
+                        ) : (
+                            <>
+                                <th className="border border-black p-2  ">
+                                    ကျား/မ
+                                </th>
+                                <th className="border border-black p-2  ">
+                                    မည်သည့်နိုင်ငံသား
+                                </th>
+                                <th className="border border-black p-2">
+                                    အလုပ်အကိုင်
+                                </th>
+                                <th className="border border-black p-2">
+                                    နေရပ်
+                                </th>
+                                <th className="border border-black p-2">
+                                    မှတ်ချက်
+                                </th>
+                            </>
+                        )}
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-black">
@@ -43,21 +73,44 @@ export default function FamilyTable({
                                     {getRelationMyanmar(fam.family_lineage) ||
                                         "-"}
                                 </td>
-                                <td className="border border-black p-2">
-                                    {getGenderMyanmar(fam.gender) || "-"}
-                                </td>
-                                <td className="border border-black p-2">
-                                    {fam.nationality || "-"}
-                                </td>
-                                <td className="border border-black p-2 text-left">
-                                    {fam.occupation || "-"}
-                                </td>
-                                <td className="border border-black p-2 text-left break-words">
-                                    {fam.address || "-"}
-                                </td>
-                                <td className="border border-black p-2">
-                                    {fam.remark || "-"}
-                                </td>
+                                {isAbroad ? (
+                                    <>
+                                        <td className="border border-black p-2">
+                                            {fam.nationality || "-"}
+                                        </td>
+                                        <td className="border border-black p-2 text-left">
+                                            {fam.occupation || "-"}
+                                        </td>
+                                        <td className="border border-black p-2 text-left">
+                                            {fam.arrived_country || "-"}
+                                        </td>
+                                        <td className="border border-black p-2 text-left break-words">
+                                            {fam.arrived_purpose || "-"}
+                                        </td>
+                                        <td className="border border-black p-2">
+                                            {fam.return_period || "-"}
+                                        </td>
+                                    </>
+                                ) : (
+                                    <>
+                                        <td className="border border-black p-2">
+                                            {getGenderMyanmar(fam.gender) ||
+                                                "-"}
+                                        </td>
+                                        <td className="border border-black p-2">
+                                            {fam.nationality || "-"}
+                                        </td>
+                                        <td className="border border-black p-2 text-left">
+                                            {fam.occupation || "-"}
+                                        </td>
+                                        <td className="border border-black p-2 text-left break-words">
+                                            {fam.address || "-"}
+                                        </td>
+                                        <td className="border border-black p-2">
+                                            {fam.remark || "-"}
+                                        </td>
+                                    </>
+                                )}
                             </tr>
                         ))
                     ) : (

@@ -27,6 +27,7 @@ class Employee extends Model
         'mother_name',
         'marital_status',
         'spouse_name', 
+        'is_rector_or_above'
     ];
 
 
@@ -50,6 +51,11 @@ class Employee extends Model
     public function referee()
     {
         return $this->hasOne(Referee::class);
+    }
+
+    public function details()
+    {
+        return $this->hasOne(EmployeeDetail::class);
     }
     public function educations()
     {
@@ -83,5 +89,10 @@ class Employee extends Model
     public function trainings()
     {
         return $this->hasMany(Training::class);
+    }
+
+        public function pastJobs()
+    {
+        return $this->hasMany(EmployeePastJob::class);
     }
 }

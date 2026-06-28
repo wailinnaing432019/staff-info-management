@@ -5,7 +5,7 @@ namespace App\Http\Controllers\staff;
 use App\Http\Controllers\Controller;
 use App\Services\EmployeeService;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
 use Inertia\Inertia;
 
 class StaffController extends Controller
@@ -44,11 +44,13 @@ class StaffController extends Controller
 
     public function create()
     {
+ 
         return inertia('Staff/Create');
     }
 
     public function store(Request $request)
-    {
+    { 
+ 
         try {
             $request->validate([
                 'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -63,7 +65,7 @@ class StaffController extends Controller
         } catch (Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'ဒေတာသိမ်းဆည်းစဉ် ပြဿနာတစ်ခုဖြစ်ပွားခဲ့ပါသည်- ' . $e->getMessage());
+                ->with('error', 'ဒေတာသိမ်းဆည်းစဉ် ပြဿနာတစ်ခုဖြစ်ပွားခဲ့ပါသည်');
         }
     }
 
@@ -102,10 +104,18 @@ class StaffController extends Controller
             'data' => $employeeData
         ]);
     }
-
+    
+    public function format55Pdf($id)
+    { 
+         $employeeData = $this->employeeService->getEmployeeWithFormats($id);
+ 
+        return Inertia::render('Staff/pdf/Format55Pdf', [
+            'data' => $employeeData
+        ]);
+    }
     public function edit($id)
     {
-        $employee = $this->employeeService->getEmployeeWithFormats($id);
+          $employee = $this->employeeService->getEmployeeWithFormats($id);
 
         return Inertia::render('Staff/Edit', [
             'employee' => $employee
@@ -113,7 +123,7 @@ class StaffController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
+    { 
         try {
             if ($request->hasFile('image_path')) {
                 $request->validate([

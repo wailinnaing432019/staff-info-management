@@ -5,6 +5,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { Eye, PencilLine, Trash, User2, UserIcon } from "lucide-react";
 import { getGenderMyanmar } from "@/util/genderHelper";
+import Swal from "sweetalert2";
 
 export default function Index({ employees, filters }) {
     const [search, setSearch] = useState(filters.search || "");
@@ -27,9 +28,22 @@ export default function Index({ employees, filters }) {
     }, [search]);
 
     const handleDelete = (id, name) => {
-        if (confirm(`ဝန်ထမ်း "${name}" ကို တကယ်ပဲ ဖျက်မှာ သေချာပါသလား?`)) {
-            router.delete(`/employees/${id}`);
-        }
+        Swal.fire({
+            title: "သေချာပါသလား?",
+            text: `ဝန်ထမ်း "${name}" ကို တကယ်ပဲ ဖျက်မှာ သေချာပါသလား?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33", // ဖျက်မယ့်ခလုတ်ကို အနီရောင်ထားခြင်း
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "ဖျက်မည်",
+            cancelButtonText: "မဖျက်တော့ပါ",
+            reverseButtons: true, // 'မဖျက်တော့ပါ' ကို ဘယ်ဘက်၊ 'ဖျက်မည်' ကို ညာဘက် ထားခြင်း
+        }).then((result) => {
+            // အသုံးပြုသူက 'ဖျက်မည်' ခလုတ်ကို နှိပ်လိုက်မှသာ ရော်တာကနေ ဒေတာဖျက်မည်
+            if (result.isConfirmed) {
+                router.delete(`/employees/${id}`);
+            }
+        });
     };
 
     const getMyanmarWords = (name, count = 1) => {

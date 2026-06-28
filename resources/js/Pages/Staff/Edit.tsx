@@ -4,16 +4,18 @@ import { Head, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { tabs } from "@/constant/Tabs";
 import EmployeeFormFields from "./components/StaffFormFields";
+import { validateHelperTabs } from "@/util/validationHelper";
+import Swal from "sweetalert2";
 
 export default function EditEmployee({ employee }) {
     const [activeTab, setActiveTab] = useState("personal");
     const currentTabIndex = tabs.findIndex((tab) => tab.id === activeTab);
-    const isLastTab = currentTabIndex === tabs.length - 1;
 
     const { data, setData, post, errors, setError, clearErrors, processing } =
         useForm({
             _method: "PUT",
             staff_number: employee.staff_number || "",
+            is_rector_or_above: employee.is_rector_or_above || 0,
             name: employee.name || "",
             nickname: employee.nickname || "",
             alternative_name: employee.alternative_name || "",
@@ -92,108 +94,62 @@ export default function EditEmployee({ employee }) {
             dept_head_position: employee.referee?.dept_head_position || "",
             dept_head_department: employee.referee?.dept_head_department || "",
 
+            skin_color: employee.details?.skin_color || "",
+            is_parent_season_at_birth:
+                employee.details?.is_parent_season_at_birth || "",
+            previous_address: employee.details?.previous_address || "",
+            father_address_detail:
+                employee.details?.father_address_detail || "",
+            mother_address_detail:
+                employee.details?.mother_address_detail || "",
+            reason_for_current_occupation:
+                employee.details?.reason_for_current_occupation || "",
+            selection_type: employee.details?.selection_type || "",
+            previous_school: employee.details?.previous_school || "",
+            last_school: employee.details?.last_school || "",
+            student_level: employee.details?.student_level || "",
+            hobby: employee.details?.hobby || "",
+            referee_status: employee.details?.referee_status || "",
+            reason_for_transfer: employee.details?.reason_for_transfer || "",
+            service_rank: employee.details?.service_rank || "",
+            close_friend: employee.details?.close_friend || "",
+            close_foreign_friend: employee.details?.close_foreign_friend || "",
+            supporter: employee.details?.supporter || "",
+            crime_victim_status: employee.details?.crime_victim_status || "",
+            is_party_member: employee.details?.is_party_member || "",
+            employment_reference: employee.details?.employment_reference || "",
             educations:
-                employee.educations?.length > 0
-                    ? employee.educations
-                    : [
-                          {
-                              degree_name: "",
-                              major_subject: "",
-                              graduation_year: "",
-                              degree_level: "",
-                          },
-                      ],
-            trainings:
-                employee.trainings?.length > 0
-                    ? employee.trainings
-                    : [
-                          {
-                              learn_course: "",
-                              from_date: "",
-                              to_date: "",
-                              location: "",
-                              category: "local_trainig",
-                          },
-                      ],
+                employee.educations?.length > 0 ? employee.educations : [],
+            trainings: employee.trainings?.length > 0 ? employee.trainings : [],
             service_records:
                 employee.service_records?.length > 0
                     ? employee.service_records
-                    : [
-                          {
-                              position_held: "",
-                              department_name: "",
-                              start_date: "",
-                              end_date: "",
-                              location_region: "",
-                          },
-                      ],
+                    : [],
             families:
                 employee.family_members?.length > 0
                     ? employee.family_members
-                    : [
-                          {
-                              relation_name: "",
-                              relationship_type: "",
-                              gender: "ကျား",
-                              nationality: "",
-                              occupation: "",
-                              address: "",
-                          },
-                      ],
+                    : [],
             foreign_visits:
                 employee.foreign_visits?.length > 0
                     ? employee.foreign_visits
-                    : [
-                          {
-                              destination_country: "",
-                              assigned_country: "",
-                              time_period: "",
-                              arrival_date: "",
-                              training_course: "",
-                              supporting_agency: "",
-                              return_department: "",
-                              foreign_visit_details: "",
-                          },
-                      ],
+                    : [],
             abroad_visits:
                 employee.abroad_visits?.length > 0
                     ? employee.abroad_visits
-                    : [
-                          {
-                              employee_id: "",
-                              country_visited: "",
-                              visit_purpose: "",
-                              abroad_from: "",
-                              abroad_to: "",
-                              foreign_currency_amount: "",
-                          },
-                      ],
+                    : [],
             legal_records:
                 employee.court_disciplinary_actions?.length > 0
                     ? employee.court_disciplinary_actions
-                    : [
-                          {
-                              record_type: "disciplinary",
-                              period: "",
-                              reason: "",
-                              penalty: "",
-                          },
-                      ],
+                    : [],
             criminal_records:
                 employee.criminal_records?.length > 0
                     ? employee.criminal_records
-                    : [
-                          {
-                              criminalPenalty: "",
-                              reasonPelanty: "",
-                              criminalFrom: "",
-                              criminalTo: "",
-                          },
-                      ],
+                    : [],
             awards:
                 employee.awards_received?.length > 0
                     ? employee.awards_received
-                    : [{ award_name: "", award_year: "", description: "" }],
+                    : [],
+            past_jobs: employee.past_jobs?.length > 0 ? employee.past_jobs : [],
         });
 
     const addRow = (field, schema) => setData(field, [...data[field], schema]);
@@ -209,80 +165,24 @@ export default function EditEmployee({ employee }) {
     };
 
     const validateTabs = () => {
-        let localErrors = {};
-        let isValid = true;
-
-        if (activeTab === "personal") {
-            const personalFields = [
-                "name",
-                "gender",
-                "date_of_birth",
-                "age",
-                "birth_place",
-                "race",
-                "religion",
-                "blood_type",
-                "marital_status",
-                "height",
-                "weight",
-                "hair_color",
-                "eye_color",
-                "distinctive_mark",
-                "father_name",
-                "mother_name",
-                "nrc_state",
-                "nrc_township",
-                "nrc_number",
-                "nrc_type",
-            ];
-
-            personalFields.forEach((field) => {
-                if (!data[field] || String(data[field]).trim() === "") {
-                    localErrors[field] =
-                        "ဤအချက်အလက်အား ဖြည့်စွက်ရန် လိုအပ်ပါသည်။";
-                    isValid = false;
-                }
-            });
-        }
-
-        if (activeTab === "employment") {
-            const employmentFields = [
-                "degree",
-                "position",
-                "department",
-                "salary_rate",
-                "employee_start_date_detail",
-                "current_pos_start_date_detail",
-                "current_dept_start_date_detail",
-                "year_of_service",
-                "foreign_detail",
-                "penalty_detail",
-                "training_detail",
-                "not_border",
-                "current_address",
-                "permanent_address",
-                "email",
-                "mobile_phno",
-                "contract_agreement_detail",
-            ];
-
-            employmentFields.forEach((field) => {
-                if (!data[field] || String(data[field]).trim() === "") {
-                    localErrors[field] =
-                        "ဤအချက်အလက်အား ဖြည့်စွက်ရန် လိုအပ်ပါသည်။";
-                    isValid = false;
-                }
-            });
-        }
-
+        const { isValid, localErrors } = validateHelperTabs(activeTab, data);
         clearErrors();
-
         if (!isValid) {
             setError(localErrors);
+            Swal.fire({
+                icon: "error",
+                text: "လိုအပ်သည့် ဒေတာများအားလုံးပြည့်စုံစွာ ဖြည့်ရန်လိုအပ်ပါသည်",
+                confirmButtonText: "နားလည်ပါပြီ",
+                confirmButtonColor: "oklch(0.577 0.245 27.325)",
+            });
         }
-
         return isValid;
     };
+
+    const isSecLastTab = currentTabIndex === tabs.length - 2;
+    const isLastTab = currentTabIndex === tabs.length - 1;
+
+    const shouldFormEndHere = isSecLastTab && !data.is_rector_or_above;
 
     const handleTabChange = (targetTabId) => {
         const targetTabIndex = tabs.findIndex((tab) => tab.id === targetTabId);
@@ -292,29 +192,50 @@ export default function EditEmployee({ employee }) {
             clearErrors();
             return;
         }
-        if (!validateTabs()) {
+
+        if (!validateTabs()) return;
+
+        if (targetTabIndex === tabs.length - 1 && !data.is_rector_or_above) {
+            Swal.fire({
+                icon: "error",
+                text: "အထက်လူကြီးဖြစ်မှသာ နောက်ဆုံးအဆင့် (၉ ခုမြှောက် Tab) သို့ သွားရောက်နိုင်ပါသည်။",
+                confirmButtonText: "နားလည်ပါပြီ",
+                confirmButtonColor: "oklch(0.577 0.245 27.325)",
+            });
+
             return;
         }
+
         setActiveTab(targetTabId);
     };
     const handleNextStep = (e) => {
         if (e) e.preventDefault();
 
-        if (!validateTabs()) {
+        if (!validateTabs()) return;
+
+        if (shouldFormEndHere) {
+            if (!validateTabs()) return;
+
+            post(route("employees.store"));
             return;
         }
+
         if (!isLastTab) {
             setActiveTab(tabs[currentTabIndex + 1].id);
         }
     };
 
     const handlePrevStep = () => {
-        if (currentTabIndex > 0) setActiveTab(tabs[currentTabIndex - 1].id);
+        if (currentTabIndex > 0) {
+            setActiveTab(tabs[currentTabIndex - 1].id);
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (isLastTab) {
+        if (!validateTabs()) return;
+
+        if (isLastTab || shouldFormEndHere) {
             post(route("employees.update", employee.id));
         }
     };
@@ -397,24 +318,24 @@ export default function EditEmployee({ employee }) {
                             နောက်သို့
                         </button>
                     )}
-                    {!isLastTab ? (
+
+                    {shouldFormEndHere || isLastTab ? (
+                        <button
+                            type="submit"
+                            form="employeeMegaForm"
+                            disabled={processing}
+                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow font-bold"
+                            onClick={handleSubmit}
+                        >
+                            {processing ? "ပြင်ဆင်နေပါသည်..." : "ပြင်ဆင်မည်..."}
+                        </button>
+                    ) : (
                         <button
                             type="button"
                             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow font-semibold"
                             onClick={(e) => handleNextStep(e)}
                         >
                             နောက်တစ်ဆင့် သို့
-                        </button>
-                    ) : (
-                        <button
-                            type="submit"
-                            form="employeeMegaForm"
-                            disabled={processing}
-                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow font-bold"
-                        >
-                            {processing
-                                ? "ပြင်ဆင်နေပါသည်..."
-                                : "အချက်အလက်များအားလုံး ပြင်ဆင်မည်"}
                         </button>
                     )}
                 </div>

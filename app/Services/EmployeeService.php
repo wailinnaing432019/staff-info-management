@@ -50,6 +50,7 @@ class EmployeeService
             $employee->employment()->create($storeData);
             $employee->foreignVisitedPurpose()->create($storeData);
             $employee->referee()->create($storeData);
+            $employee->details()->create($storeData);
 
             if (!empty($storeData['educations'])) $employee->educations()->createMany($storeData['educations']);
             if (!empty($storeData['trainings'])) $employee->trainings()->createMany($storeData['trainings']);
@@ -59,6 +60,7 @@ class EmployeeService
             if (!empty($storeData['awards'])) $employee->awardsReceived()->createMany($storeData['awards']);
             if (!empty($storeData['legal_records'])) $employee->courtDisciplinaryActions()->createMany($storeData['legal_records']);
             if (!empty($storeData['criminal_records'])) $employee->criminalRecords()->createMany($storeData['criminal_records']);
+            if (!empty($storeData['past_jobs'])) $employee->pastJobs()->createMany($storeData['past_jobs']);
 
             return $employee;
         });

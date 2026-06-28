@@ -3,6 +3,7 @@ import ActionTable from "../components/ActionTable";
 import FamilyTable from "../components/FamilyTable";
 import toMyanmarNumber from "@/util/numberHelper";
 import Format36 from "../components/Format36";
+import { Head } from "@inertiajs/react";
 
 export default function Format36Pdf({ data = {} }) {
     useEffect(() => {
@@ -14,6 +15,7 @@ export default function Format36Pdf({ data = {} }) {
     }, []);
     return (
         <>
+            <Head title={`ပုံစံ-၃၆`} />
             <style
                 dangerouslySetInnerHTML={{
                     __html: `

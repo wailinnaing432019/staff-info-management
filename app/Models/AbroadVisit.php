@@ -12,6 +12,7 @@ class AbroadVisit extends Model
 'visit_purpose',
 'abroad_from',
 'abroad_to',
+'person_met',
 'foreign_currency_amount',
     ];
 }

@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/employees/{id}/format18pdf', [StaffController::class, 'format18Pdf'])->name('staff.format18Pdf');
     Route::get('/employees/{id}/format36pdf', [StaffController::class, 'format36Pdf'])->name('staff.format36Pdf');
     Route::get('/employees/{id}/format25pdf', [StaffController::class, 'format25Pdf'])->name('staff.format25Pdf');
+    Route::get('/employees/{id}/format55pdf', [StaffController::class, 'format55Pdf'])->name('staff.format55Pdf');
 
     Route::get('/api/check-staff-number', [StaffController::class, 'checkStaffNumber']);
     Route::get('/allEmployees',[StaffController::class,'format25Page'])->name('format25page');

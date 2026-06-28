@@ -11,7 +11,6 @@ import {
 import {
     LogOut,
     UserRoundCog,
-    FileChartColumn,
     Plus,
     UserRound,
     LayoutDashboardIcon,
@@ -398,6 +397,7 @@ export default function Authenticated({
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50">
                     <div className="p-4 md:p-6 mx-auto max-w-[1600px] animate-fadeIn">
                         <Message />
+
                         {children}
                     </div>
                 </main>

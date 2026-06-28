@@ -4,6 +4,8 @@ import FamilyTab from "../FamilyTab";
 import TrainingTab from "../TrainingTab";
 import LegalTab from "../LegalTab";
 import Referee from "./Referee";
+import toMyanmarNumber from "@/util/numberHelper";
+import PastJobsTab from "../PastJobsTab";
 
 const InputField = ({
     label,
@@ -1022,6 +1024,10 @@ export default function EmployeeFormFields({
                                             သွားရောက်သည့်ကိစ္စ
                                         </th>
                                         <th className="p-2 border">
+                                            တွေ့ဆုံခဲ့သည့် ကုမ္ပဏီ/
+                                            လူပုဂ္ဂိုလ်အမည်
+                                        </th>
+                                        <th className="p-2 border">
                                             နိုင်ငံခြားငွေ မည်မျှ ထုတ်ယူခဲ့သည်
                                         </th>
                                         <th className="p-2 border"></th>
@@ -1090,6 +1096,21 @@ export default function EmployeeFormFields({
                                                     }
                                                 />
                                             </td>
+                                            <td className="p-1 border">
+                                                <textarea
+                                                    rows={1}
+                                                    className="w-full border-0 p-1"
+                                                    value={row.person_met}
+                                                    onChange={(e) =>
+                                                        handleDynamicChange(
+                                                            "abroad_visits",
+                                                            i,
+                                                            "person_met",
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </td>
 
                                             <td className="p-1 border">
                                                 <textarea
@@ -1108,7 +1129,7 @@ export default function EmployeeFormFields({
                                                     }
                                                 />
                                             </td>
-                                            <td className="p-1 border text-center">
+                                            <td className="p-1 border text-center w-24">
                                                 <button
                                                     type="button"
                                                     onClick={() =>
@@ -1133,8 +1154,9 @@ export default function EmployeeFormFields({
                                 addRow("abroad_visits", {
                                     abroad_from: "",
                                     abroad_to: "",
-                                    visit_purpose: "",
                                     country_visited: "",
+                                    visit_purpose: "",
+                                    person_met: "",
                                     foreign_currency_amount: "",
                                 })
                             }
@@ -1396,7 +1418,287 @@ export default function EmployeeFormFields({
             {activeTab === "referee" && (
                 <div className="space-y-6">
                     <Referee data={data} setData={setData} />
+                    <div className="p-4 border rounded-lg bg-gray-50 mb-4">
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                            ပါမောက္ခချုပ်/ ဒုတိယပါမောက္ခချုပ် ဖြစ်ပါသလား။။
+                        </label>
+                        <div className="flex space-x-4">
+                            <label className="flex items-center text-sm font-medium">
+                                <input
+                                    type="radio"
+                                    className="mr-2"
+                                    checked={data.is_rector_or_above === 1}
+                                    onChange={() =>
+                                        setData("is_rector_or_above", 1)
+                                    }
+                                />
+                                ဟုတ်ပါသည် (နောက်တစ်ဆင့် ဆက်သွားမည်)
+                            </label>
+                            <label className="flex items-center text-sm font-medium">
+                                <input
+                                    type="radio"
+                                    className="mr-2"
+                                    checked={data.is_rector_or_above === 0}
+                                    onChange={() =>
+                                        setData("is_rector_or_above", 0)
+                                    }
+                                />
+                                မဟုတ်ပါ (ဤနေရာတွင် ဖောင်ပိတ်သိမ်းမည်)
+                            </label>
+                        </div>
+                    </div>
                 </div>
+            )}
+
+            {activeTab === "detail_history" && (
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <InputField
+                            label="အသားအရောင်"
+                            value={data.skin_color}
+                            error={errors.skin_color}
+                            required={true}
+                            onChange={(e) =>
+                                setData("skin_color", e.target.value)
+                            }
+                        />
+
+                        <InputField
+                            label="ကာယကံရှင်မွေးဖွားချိန်၌ မိဘနှစ်ပါးသည် နိုင်ငံသား ဟုတ်/ မဟုတ်"
+                            value={data.is_parent_season_at_birth}
+                            error={errors.is_parent_season_at_birth}
+                            onChange={(e) =>
+                                setData(
+                                    "is_parent_season_at_birth",
+                                    e.target.value,
+                                )
+                            }
+                        />
+                        <InputField
+                            label="အလုပ်အကိုင်အတွက် ထောက်ခံသူများ"
+                            value={data.employment_reference}
+                            error={errors.employment_reference}
+                            onChange={(e) =>
+                                setData("employment_reference", e.target.value)
+                            }
+                        />
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="မိမိနှင့် မိမိ၏ဇနီးခင်ပွန်းတို့၏မိဘ၊ ညီအစ်ကိုမောင်နှမများ၊ သားသမီးများသည် နိုင်ငံရေးပါတီများတွင် ဝင်ရောက်ဆောင်ရွက်မှု ရှိ/ မရှိ (ရှိကအသေးစိတ်ဖော်ပြရန်)"
+                                value={data.is_party_member}
+                                error={errors.is_party_member}
+                                rows={2}
+                                required={false}
+                                onChange={(e) =>
+                                    setData("is_party_member", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="ယခင်နေထိုင်ခဲ့ဖူးသောဒေသနှင့် နေရပ်လိပ်စာများအပြည့်အစုံ (တပ်မတော်သားဖြစ်ကတပ်လိပ်စာဖော်ပြရန်မလို)"
+                                value={data.previous_address}
+                                error={errors.previous_address}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("previous_address", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="အဘ၏ နေရပ်လိပ်စာအပြည့်အစုံ"
+                                value={data.father_address_detail}
+                                error={errors.father_address_detail}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData(
+                                        "father_address_detail",
+                                        e.target.value,
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="အမိ၏ နေရပ်လိပ်စာအပြည့်အစုံ"
+                                value={data.mother_address_detail}
+                                error={errors.mother_address_detail}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData(
+                                        "mother_address_detail",
+                                        e.target.value,
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="လက်ရှိအလုပ်အကိုင် ရရှိလာပုံ"
+                                value={data.reason_for_current_occupation}
+                                error={errors.reason_for_current_occupation}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData(
+                                        "reason_for_current_occupation",
+                                        e.target.value,
+                                    )
+                                }
+                            />
+                        </div>
+                        <InputField
+                            label="ပြိုင်အရွေးခံ(သို့)တိုက်ရိုက်ခန့်"
+                            value={data.selection_type}
+                            error={errors.selection_type}
+                            onChange={(e) =>
+                                setData("selection_type", e.target.value)
+                            }
+                        />
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="နေခဲ့ဖူးသောကျောင်းများ (ခုနှစ်၊သက္ကရာဇ်ဖော်ပြရန်)"
+                                value={data.previous_school}
+                                error={errors.previous_school}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("previous_school", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="နောက်ဆုံးအောင်မြင်ခဲ့သည့် ကျောင်း/ အတန်း၊ ခုံအမှတ်၊ဘာသာရပ် အတိအကျဖော်ပြရန်"
+                                value={data.last_school}
+                                error={errors.last_school}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("last_school", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="ကျောင်းသားဘဝတွင် နိုင်ငံရေး/မြို့ရေး/ရွာရေး ဆောင်ရွက်မှုများနှင့် အဆင့်အတန်း၊ တာဝန်"
+                                value={data.student_level}
+                                error={errors.student_level}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("student_level", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="ဝါသနာပါပြီး လေ့လာလိုက်စားခဲ့သော ကျန်းမာရေးကစားခုန်စားမှုများ၊ အနုပညာဆိုင်ရာအတီးအမှုတ်များ၊ ပညာရေးစက်မှုလက်မှု"
+                                value={data.hobby}
+                                error={errors.hobby}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("hobby", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="တောခိုခဲ့ဖူးလျှင် (သို့မဟုတ်) သောင်းကျန်းသူများကြီးစိုးသော နယ်မြေတွင် နေထိုင်ခဲ့ဖူးလျှင် ဆောင်ရွက်ချက်များကိုဖော်ပြပါ"
+                                value={data.referee_status}
+                                error={errors.referee_status}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("referee_status", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="အလုပ်အကိုင်ပြောင်းရွှေ့ခဲ့ရသော အကြောင်းအကျိုးနှင့်လစာ"
+                                value={data.reason_for_transfer}
+                                error={errors.reason_for_transfer}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData(
+                                        "reason_for_transfer",
+                                        e.target.value,
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="အမှုထမ်းနေစဉ်(သို့)ကိုယ်ပိုင်အလုပ်အကိုင်ဆောင်ရွက်နေစဉ် နိုင်ငံရေး၊ မြို့/ ရွာရေးဆောင်ရွက်မှုများ ၊ဆောင်ရွက်နေစဉ် နိုင်ငံရေး၊ မြို့/ ရွာရေးဆောင်ရွက်မှုများ၊ ဆောင်ရွက်နေစဉ် အဆင့်အတန်းနှင့်တာဝန်"
+                                value={data.service_rank}
+                                error={errors.service_rank}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("service_rank", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="စစ်ဘက်/ နယ်ဘက်/ ရဲဘက်နှင့် နိုင်ငံရေးဘက်တွင် ခင်မင်ရင်းနှီးသော မိတ်ဆွေများ ရှိ/ မရှိ"
+                                value={data.close_friend}
+                                error={errors.close_friend}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("close_friend", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="မိမိနှင့် ခင်မင်ရင်းနှီးသောနိုင်ငံခြားသား ရှိ/ မရှိ၊ ရှိကမည်သည့် အလုပ်အကိုင်၊ လူမျိုး၊ တိုင်းပြည်၊ မည်ကဲ့သို့ရင်းနှီးသည်"
+                                value={data.close_foreign_friend}
+                                error={errors.close_foreign_friend}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData(
+                                        "close_foreign_friend",
+                                        e.target.value,
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="မိမိအား ထောက်ခံသည့် ပုဂ္ဂိုလ်(စစ်ဘက်/ နယ်ဘက်အရာရှိ၊ မြို့နယ်/ ကျေးရွာ/ ရပ်ကွက်အုပ်ချုပ်ရေးမှူး)"
+                                value={data.supporter}
+                                error={errors.supporter}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData("supporter", e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="md:col-span-3">
+                            <TextareaField
+                                label="ရာဇဝတ်ပြစ်မှုခံရခြင်း ရှိ/ မရှိ"
+                                value={data.crime_victim_status}
+                                error={errors.crime_victim_status}
+                                required={false}
+                                rows={2}
+                                onChange={(e) =>
+                                    setData(
+                                        "crime_victim_status",
+                                        e.target.value,
+                                    )
+                                }
+                            />
+                        </div>
+                    </div>
+                    <PastJobsTab data={data} setData={setData} />
+                </>
             )}
         </>
     );
